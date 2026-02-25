@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tycs — Design Direction Exploration</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-dark: #0f1117;
+    --bg-panel: #1a1d27;
+    --bg-elevated: #242836;
+    --border: #2e3347;
+    --text-primary: #e4e4e7;
+    --text-secondary: #8b8fa3;
+    --text-muted: #555973;
+    --green-brand: #34d399;
+    --green-brand-hover: #5eead4;
+    --green-brand-muted: rgba(52, 211, 153, 0.12);
+    --green-success: #86efac;
+    --gray-neutral: #6b7280;
+    --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-ui);
+    background: #08090d;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(8, 9, 13, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-brand);
+  }
+  .nav-links {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-links a {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+  }
+
+  /* Sections */
+  .section {
+    min-height: 100vh;
+    padding: 80px 32px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header {
+    max-width: 800px;
+    margin: 0 auto 40px;
+  }
+  .section-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-header .subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .section-header .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--green-brand);
+    background: var(--green-brand-muted);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  /* Mockup Container */
+  .mockup-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .mockup-frame {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .mockup-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ef4444; }
+  .dot-yellow { background: #eab308; }
+  .dot-green { background: #22c55e; }
+  .mockup-titlebar span {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 8px;
+  }
+
+  /* Direction A: Contextual Overview */
+  .overview-a {
+    padding: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    min-height: 500px;
+    justify-content: center;
+  }
+  .overview-a .milestone-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .overview-a .milestone-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .overview-a .cs-concept {
+    font-size: 14px;
+    color: var(--green-brand);
+    margin-top: 4px;
+  }
+  .overview-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 640px;
+    width: 100%;
+  }
+  .overview-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .overview-card .card-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .overview-card .card-value {
+    font-family: var(--font-code);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .overview-card .card-value.green { color: var(--green-brand); }
+  .overview-card .card-trend {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .overview-card.summary {
+    grid-column: 1 / -1;
+    background: transparent;
+    border: 1px dashed var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .btn-primary {
+    background: var(--green-brand);
+    color: #0f1117;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .btn-primary:hover {
+    background: var(--green-brand-hover);
+  }
+
+  /* Direction B: Contextual Overview — Compact */
+  .overview-b {
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    min-height: 400px;
+    justify-content: center;
+  }
+  .overview-b .inline-stats {
+    display: flex;
+    gap: 32px;
+    align-items: baseline;
+  }
+  .overview-b .stat {
+    text-align: center;
+  }
+  .overview-b .stat-value {
+    font-family: var(--font-code);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--green-brand);
+  }
+  .overview-b .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .overview-b .next-criteria {
+    font-size: 14px;
+    color: var(--text-secondary);
+    background: var(--bg-panel);
+    padding: 12px 20px;
+    border-radius: 6px;
+    border-left: 3px solid var(--green-brand);
+  }
+
+  /* Workspace Layout */
+  .workspace {
+    display: grid;
+    min-height: 520px;
+  }
+  .workspace-a {
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: 1fr 180px;
+  }
+  .workspace-b {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 200px;
+  }
+
+  .editor-panel {
+    background: var(--bg-dark);
+    padding: 0;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .editor-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    font-size: 13px;
+  }
+  .file-tab {
+    padding: 4px 12px;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-family: var(--font-code);
+    font-size: 12px;
+  }
+  .file-tab.active {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+  .editor-content {
+    padding: 16px;
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  .line-number {
+    color: var(--text-muted);
+    user-select: none;
+    display: inline-block;
+    width: 30px;
+    text-align: right;
+    margin-right: 16px;
+  }
+  .code-keyword { color: #c792ea; }
+  .code-func { color: #82aaff; }
+  .code-type { color: #ffcb6b; }
+  .code-string { color: #c3e88d; }
+  .code-comment { color: var(--text-muted); font-style: italic; }
+  .code-bracket { color: var(--text-secondary); }
+
+  .tutor-panel {
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    grid-row: 1 / -1;
+    grid-column: 2;
+  }
+  .tutor-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tutor-header .tutor-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tutor-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green-brand);
+  }
+  .tutor-close {
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .tutor-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tutor-msg {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: 8px;
+    max-width: 90%;
+  }
+  .tutor-msg.ai {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    align-self: flex-start;
+  }
+  .tutor-msg.user {
+    background: var(--green-brand-muted);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    color: var(--text-primary);
+    align-self: flex-end;
+  }
+  .tutor-input {
+    display: flex;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    gap: 8px;
+  }
+  .tutor-input input {
+    flex: 1;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: var(--font-ui);
+    outline: none;
+  }
+  .tutor-input input:focus {
+    border-color: var(--green-brand);
+  }
+  .tutor-send {
+    background: var(--green-brand);
+    border: none;
+    color: #0f1117;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .terminal-panel {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .terminal-header {
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .terminal-content {
+    padding: 12px 16px;
+    font-family: var(--font-code);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  .terminal-success { color: var(--green-success); }
+  .terminal-prompt { color: var(--text-muted); }
+
+  /* Benchmark results */
+  .benchmark-result {
+    padding: 24px;
+    text-align: center;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+  }
+  .benchmark-hero {
+    font-family: var(--font-code);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--green-brand);
+  }
+  .benchmark-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .benchmark-secondary {
+    font-family: var(--font-code);
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .benchmark-trend {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Acceptance Criteria */
+  .criteria-list {
+    padding: 16px;
+  }
+  .criteria-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .criteria-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .criteria-met {
+    background: rgba(134, 239, 172, 0.15);
+    color: var(--green-success);
+  }
+  .criteria-unmet {
+    background: rgba(107, 114, 128, 0.15);
+    color: var(--gray-neutral);
+  }
+
+  /* Milestone Completion */
+  .completion-view {
+    padding: 64px 48px;
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .completion-milestone {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .completion-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .completion-benchmark {
+    font-family: var(--font-code);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green-brand);
+    margin: 8px 0;
+  }
+  .completion-concepts {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .trajectory-chart {
+    width: 100%;
+    max-width: 500px;
+    height: 180px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .chart-line {
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    right: 40px;
+    height: 120px;
+  }
+  .chart-point {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-brand);
+    position: absolute;
+    z-index: 2;
+  }
+  .chart-point.new {
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
+  }
+  .chart-label {
+    position: absolute;
+    bottom: 8px;
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    transform: translateX(-50%);
+  }
+  .chart-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .next-milestone-preview {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    max-width: 500px;
+    text-align: left;
+  }
+  .next-milestone-preview .next-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .next-milestone-preview .next-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .next-milestone-preview .next-concept {
+    font-size: 13px;
+    color: var(--green-brand);
+    margin-bottom: 8px;
+  }
+  .next-milestone-preview .next-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Workspace top bar */
+  .workspace-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .workspace-topbar .project-name {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .workspace-topbar .milestone-indicator {
+    color: var(--text-secondary);
+  }
+  .workspace-topbar .actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-run {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-run:hover {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+  }
+  .btn-benchmark {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 5px;
+    border: none;
+    background: var(--green-brand);
+    color: #0f1117;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-benchmark:hover {
+    background: var(--green-brand-hover);
+  }
+  .shortcut-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    margin-left: 4px;
+  }
+
+  /* Tutor collapsed indicator */
+  .tutor-collapsed {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 48px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .tutor-collapsed:hover {
+    color: var(--green-brand);
+    background: var(--bg-elevated);
+  }
+  .tutor-collapsed.signaling {
+    color: var(--green-brand);
+    border-color: rgba(52, 211, 153, 0.3);
+    background: var(--green-brand-muted);
+  }
+
+  /* Comparison / side by side */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .comparison-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  /* Error display */
+  .error-output {
+    padding: 16px;
+  }
+  .error-interpretation {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    padding: 12px 16px;
+    background: var(--bg-elevated);
+    border-radius: 6px;
+    border-left: 3px solid var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .error-raw {
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+  }
+  .error-toggle {
+    font-size: 11px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-bottom: 4px;
+  }
+
+  /* Landing page mockup */
+  .landing-hero {
+    padding: 80px 48px;
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .landing-hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    max-width: 600px;
+    line-height: 1.2;
+  }
+  .landing-hero .tagline {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .landing-code-preview {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 520px;
+    width: 100%;
+    text-align: left;
+    margin-top: 16px;
+  }
+  .landing-code-preview code {
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .landing-benchmark-preview {
+    font-family: var(--font-code);
+    font-size: 14px;
+    color: var(--green-brand);
+    margin-top: 8px;
+    padding: 8px 16px;
+    background: var(--green-brand-muted);
+    border-radius: 4px;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">tycs — Design Directions</div>
+  <div class="nav-links">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#workspace">Workspace</a>
+    <a href="#tutor">Tutor</a>
+    <a href="#benchmark">Benchmark</a>
+    <a href="#completion">Completion</a>
+    <a href="#errors">Errors</a>
+    <a href="#landing">Landing</a>
+  </div>
+</nav>
+
+<!-- SECTION 1: Contextual Overview -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <span class="tag">Direction A — Centered, spacious</span>
+    <h2>Contextual Overview — Motivation Primer</h2>
+    <p class="subtitle">The full-screen view returning users see before entering the workspace. Four data points + one action. This is where psychological priming happens.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="mockup-frame">
+      <div class="mockup-titlebar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span>app.tycs.dev</span>
+      </div>
+      <div class="overview-a">
+        <div style="text-align: center;">
+          <div class="milestone-label">Milestone 3 of 5</div>
+          <div class="milestone-name">B-Tree Indexing</div>
+          <div class="cs-concept">Data Structures & Algorithms</div>
+        </div>
+        <div class="overview-cards">
+          <div class="overview-card">
+            <div class="card-label">Progress</div>
+            <div class="card-value green">60%</div>
+            <div class="card-trend">3 of 5 criteria met</div>
+          </div>
+          <div class="overview-card">
+            <div class="card-label">Last Benchmark</div>
+            <div class="card-value">8,200</div>
+            <div class="card-trend">ops/sec ↑</div>
+          </div>
+          <div class="overview-card">
+            <div class="card-label">Next Criteria</div>
+            <div class="card-value" style="font-size: 14px; font-weight: 400;">Node split for full leaf nodes</div>
+          </div>
+          <div class="overview-card summary">
+            You were working on the B-tree insert function. The basic insert works for non-full nodes. Remaining: handle the case where a leaf node is full and needs to split.
+          </div>
+        </div>
+        <button class="btn-primary">Continue Building</button>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top: 48px;">
+      <span class="tag">Direction B — Compact, inline</span>
+    </div>
+    <div class="mockup-frame">
+      <div class="mockup-titlebar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span>app.tycs.dev</span>
+      </div>
+      <div class="overview-b">
+        <div style="text-align: center;">
+          <div class="milestone-label" style="font-size: 13px; color: var(--text-muted);">Milestone 3 of 5</div>
+          <div style="font-size: 22px; font-weight: 700; margin-top: 4px;">B-Tree Indexing</div>
+          <div style="font-size: 13px; color: var(--green-brand); margin-top: 2px;">Data Structures & Algorithms</div>
+        </div>
+        <div class="inline-stats">
+          <div class="stat">
+            <div class="stat-value">60%</div>
+            <div class="stat-label">Progress</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">8,200</div>
+            <div class="stat-label">ops/sec ↑</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" style="color: var(--text-primary);">3/5</div>
+            <div class="stat-label">Criteria met</div>
+          </div>
+        </div>
+        <div class="next-criteria">
+          <strong>Next:</strong> Implement node split for full leaf nodes
+        </div>
+        <button class="btn-primary">Continue Building</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Workspace -->
+<section class="section" id="workspace">
+  <div class="section-header">
+    <span class="tag">Workspace — Tutor Open</span>
+    <h2>The Workspace</h2>
+    <p class="subtitle">The primary screen. Editor dominant, tutor as resizable side panel, terminal below. This is where 90% of time is spent.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="mockup-frame">
+      <div class="workspace-topbar">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <span class="project-name">tycs</span>
+          <span class="milestone-indicator">Milestone 3: B-Tree Indexing — 60%</span>
+        </div>
+        <div class="actions">
+          <button class="btn-run">Run <span class="shortcut-hint">⌘↵</span></button>
+          <button class="btn-benchmark">Benchmark <span class="shortcut-hint">⌘⇧↵</span></button>
+        </div>
+      </div>
+      <div class="workspace workspace-a">
+        <div class="editor-panel">
+          <div class="editor-header">
+            <span class="file-tab active">btree.go</span>
+            <span class="file-tab">node.go</span>
+            <span class="file-tab">store.go</span>
+          </div>
+          <div class="editor-content">
+            <div><span class="line-number">140</span><span class="code-keyword">func</span> <span class="code-bracket">(</span>t *<span class="code-type">BTree</span><span class="code-bracket">)</span> <span class="code-func">insert</span><span class="code-bracket">(</span>key <span class="code-bracket">[]</span><span class="code-type">byte</span>, value <span class="code-bracket">[]</span><span class="code-type">byte</span><span class="code-bracket">)</span> {</div>
+            <div><span class="line-number">141</span>    node := t.<span class="code-func">findLeaf</span>(key)</div>
+            <div><span class="line-number">142</span>    <span class="code-keyword">if</span> node.<span class="code-func">isFull</span>() {</div>
+            <div><span class="line-number">143</span>        <span class="code-comment">// TODO: handle node split</span></div>
+            <div><span class="line-number">144</span>        <span class="code-keyword">return</span></div>
+            <div><span class="line-number">145</span>    }</div>
+            <div><span class="line-number">146</span>    node.<span class="code-func">insertKey</span>(key, value)</div>
+            <div><span class="line-number">147</span>}</div>
+            <div><span class="line-number">148</span></div>
+            <div><span class="line-number">149</span><span class="code-comment">// split divides a full node into two nodes</span></div>
+            <div><span class="line-number">150</span><span class="code-keyword">func</span> <span class="code-bracket">(</span>n *<span class="code-type">Node</span><span class="code-bracket">)</span> <span class="code-func">split</span><span class="code-bracket">()</span> <span class="code-bracket">(</span>*<span class="code-type">Node</span>, <span class="code-bracket">[]</span><span class="code-type">byte</span><span class="code-bracket">)</span> {</div>
+            <div><span class="line-number">151</span>    mid := len(n.keys) / <span class="code-string">2</span></div>
+            <div><span class="line-number">152</span>    right := &<span class="code-type">Node</span>{</div>
+            <div><span class="line-number">153</span>        keys:   n.keys[mid:],</div>
+            <div><span class="line-number">154</span>        values: n.values[mid:],</div>
+            <div><span class="line-number">155</span>    }</div>
+          </div>
+        </div>
+        <div class="tutor-panel">
+          <div class="tutor-header">
+            <span class="tutor-label"><span class="tutor-dot"></span> AI Tutor</span>
+            <span class="tutor-close">×</span>
+          </div>
+          <div class="tutor-messages">
+            <div class="tutor-msg ai">Your split is copying keys to the right node — good start. But look at line 153: after the split, what happens to the parent node's reference? How does the parent know there's a new child?</div>
+            <div class="tutor-msg user">Oh — I need to insert the middle key into the parent and update its children array?</div>
+            <div class="tutor-msg ai">Exactly. And what happens if the parent is also full? That's the recursive case that makes B-trees interesting. Look at your insert function on line 140 — where would the parent split logic go?</div>
+          </div>
+          <div class="tutor-input">
+            <input type="text" placeholder="Ask a question...">
+            <button class="tutor-send">Send</button>
+          </div>
+        </div>
+        <div class="terminal-panel">
+          <div class="terminal-header">
+            <span>Output</span>
+            <span style="font-family: var(--font-code); font-size: 11px;">Compilation successful — 0.8s</span>
+          </div>
+          <div class="terminal-content">
+            <div><span class="terminal-prompt">$</span> go build ./...</div>
+            <div><span class="terminal-success">✓ Build successful</span></div>
+            <div style="margin-top: 8px;">
+              <div class="criteria-item">
+                <span class="criteria-icon criteria-met">✓</span>
+                <span>Insert single key into empty tree: <strong>MET</strong></span>
+              </div>
+              <div class="criteria-item">
+                <span class="criteria-icon criteria-met">✓</span>
+                <span>Insert and retrieve 100 keys: <strong>MET</strong></span>
+              </div>
+              <div class="criteria-item">
+                <span class="criteria-icon criteria-met">✓</span>
+                <span>Search returns correct value for existing key: <strong>MET</strong></span>
+              </div>
+              <div class="criteria-item">
+                <span class="criteria-icon criteria-unmet">–</span>
+                <span style="color: var(--text-secondary);">Node split when leaf is full: <strong style="color: var(--text-muted);">NOT MET</strong></span>
+              </div>
+              <div class="criteria-item">
+                <span class="criteria-icon criteria-unmet">–</span>
+                <span style="color: var(--text-secondary);">Range scan across split nodes: <strong style="color: var(--text-muted);">NOT MET</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: Tutor States -->
+<section class="section" id="tutor">
+  <div class="section-header">
+    <span class="tag">Tutor — Collapsed States</span>
+    <h2>Two-Stage Stuck Detection</h2>
+    <p class="subtitle">The tutor's collapsed indicator — default (invisible), Stage 1 signal (subtle glow), and Stage 2 expansion.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="comparison-grid">
+      <div>
+        <div class="comparison-label">Default — Collapsed, barely visible</div>
+        <div class="mockup-frame" style="min-height: 200px; position: relative;">
+          <div style="padding: 32px; color: var(--text-muted); font-size: 13px;">
+            Editor content here... the tutor indicator is a subtle tab on the right edge. Nearly invisible until you need it.
+          </div>
+          <div class="tutor-collapsed">💬</div>
+        </div>
+      </div>
+      <div>
+        <div class="comparison-label">Stage 1 — Signaling availability (subtle glow)</div>
+        <div class="mockup-frame" style="min-height: 200px; position: relative;">
+          <div style="padding: 32px; color: var(--text-muted); font-size: 13px;">
+            User has been inactive for 10 minutes. The tutor icon subtly glows green — "I'm here if you need me." No panel expansion yet.
+          </div>
+          <div class="tutor-collapsed signaling">💬</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Benchmark Results -->
+<section class="section" id="benchmark">
+  <div class="section-header">
+    <span class="tag">Benchmark Display</span>
+    <h2>The Benchmark Moment</h2>
+    <p class="subtitle">Hero number (absolute) + secondary (normalized ratio). Session qualifier for honesty. This is the screenshot target.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="comparison-grid">
+      <div>
+        <div class="comparison-label">Improvement — Numbers go up</div>
+        <div class="mockup-frame">
+          <div class="benchmark-result">
+            <div class="benchmark-hero">12,400</div>
+            <div class="benchmark-label">range scan ops/sec <span style="color: var(--text-muted);">(this session)</span></div>
+            <div class="benchmark-secondary">0.82x reference implementation</div>
+            <div class="benchmark-trend">↑ from 0 ops/sec before B-tree indexing</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="comparison-label">Regression — Numbers go down (no alarm)</div>
+        <div class="mockup-frame">
+          <div class="benchmark-result">
+            <div class="benchmark-hero" style="color: var(--text-primary);">6,100</div>
+            <div class="benchmark-label">range scan ops/sec <span style="color: var(--text-muted);">(this session)</span></div>
+            <div class="benchmark-secondary">0.51x reference implementation</div>
+            <div class="benchmark-trend" style="color: var(--text-muted);">↓ from 8,200 ops/sec — previous submission</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: Milestone Completion -->
+<section class="section" id="completion">
+  <div class="section-header">
+    <span class="tag">Milestone Completion</span>
+    <h2>Summit and Next Peak</h2>
+    <p class="subtitle">Full-screen Strava-pattern moment. Trajectory chart grows. Engineering-grade language. Screenshot-ready.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="mockup-frame">
+      <div class="completion-view">
+        <div class="completion-milestone">Milestone 3 Complete</div>
+        <div class="completion-title">B-Tree Indexing</div>
+        <div class="completion-benchmark">12,400 range scan ops/sec</div>
+        <div class="completion-concepts">Concepts encountered: Data Structures, Algorithms, Cache-Line Awareness</div>
+
+        <div class="trajectory-chart">
+          <svg class="chart-svg" viewBox="0 0 500 180">
+            <line x1="40" y1="150" x2="460" y2="150" stroke="#2e3347" stroke-width="1" />
+            <line x1="40" y1="30" x2="40" y2="150" stroke="#2e3347" stroke-width="1" />
+            <polyline points="80,130 200,110 360,45" fill="none" stroke="#34d399" stroke-width="2" opacity="0.6" />
+            <polyline points="360,45 360,45" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="6,4" opacity="0.4" />
+          </svg>
+          <div class="chart-point" style="left: 60px; bottom: 48px;"></div>
+          <div class="chart-point" style="left: 180px; bottom: 68px;"></div>
+          <div class="chart-point new" style="left: 340px; bottom: 123px;"></div>
+          <div class="chart-label" style="left: 80px;">KV Store</div>
+          <div class="chart-label" style="left: 200px;">Storage</div>
+          <div class="chart-label" style="left: 360px; color: var(--green-brand); font-weight: 600;">B-Tree</div>
+        </div>
+
+        <div class="next-milestone-preview">
+          <div class="next-label">UP NEXT</div>
+          <div class="next-name">Milestone 4: Query Parser</div>
+          <div class="next-concept">Compilers & Interpreters — Parsing, AST Construction</div>
+          <div class="next-desc">Your database can store and retrieve data efficiently. Now give it a language — build a SQL-like query parser so users can ask questions instead of writing raw key lookups.</div>
+        </div>
+
+        <button class="btn-primary">Continue to Query Parser</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: Error Display -->
+<section class="section" id="errors">
+  <div class="section-header">
+    <span class="tag">Error Presentation</span>
+    <h2>Errors Are Data, Not Judgment</h2>
+    <p class="subtitle">Two-tier display: human-readable interpretation above raw compiler output. No red. Diagnostic, not punitive.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="mockup-frame">
+      <div class="terminal-header">
+        <span>Output</span>
+        <span style="font-family: var(--font-code); font-size: 11px; color: var(--text-muted);">Compilation — 1 issue</span>
+      </div>
+      <div class="error-output">
+        <div class="error-interpretation">
+          Your <code style="font-family: var(--font-code); background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px;">split</code> function references <code style="font-family: var(--font-code); background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px;">node</code> on line 152, but it hasn't been declared in this scope. Check if it should be defined in the <code style="font-family: var(--font-code); background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px;">split</code> function parameters or as a receiver.
+        </div>
+        <div class="error-toggle">▸ Show raw compiler output</div>
+        <div class="error-raw" style="display: none;">
+          ./btree.go:152:12: undefined: node
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: Landing Page -->
+<section class="section" id="landing">
+  <div class="section-header">
+    <span class="tag">Landing Page</span>
+    <h2>The Front Door</h2>
+    <p class="subtitle">Astro static site at tycs.dev. Real code, real benchmarks, no marketing fluff. Sam's skepticism breaks here.</p>
+  </div>
+  <div class="mockup-container">
+    <div class="mockup-frame">
+      <div class="mockup-titlebar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span>tycs.dev</span>
+      </div>
+      <div class="landing-hero">
+        <h1>Build a database.<br>Learn computer science.</h1>
+        <p class="tagline">Write real code. Watch your system improve across 5 milestones. Guided by AI, compared to the pros. No textbooks, no lectures.</p>
+        <div class="landing-code-preview">
+          <code>
+            <div><span class="code-keyword">func</span> <span class="code-bracket">(</span>kv *<span class="code-type">KVStore</span><span class="code-bracket">)</span> <span class="code-func">Put</span><span class="code-bracket">(</span>key, value <span class="code-bracket">[]</span><span class="code-type">byte</span><span class="code-bracket">)</span> <span class="code-type">error</span> {</div>
+            <div>    entry := <span class="code-func">encode</span>(key, value)</div>
+            <div>    _, err := kv.file.<span class="code-func">Write</span>(entry)</div>
+            <div>    <span class="code-keyword">return</span> err</div>
+            <div>}</div>
+          </code>
+          <div class="landing-benchmark-preview">→ 1,000 key-value pairs written to disk in 47ms</div>
+        </div>
+        <button class="btn-primary">Start Building</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Simple nav highlighting
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  // Error toggle
+  document.querySelectorAll('.error-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const raw = this.nextElementSibling;
+      if (raw.style.display === 'none') {
+        raw.style.display = 'block';
+        this.textContent = '▾ Hide raw compiler output';
+      } else {
+        raw.style.display = 'none';
+        this.textContent = '▸ Show raw compiler output';
+      }
+    });
+  });
+</script>
+</body>
+</html>
