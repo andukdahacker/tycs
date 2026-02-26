@@ -1,3 +1,4 @@
+import type { DB } from '@tycs/shared'
 import { Kysely, PostgresDialect } from 'kysely'
 import pg from 'pg'
 
@@ -11,8 +12,7 @@ const dialect = new PostgresDialect({
   }),
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- replaced by kysely-codegen types in Story 1.3
-export const db = new Kysely<any>({ dialect })
+export const db = new Kysely<DB>({ dialect })
 
 export async function destroyDb(): Promise<void> {
   await db.destroy()
