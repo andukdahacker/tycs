@@ -59,7 +59,7 @@ development_status:
   # Epic 1: Project Foundation & Developer Environment
   epic-1: in-progress
   1-1-monorepo-scaffold-and-local-dev-environment: done
-  1-2-database-foundation-and-migration-system: backlog
+  1-2-database-foundation-and-migration-system: done
   1-3-database-codegen-and-shared-utilities: backlog
   1-4-fastify-server-bootstrap-and-plugin-architecture: backlog
   1-5-test-infrastructure-and-shared-utilities: backlog
