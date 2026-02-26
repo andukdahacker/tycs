@@ -80,7 +80,7 @@ reply.send(toCamelCase(await db.selectFrom('submissions').where('user_id', '=', 
 
 ### Fastify (Backend)
 
-**Plugin Registration Order** in `server.ts` (new plugins MUST document position):
+**Plugin Registration Order** in `app.ts` (new plugins MUST document position):
 1. Auth plugin (global `onRequest` hook — must be first)
 2. Rate limiter (depends on auth for `uid`)
 3. Domain plugins (depend on auth + rate limiter)

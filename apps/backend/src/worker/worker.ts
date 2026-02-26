@@ -1,10 +1,24 @@
-/**
- * BullMQ Worker Entry Point.
- * BullMQ dependency added in Story 3.3.
- *
- * Processors:
- *   - execution-processor.ts (Story 3.3)
- *   - benchmark-runner.ts (Story 7.1)
- */
+import pino from 'pino'
 
-export {}
+const logger = pino({
+  level: process.env['LOG_LEVEL'] ?? 'info',
+  transport:
+    process.env['NODE_ENV'] !== 'production'
+      ? { target: 'pino-pretty' }
+      : undefined,
+})
+
+logger.info('Worker started')
+
+// BullMQ processors registered in Story 3.3
+
+// Keep the event loop alive until BullMQ provides its own activity (Story 3.3)
+const keepAlive = setInterval(() => {}, 1 << 30)
+
+for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+  process.on(signal, () => {
+    logger.info({ signal }, 'Worker shutting down')
+    clearInterval(keepAlive)
+    process.exit(0)
+  })
+}

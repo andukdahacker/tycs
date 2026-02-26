@@ -1,11 +1,8 @@
-/**
- * Execution Plugin — Registration Order: Position 3 (domain plugin)
- *
- * Request decorator pattern: fastify.decorateRequest('uid', '')
- * SSE routes MUST override connectionTimeout: 0 to prevent Fastify killing the connection.
- * 30s manual heartbeat within Railway's 5-min hard timeout.
- *
- * Actual implementation in Story 3.x.
- */
+import type { FastifyInstance } from 'fastify'
 
-export {}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function executionPlugin(fastify: FastifyInstance): Promise<void> {
+  // Routes added in Story 3.x:
+  // POST /submit — submit code for execution
+  // GET /:submissionId/stream — SSE stream for execution results
+}

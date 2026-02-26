@@ -1,14 +1,23 @@
-/**
- * Auth Plugin — Registration Order: Position 1 (registered FIRST)
- *
- * Uses request decorator pattern:
- *   fastify.decorateRequest('uid', '')
- *   declare module 'fastify' { interface FastifyRequest { uid: string } }
- *
- * Global onRequest hook verifies Firebase ID tokens.
- * Downstream plugins read request.uid for authenticated user identification.
- *
- * Actual implementation in Story 2.1.
- */
+import type { FastifyInstance } from 'fastify'
+import fp from 'fastify-plugin'
 
-export {}
+declare module 'fastify' {
+  interface FastifyRequest {
+    uid: string
+  }
+}
+
+async function auth(fastify: FastifyInstance): Promise<void> {
+  fastify.decorateRequest('uid', '')
+
+  fastify.addHook('onRequest', async (request) => {
+    if (request.url === '/health' || request.url.startsWith('/health?')) return
+    // TODO(story-2.1): Implement Firebase ID token verification
+    // 1. Extract Authorization: Bearer <token>
+    // 2. Verify via Firebase Admin SDK auth.verifyIdToken()
+    // 3. Set request.uid = decodedToken.uid
+    // 4. Return 401 if missing/invalid/expired
+  })
+}
+
+export const authPlugin = fp(auth, { name: 'auth-plugin' })

@@ -1,11 +1,9 @@
-/**
- * Tutor Plugin — Registration Order: Position 3 (domain plugin)
- *
- * Request decorator pattern: fastify.decorateRequest('uid', '')
- * SSE routes MUST override connectionTimeout: 0 to prevent Fastify killing the connection.
- * 30s manual heartbeat within Railway's 5-min hard timeout.
- *
- * Actual implementation in Story 6.x.
- */
+import type { FastifyInstance } from 'fastify'
 
-export {}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function tutorPlugin(fastify: FastifyInstance): Promise<void> {
+  // Routes added in Story 6.x:
+  // GET /:sessionId/stream — SSE stream for tutor responses
+  // POST /:sessionId/message — send message to tutor
+  // GET /:sessionId/messages — get conversation history
+}

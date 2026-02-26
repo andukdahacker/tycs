@@ -1,26 +1,26 @@
-import Fastify from 'fastify'
+import { buildApp } from './app.js'
 
-const fastify = Fastify({
-  logger: {
-    transport:
-      process.env['NODE_ENV'] !== 'production'
-        ? { target: 'pino-pretty' }
-        : undefined,
-  },
-})
+async function start(): Promise<void> {
+  const app = await buildApp()
 
-fastify.get('/health', async () => {
-  return { status: 'ok' }
-})
-
-const start = async (): Promise<void> => {
   const port = Number(process.env['PORT'] ?? 3001)
   const host = process.env['HOST'] ?? '0.0.0.0'
 
-  await fastify.listen({ port, host })
+  await app.listen({ port, host })
+
+  for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+    process.on(signal, () => {
+      app.log.info({ signal }, 'Shutting down')
+      void app.close().then(
+        () => process.exit(0),
+        () => process.exit(1)
+      )
+    })
+  }
 }
 
 start().catch((err: unknown) => {
-  fastify.log.error(err)
+  // eslint-disable-next-line no-console
+  console.error('Failed to start server:', err)
   process.exit(1)
 })
