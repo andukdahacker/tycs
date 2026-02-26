@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "@tycs/shared": ["../../packages/shared/src"],
+      "@tycs/shared/*": ["../../packages/shared/src/*"],
+      "@tycs/execution": ["../../packages/execution/src"],
+      "@tycs/execution/*": ["../../packages/execution/src/*"],
+      "@tycs/config": ["../../packages/config"],
+      "@tycs/config/*": ["../../packages/config/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

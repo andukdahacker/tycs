@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@import '@tycs/config/tailwind-tokens.css';
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  /* Website: font-display: swap (prioritize LCP) */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: local('Inter');
+  }
+
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: local('JetBrains Mono');
+  }
+}

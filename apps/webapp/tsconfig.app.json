@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@tycs/shared": ["../../packages/shared/src"],
+      "@tycs/shared/*": ["../../packages/shared/src/*"],
+      "@tycs/ui": ["../../packages/ui"],
+      "@tycs/ui/*": ["../../packages/ui/*"],
+      "@tycs/execution": ["../../packages/execution/src"],
+      "@tycs/execution/*": ["../../packages/execution/src/*"],
+      "@tycs/config": ["../../packages/config"],
+      "@tycs/config/*": ["../../packages/config/*"]
+    }
+  },
+  "include": ["src"]
+}

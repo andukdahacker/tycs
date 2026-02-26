@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+@import '@tycs/config/tailwind-tokens.css';
+
+/*
+ * shadcn/ui CSS custom property mapping.
+ * Maps design tokens to shadcn/ui's expected variable names.
+ * Dark mode is the primary design target.
+ */
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  /* Webapp: font-display: optional (NOT swap — that's Astro only) */
+  /* TODO(story-4.5): Replace local() with self-hosted font files or CDN URLs */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: optional;
+    src: local('Inter');
+  }
+
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: optional;
+    src: local('JetBrains Mono');
+  }
+}
