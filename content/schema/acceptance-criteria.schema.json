@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tycs.dev/schema/acceptance-criteria.schema.json",
+  "title": "Milestone Acceptance Criteria",
+  "description": "Defines the acceptance criteria for a tycs milestone, used by Content CI and the learner progress system.",
+  "type": "object",
+  "required": ["milestone", "criteria"],
+  "properties": {
+    "milestone": {
+      "type": "string",
+      "description": "Milestone identifier matching the directory name (e.g., '01-kv-store')."
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/criterion"
+      }
+    }
+  },
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "required": ["name", "order", "assertion"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique kebab-case identifier for this criterion (e.g., 'put-and-get')."
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Display order index. Criteria are shown to the learner in ascending order."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description shown to the learner."
+        },
+        "assertion": {
+          "$ref": "#/$defs/assertion"
+        },
+        "error_hint": {
+          "type": "string",
+          "description": "Optional diagnostic hint shown when the criterion fails. Guides without revealing the answer."
+        }
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["type", "expected"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "stdout-contains",
+            "stdout-regex",
+            "exit-code-equals",
+            "output-line-count",
+            "benchmark-threshold"
+          ],
+          "description": "The type of assertion to run against program output."
+        },
+        "expected": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" }
+          ],
+          "description": "The expected value. Interpretation depends on assertion type."
+        },
+        "command_args": {
+          "type": "string",
+          "description": "Optional CLI arguments passed to the learner's program for this specific test."
+        }
+      }
+    }
+  }
+}

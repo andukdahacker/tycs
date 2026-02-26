@@ -1,0 +1,18 @@
+milestone: 01-kv-store
+
+benchmarks:
+  - name: sequential-inserts
+    description: >
+      Sequential insertion of 1,000 key-value pairs with 16-byte keys
+      and 64-byte values. Measures raw write throughput including
+      disk persistence on every Put.
+    warmup_iterations: 2
+    measured_iterations: 10
+    workload:
+      type: inserts
+      num_operations: 1000
+      key_size_bytes: 16
+      value_size_bytes: 64
+    target_metrics:
+      ops_per_sec: 100
+    reference_version: milestone-1-v1

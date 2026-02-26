@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tycs.dev/schema/benchmark-config.schema.json",
+  "title": "Milestone Benchmark Configuration",
+  "description": "Defines the benchmark workload and target metrics for a tycs milestone.",
+  "type": "object",
+  "required": ["milestone", "benchmarks"],
+  "properties": {
+    "milestone": {
+      "type": "string",
+      "description": "Milestone identifier matching the directory name (e.g., '01-kv-store')."
+    },
+    "benchmarks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/benchmark"
+      }
+    }
+  },
+  "$defs": {
+    "benchmark": {
+      "type": "object",
+      "required": ["name", "description", "workload", "target_metrics"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique kebab-case identifier for this benchmark (e.g., 'sequential-inserts')."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of what this benchmark measures."
+        },
+        "warmup_iterations": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 2,
+          "description": "Number of warmup iterations before measurement begins."
+        },
+        "measured_iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10,
+          "description": "Number of measured iterations for statistical reliability."
+        },
+        "workload": {
+          "$ref": "#/$defs/workload"
+        },
+        "target_metrics": {
+          "$ref": "#/$defs/target_metrics"
+        },
+        "reference_version": {
+          "type": "string",
+          "description": "Git tag or commit of the reference implementation used to establish baseline metrics."
+        }
+      }
+    },
+    "workload": {
+      "type": "object",
+      "required": ["type", "num_operations"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["inserts", "lookups", "range-scans", "mixed"],
+          "description": "The category of operations in this benchmark workload."
+        },
+        "num_operations": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of operations in the workload."
+        },
+        "key_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Size of each key in bytes."
+        },
+        "value_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Size of each value in bytes."
+        },
+        "mix_ratio": {
+          "type": "object",
+          "description": "For 'mixed' workload type, the ratio of each operation.",
+          "properties": {
+            "inserts": { "type": "number", "minimum": 0, "maximum": 1 },
+            "lookups": { "type": "number", "minimum": 0, "maximum": 1 },
+            "deletes": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "target_metrics": {
+      "type": "object",
+      "required": ["ops_per_sec"],
+      "properties": {
+        "ops_per_sec": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Target operations per second (baseline from reference implementation)."
+        },
+        "p50_latency_us": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Target p50 latency in microseconds."
+        },
+        "p99_latency_us": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Target p99 latency in microseconds."
+        }
+      }
+    }
+  }
+}

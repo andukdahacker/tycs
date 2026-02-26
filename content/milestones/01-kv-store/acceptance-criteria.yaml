@@ -1,0 +1,88 @@
+milestone: 01-kv-store
+
+criteria:
+  - name: put-and-get
+    order: 1
+    description: Put a key-value pair and retrieve it with Get.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: put-and-get"
+      command_args: test
+    error_hint: >
+      Check that Put stores the key-value pair in the data map
+      and that Get looks it up correctly.
+
+  - name: get-missing-key
+    order: 2
+    description: Get on a nonexistent key returns not-found.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: get-missing-key"
+      command_args: test
+    error_hint: >
+      Make sure Get returns false for the second return value
+      when the key isn't in the map.
+
+  - name: delete-key
+    order: 3
+    description: Delete removes a key so subsequent Get returns not-found.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: delete-key"
+      command_args: test
+    error_hint: >
+      Use Go's built-in delete() to remove the key from the map,
+      then persist the change.
+
+  - name: overwrite-key
+    order: 4
+    description: Put with an existing key updates the value.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: overwrite-key"
+      command_args: test
+    error_hint: >
+      Assigning to a map key that already exists overwrites
+      the value — make sure your Put does this.
+
+  - name: persistence-write
+    order: 5
+    description: Data file exists on disk after Put and Close.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: persistence-write"
+      command_args: test
+    error_hint: >
+      Your saveToDisk method needs to actually write bytes to the file.
+      Make sure you're writing to s.file, not just updating the map.
+
+  - name: persistence-reload
+    order: 6
+    description: A new KVStore instance loads previously persisted data.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: persistence-reload"
+      command_args: test
+    error_hint: >
+      loadFromDisk needs to read the same binary format that saveToDisk writes.
+      Check that your key/value length encoding matches in both directions.
+
+  - name: multiple-keys
+    order: 7
+    description: Store handles 100+ key-value pairs correctly.
+    assertion:
+      type: stdout-contains
+      expected: "PASS: multiple-keys"
+      command_args: test
+    error_hint: >
+      If individual puts work but bulk fails, check that saveToDisk
+      writes ALL entries (not just the last one) and loadFromDisk
+      reads until EOF.
+
+  - name: exit-clean
+    order: 8
+    description: Program exits with code 0 on success.
+    assertion:
+      type: exit-code-equals
+      expected: 0
+      command_args: test

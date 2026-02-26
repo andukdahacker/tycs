@@ -1,0 +1,153 @@
+# generated: 2026-02-26
+# project: tycs
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> in-progress: Automatically when first story is created (via create-story)
+#   - in-progress -> done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+#
+# CONTENT AUTHORING DEPENDENCY (parallel workstream):
+# ===================================================
+# Content authoring (milestone briefs, starter code, acceptance criteria, benchmark
+# workloads, reference implementations, concept explainer SVGs) is NOT tracked in
+# these engineering epics. It is a separate curriculum workstream that must proceed
+# in parallel with implementation.
+#
+# Deadlines by epic dependency:
+#   - Epics 1-3: Can use stub/fixture content (hardcoded test milestones, dummy Go programs)
+#   - BEFORE Epic 4: Milestone 1 content REQUIRED (brief, starter code, structured
+#     acceptance criteria assertions, reference implementation)
+#   - BEFORE Epic 7: Benchmark workloads + pinned reference implementation REQUIRED
+#   - BEFORE Epic 9: Milestone 1 content must be polished for public preview
+#
+# Recommended start: Begin Milestone 1 content authoring alongside Epic 2.
+# Content location: content/milestones/ (NOT a pnpm workspace — no package.json, no TS)
+# Validation: Content CI pipeline (Story 1.6 scaffold) validates structure + compilation
+
+generated: 2026-02-26
+project: tycs
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Project Foundation & Developer Environment
+  epic-1: backlog
+  1-1-monorepo-scaffold-and-local-dev-environment: backlog
+  1-2-database-foundation-and-migration-system: backlog
+  1-3-database-codegen-and-shared-utilities: backlog
+  1-4-fastify-server-bootstrap-and-plugin-architecture: backlog
+  1-5-test-infrastructure-and-shared-utilities: backlog
+  1-6-ci-cd-pipeline-and-quality-gates: backlog
+  1-7-error-tracking-monitoring-and-deployment-config: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: User Authentication & Onboarding
+  epic-2: backlog
+  2-1-firebase-auth-integration-and-session-management: backlog
+  2-2-signup-and-login-ui: backlog
+  2-3-background-questionnaire-and-user-profile: backlog
+  2-4-skill-floor-assessment: backlog
+  2-5-graceful-redirect-for-under-qualified-users: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Code Execution & Workspace
+  epic-3: backlog
+  3-1-execution-environment-image-and-registry: backlog
+  3-2-execution-package-and-fly-io-machine-integration: backlog
+  3-3-submission-queue-and-worker-process: backlog
+  3-4-submission-api-and-sse-streaming: backlog
+  3-5-workspace-layout-and-resizable-panels: backlog
+  3-6-monaco-editor-integration: backlog
+  3-7-terminal-output-and-error-presentation: backlog
+  3-8-workspace-state-management: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Milestone Content & Learning Loop
+  epic-4: backlog
+  4-1-milestone-content-model-and-curriculum-api: backlog
+  4-2-milestone-brief-and-starter-code-loading: backlog
+  4-3-acceptance-criteria-evaluation-and-display: backlog
+  4-4-milestone-completion-and-advancement: backlog
+  4-5-visual-concept-explainers: backlog
+  4-6-contextual-overview: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Progress Persistence & Re-engagement
+  epic-5: backlog
+  5-1-auto-save-and-code-snapshot-persistence: backlog
+  5-2-session-resume-and-continue-building: backlog
+  5-3-session-summary-generation: backlog
+  5-4-session-summary-display-for-returning-users: backlog
+  5-5-overall-progress-view: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: AI Socratic Tutor
+  epic-6: backlog
+  6-1-tutor-backend-and-anthropic-sdk-integration: backlog
+  6-2-tutor-sse-streaming-and-conversation-persistence: backlog
+  6-3-tutor-chat-ui-and-panel-integration: backlog
+  6-4-two-stage-stuck-detection-and-proactive-intervention: backlog
+  6-5-tutor-surfaced-concept-explainers: backlog
+  6-6-graceful-degradation-and-availability: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Benchmarks & Performance Narrative
+  epic-7: backlog
+  7-1-benchmark-runner-and-reference-normalization: backlog
+  7-2-benchmark-results-display: backlog
+  7-3-historical-benchmark-results: backlog
+  7-4-benchmark-trajectory-visualization: backlog
+  7-5-progressive-enhancements-to-overview-and-completion: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: User Account & Privacy
+  epic-8: backlog
+  8-1-account-settings-page: backlog
+  8-2-data-export: backlog
+  8-3-account-deletion: backlog
+  8-4-privacy-policy-page: backlog
+  epic-8-retrospective: optional
+
+  # Epic 9: Landing Page & Marketing
+  epic-9: backlog
+  9-1-astro-landing-page-scaffold-and-design-system: backlog
+  9-2-value-proposition-and-concrete-proof: backlog
+  9-3-milestone-1-preview: backlog
+  9-4-signup-cta-and-auth-redirect: backlog
+  9-5-seo-and-social-sharing: backlog
+  epic-9-retrospective: optional
+
+  # Epic 10: Operations & Monitoring
+  epic-10: backlog
+  10-1-infrastructure-health-monitoring: backlog
+  10-2-execution-queue-management-via-bull-board: backlog
+  10-3-ai-tutor-conversation-log-review: backlog
+  10-4-analytics-and-reporting: backlog
+  10-5-external-configuration-for-tutor-and-stuck-detection: backlog
+  epic-10-retrospective: optional
