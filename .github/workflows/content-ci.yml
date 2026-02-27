@@ -1,0 +1,29 @@
+name: Content CI
+
+on:
+  push:
+    paths:
+      - 'content/**'
+    branches: [main]
+  pull_request:
+    paths:
+      - 'content/**'
+    branches: [main]
+
+jobs:
+  validate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Scaffold: Add pnpm/node setup and validation steps when content
+      # schemas and execution pipeline are implemented
+      - name: Validate milestone content structure
+        run: |
+          echo "Content CI scaffold - validation steps pending"
+          echo "Will validate: YAML schemas, starter code compilation,"
+          echo "reference implementations, benchmark baselines"
+          # TODO(story-4.1): Add JSON schema validation for milestone YAML
+          # TODO(story-3.2): Add Go compilation check via Fly execution
+          # TODO(story-7.1): Add benchmark baseline validation
+          ls content/milestones/ || echo "No milestone content found"

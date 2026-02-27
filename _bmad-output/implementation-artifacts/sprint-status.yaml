@@ -63,7 +63,7 @@ development_status:
   1-3-database-codegen-and-shared-utilities: done
   1-4-fastify-server-bootstrap-and-plugin-architecture: done
   1-5-test-infrastructure-and-shared-utilities: done
-  1-6-ci-cd-pipeline-and-quality-gates: backlog
+  1-6-ci-cd-pipeline-and-quality-gates: done
   1-7-error-tracking-monitoring-and-deployment-config: backlog
   epic-1-retrospective: optional
 

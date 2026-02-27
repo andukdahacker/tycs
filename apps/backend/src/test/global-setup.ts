@@ -5,8 +5,10 @@ import { promises as fs } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const TEST_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs_test'
-const DEV_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs'
+const isCI = process.env['CI'] === 'true'
+const PG_PORT = isCI ? '5432' : '5433'
+const DEV_DB_URL = `postgresql://tycs:tycs@localhost:${PG_PORT}/tycs`
+const TEST_DB_URL = `postgresql://tycs:tycs@localhost:${PG_PORT}/tycs_test`
 
 export async function setup(): Promise<void> {
   // 1. Ensure tycs_test database exists (connect to dev DB to issue CREATE DATABASE)

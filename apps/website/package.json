@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
+    "@tycs/config": "workspace:*",
     "@tycs/ui": "workspace:*",
     "astro": "^5.9.3",
     "react": "^19.1.1",

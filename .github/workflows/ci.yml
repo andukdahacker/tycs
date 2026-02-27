@@ -1,0 +1,170 @@
+# REQUIRED REPOSITORY SETTINGS:
+# ==============================
+# 1. Branch protection rule on 'main':
+#    - Require status checks to pass: "ci" and "e2e" jobs
+#    - Require branches to be up to date before merging
+#    - Require pull request reviews (optional but recommended)
+# 2. GitHub Secrets:
+#    - TURBO_TOKEN (optional): Vercel Turborepo remote cache token
+# 3. GitHub Variables:
+#    - TURBO_TEAM (optional): Vercel team slug for remote caching
+#
+# TURBOREPO REMOTE CACHING SETUP (optional):
+# 1. Create a Vercel account (free tier)
+# 2. Generate a Turborepo token at https://vercel.com/account/tokens
+# 3. Add TURBO_TOKEN as a GitHub repository secret
+# 4. Add TURBO_TEAM as a GitHub repository variable (the Vercel team slug)
+# Turborepo automatically detects these env vars and enables remote caching.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: tycs
+          POSTGRES_PASSWORD: tycs
+          POSTGRES_DB: tycs
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    env:
+      DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+      REDIS_URL: redis://localhost:6379
+      NODE_ENV: test
+      LOG_LEVEL: silent
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      CI: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [ci]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: tycs
+          POSTGRES_PASSWORD: tycs
+          POSTGRES_DB: tycs
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    env:
+      DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+      REDIS_URL: redis://localhost:6379
+      NODE_ENV: test
+      LOG_LEVEL: silent
+      CI: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm --filter webapp exec playwright install chromium --with-deps
+
+      - name: Run database migrations
+        run: pnpm --filter backend db:migrate
+
+      - name: Start backend server
+        run: |
+          cd apps/backend
+          npx tsx src/server.ts &
+
+      - name: Wait for backend
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3001/health && exit 0
+            sleep 1
+          done
+          echo "Backend failed to start within 30 seconds"
+          exit 1
+
+      - name: Run E2E tests
+        run: pnpm --filter webapp test:e2e
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: apps/webapp/playwright-report/
+          retention-days: 7

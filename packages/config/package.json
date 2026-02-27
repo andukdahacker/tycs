@@ -7,7 +7,8 @@
     "./vitest.config": "./vitest.config.ts",
     "./test-utils": "./test-utils/index.ts",
     "./test-utils/mock-redis": "./test-utils/mock-redis.ts",
-    "./eslint.config": "./eslint.config.ts"
+    "./eslint.config": "./eslint.config.ts",
+    "./tailwind-tokens.css": "./tailwind-tokens.css"
   },
   "scripts": {
     "lint": "eslint .",
