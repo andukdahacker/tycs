@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "dotenv -e ../../.env -- tsx --watch src/server.ts",
     "dev:worker": "dotenv -e ../../.env -- tsx --watch src/worker/worker.ts",
-    "start:api": "node dist/server.js",
-    "start:worker": "node dist/worker/worker.js",
+    "start:api": "node --import ./dist/instrument.js dist/server.js",
+    "start:worker": "node --import ./dist/instrument.js dist/worker/worker.js",
     "build": "tsc",
     "lint": "eslint .",
     "test": "vitest run",
@@ -18,8 +18,12 @@
     "db:migrate:make": "kysely migrate:make"
   },
   "dependencies": {
+    "@bull-board/api": "^6.20.3",
+    "@bull-board/fastify": "^6.20.3",
+    "@fastify/basic-auth": "^6.2.0",
     "@fastify/cors": "^11.2.0",
     "@paralleldrive/cuid2": "^3.3.0",
+    "@sentry/node": "^10.40.0",
     "@tycs/execution": "workspace:*",
     "@tycs/shared": "workspace:*",
     "fastify": "^5.3.3",

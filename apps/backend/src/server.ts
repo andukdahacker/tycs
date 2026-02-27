@@ -1,3 +1,4 @@
+import { Sentry } from './instrument.js' // Must be first — Sentry auto-instrumentation
 import { buildApp } from './app.js'
 
 async function start(): Promise<void> {
@@ -11,10 +12,11 @@ async function start(): Promise<void> {
   for (const signal of ['SIGTERM', 'SIGINT'] as const) {
     process.on(signal, () => {
       app.log.info({ signal }, 'Shutting down')
-      void app.close().then(
-        () => process.exit(0),
-        () => process.exit(1)
-      )
+      void (async () => {
+        await Sentry.close(2000)
+        await app.close()
+        process.exit(0)
+      })().catch(() => process.exit(1))
     })
   }
 }

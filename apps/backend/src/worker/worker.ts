@@ -1,3 +1,4 @@
+import { Sentry } from '../instrument.js' // Must be first — Sentry auto-instrumentation
 import pino from 'pino'
 
 const logger = pino({
@@ -19,6 +20,9 @@ for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {
     logger.info({ signal }, 'Worker shutting down')
     clearInterval(keepAlive)
-    process.exit(0)
+    void (async () => {
+      await Sentry.close(2000)
+      process.exit(0)
+    })().catch(() => process.exit(1))
   })
 }

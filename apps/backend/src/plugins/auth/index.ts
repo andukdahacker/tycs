@@ -12,6 +12,7 @@ async function auth(fastify: FastifyInstance): Promise<void> {
 
   fastify.addHook('onRequest', async (request) => {
     if (request.url === '/health' || request.url.startsWith('/health?')) return
+    if (request.url.startsWith('/admin')) return // Admin routes use basic auth, not Firebase
     // TODO(story-2.1): Implement Firebase ID token verification
     // 1. Extract Authorization: Bearer <token>
     // 2. Verify via Firebase Admin SDK auth.verifyIdToken()
