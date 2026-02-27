@@ -85,7 +85,7 @@ So that I can build features against a consistent schema with a proven migration
 
 - [x] Task 6: Verify and validate (AC: #1, #5)
   - [x] 6.1 Run `docker compose up -d` to ensure PostgreSQL is running
-  - [x] 6.2 Ensure `DATABASE_URL` is set — copy `.env.example` to `.env` if not already done (value: `postgresql://tycs:tycs@localhost:5433/tycs`)
+  - [x] 6.2 Ensure `DATABASE_URL` is set — copy `.env.example` to `.env` if not already done (value: `postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion`)
   - [x] 6.3 Run `pnpm --filter backend db:migrate` — verify tables created
   - [x] 6.4 Run the same command again — verify idempotent (no error, no changes)
   - [x] 6.5 Run `pnpm --filter backend db:migrate:down` — verify rollback works
@@ -141,9 +141,9 @@ So that I can build features against a consistent schema with a proven migration
 - `apps/backend/src/shared/db.ts` exists as empty placeholder — replace its contents
 - `apps/backend/package.json` has fastify, ioredis, pino as deps; tsx, pino-pretty as devDeps
 - Backend runs with `tsx --watch src/server.ts` on port 3001
-- `docker-compose.yml` has PostgreSQL 16 on port 5432 (user: `tycs`, password: `tycs`, db: `tycs`)
-- `.env.example` already documents `DATABASE_URL=postgresql://tycs:tycs@localhost:5432/tycs`
-- TypeScript config extends `@tycs/config/tsconfig.base.json` with strict mode
+- `docker-compose.yml` has PostgreSQL 16 on port 5432 (user: `mycscompanion`, password: `mycscompanion`, db: `mycscompanion`)
+- `.env.example` already documents `DATABASE_URL=postgresql://mycscompanion:mycscompanion@localhost:5432/mycscompanion`
+- TypeScript config extends `@mycscompanion/config/tsconfig.base.json` with strict mode
 - ESLint enforces `no-console: 'error'` and no-default-export
 
 **Learnings from Story 1.1 dev agent:**

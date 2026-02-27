@@ -1,4 +1,4 @@
-# tycs
+# mycscompanion
 
 Learn computer science by building real systems in Go.
 
@@ -14,8 +14,8 @@ Learn computer science by building real systems in Go.
 
 ```bash
 # Clone the repository
-git clone <repo-url> tycs
-cd tycs
+git clone <repo-url> mycscompanion
+cd mycscompanion
 
 # Install dependencies
 pnpm install

@@ -5,11 +5,11 @@ import { FastifyAdapter } from '@bull-board/fastify'
 
 async function adminPlugin(fastify: FastifyInstance): Promise<void> {
   // Basic auth for /admin routes
-  const adminUser = process.env['TYCS_ADMIN_USER'] ?? 'admin'
-  const adminPass = process.env['TYCS_ADMIN_PASSWORD']
+  const adminUser = process.env['MCC_ADMIN_USER'] ?? 'admin'
+  const adminPass = process.env['MCC_ADMIN_PASSWORD']
 
   if (!adminPass) {
-    fastify.log.warn('TYCS_ADMIN_PASSWORD not set — Bull Board disabled')
+    fastify.log.warn('MCC_ADMIN_PASSWORD not set — Bull Board disabled')
     return
   }
 
@@ -19,7 +19,7 @@ async function adminPlugin(fastify: FastifyInstance): Promise<void> {
         throw new Error('Unauthorized')
       }
     },
-    authenticate: { realm: 'tycs-admin' },
+    authenticate: { realm: 'mycscompanion-admin' },
   })
 
   // Bull Board setup — empty queues, filled in Epic 3

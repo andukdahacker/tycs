@@ -3,7 +3,7 @@
 # Version: 6.0.0-alpha.23
 # Date: 2026-02-21T04:51:15.577Z
 
-project_name: tycs
+project_name: mycscompanion
 user_skill_level: intermediate
 planning_artifacts: "{project-root}/_bmad-output/planning-artifacts"
 implementation_artifacts: "{project-root}/_bmad-output/implementation-artifacts"

@@ -34,11 +34,11 @@ Railway services are created via the Railway dashboard, not config files. The `r
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | PostgreSQL connection string (auto-set by Railway PostgreSQL plugin) |
 | `REDIS_URL` | Yes | Redis connection string (auto-set by Railway Redis plugin) |
-| `TYCS_SENTRY_DSN` | Yes | Sentry DSN for error tracking |
+| `MCC_SENTRY_DSN` | Yes | Sentry DSN for error tracking |
 | `NODE_ENV` | Yes | Set to `production` |
-| `CORS_ORIGIN` | Yes | Webapp URL (e.g., `https://app.tycs.dev`) |
-| `TYCS_ADMIN_USER` | No | Bull Board username (default: `admin`) |
-| `TYCS_ADMIN_PASSWORD` | Yes | Bull Board password |
+| `CORS_ORIGIN` | Yes | Webapp URL (e.g., `https://app.mycscompanion.dev`) |
+| `MCC_ADMIN_USER` | No | Bull Board username (default: `admin`) |
+| `MCC_ADMIN_PASSWORD` | Yes | Bull Board password |
 | `FIREBASE_SERVICE_ACCOUNT` | Yes | Firebase Admin SDK service account (Story 2.1) |
 
 ### worker
@@ -47,16 +47,16 @@ Railway services are created via the Railway dashboard, not config files. The `r
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | Same as api |
 | `REDIS_URL` | Yes | Same as api |
-| `TYCS_SENTRY_DSN` | Yes | Same as api |
+| `MCC_SENTRY_DSN` | Yes | Same as api |
 | `NODE_ENV` | Yes | Set to `production` |
-| `TYCS_FLY_API_TOKEN` | Yes | Fly.io API token for code execution (Story 3.2) |
+| `MCC_FLY_API_TOKEN` | Yes | Fly.io API token for code execution (Story 3.2) |
 | `ANTHROPIC_API_KEY` | Yes | Anthropic API key for AI tutor (Story 6.1) |
 
 ### webapp
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `TYCS_FIREBASE_CONFIG` | Yes | Firebase web app config JSON (build-time) |
+| `MCC_FIREBASE_CONFIG` | Yes | Firebase web app config JSON (build-time) |
 
 ### website
 
@@ -80,14 +80,14 @@ No app-level TLS configuration is needed.
 
 1. Create a Sentry project at https://sentry.io
 2. Get the DSN from Project Settings > Client Keys
-3. Set `TYCS_SENTRY_DSN` environment variable on api and worker services
+3. Set `MCC_SENTRY_DSN` environment variable on api and worker services
 4. Sentry is `enabled: false` in development/test — only active in staging/production
 
 ### Bull Board
 
-1. Set `TYCS_ADMIN_PASSWORD` on the api service
+1. Set `MCC_ADMIN_PASSWORD` on the api service
 2. Access at `https://<api-url>/admin/queues`
-3. Authenticate with `TYCS_ADMIN_USER` (default: `admin`) and `TYCS_ADMIN_PASSWORD`
+3. Authenticate with `MCC_ADMIN_USER` (default: `admin`) and `MCC_ADMIN_PASSWORD`
 4. Shows empty queue dashboard until Epic 3 adds real queues
 
 ### Metabase (Local Dev Only)

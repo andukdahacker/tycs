@@ -36,9 +36,9 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: tycs
-          POSTGRES_PASSWORD: tycs
-          POSTGRES_DB: tycs
+          POSTGRES_USER: mycscompanion
+          POSTGRES_PASSWORD: mycscompanion
+          POSTGRES_DB: mycscompanion
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -57,7 +57,7 @@ jobs:
           - 6379:6379
 
     env:
-      DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+      DATABASE_URL: postgresql://mycscompanion:mycscompanion@localhost:5432/mycscompanion
       REDIS_URL: redis://localhost:6379
       NODE_ENV: test
       LOG_LEVEL: silent
@@ -98,9 +98,9 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: tycs
-          POSTGRES_PASSWORD: tycs
-          POSTGRES_DB: tycs
+          POSTGRES_USER: mycscompanion
+          POSTGRES_PASSWORD: mycscompanion
+          POSTGRES_DB: mycscompanion
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -119,7 +119,7 @@ jobs:
           - 6379:6379
 
     env:
-      DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+      DATABASE_URL: postgresql://mycscompanion:mycscompanion@localhost:5432/mycscompanion
       REDIS_URL: redis://localhost:6379
       NODE_ENV: test
       LOG_LEVEL: silent

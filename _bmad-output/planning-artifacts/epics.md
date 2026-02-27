@@ -9,11 +9,11 @@ inputDocuments:
   - '_bmad-output/planning-artifacts/ux-design-specification.md'
 ---
 
-# tycs - Epic Breakdown
+# mycscompanion - Epic Breakdown
 
 ## Overview
 
-This document provides the complete epic and story breakdown for tycs, decomposing the requirements from the PRD, UX Design, and Architecture into implementable stories.
+This document provides the complete epic and story breakdown for mycscompanion, decomposing the requirements from the PRD, UX Design, and Architecture into implementable stories.
 
 ## Requirements Inventory
 
@@ -165,7 +165,7 @@ This document provides the complete epic and story breakdown for tycs, decomposi
 
 - ARCH-1: Manual Assembly starter template — Turborepo + pnpm workspaces with 3 apps (backend, webapp, website) and 4 packages (ui, shared, execution, config)
 - ARCH-2: Hybrid deployment topology — Railway for web infrastructure + Fly.io Machines for isolated code execution (Firecracker VMs)
-- ARCH-3: Firebase Auth confined to `app.tycs.dev` only; landing page at `tycs.dev` is pure static with CTA redirects
+- ARCH-3: Firebase Auth confined to `app.mycscompanion.dev` only; landing page at `mycscompanion.dev` is pure static with CTA redirects
 - ARCH-4: Kysely query builder with `kysely-codegen` for type generation; migrations via `kysely-ctl`
 - ARCH-5: Fastify server with 6 domain plugins (auth, execution, tutor, curriculum, progress, account) registered in specific order
 - ARCH-6: SSE streaming via `fastify-sse-v2` with Redis pub/sub for worker↔API communication; 30s heartbeat; `Last-Event-ID` for reconnect replay
@@ -343,7 +343,7 @@ Users can manage their account settings, export all their data (code submissions
 **FRs covered:** FR40, FR41, FR42.
 
 ### Epic 9: Landing Page & Marketing
-Visitors can discover tycs through an Astro landing page that communicates the value proposition with concrete proof (code screenshots, benchmark outputs, milestone list), preview Milestone 1 content (brief, criteria, starter code as read-only) before signing up, initiate signup via CTA, and share via optimized Open Graph cards. The page is SEO-optimized with meta tags and structured data. Visual consistency with webapp via shared Tailwind design tokens.
+Visitors can discover mycscompanion through an Astro landing page that communicates the value proposition with concrete proof (code screenshots, benchmark outputs, milestone list), preview Milestone 1 content (brief, criteria, starter code as read-only) before signing up, initiate signup via CTA, and share via optimized Open Graph cards. The page is SEO-optimized with meta tags and structured data. Visual consistency with webapp via shared Tailwind design tokens.
 **FRs covered:** FR46, FR47, FR48, FR49, FR50.
 
 ### Epic 10: Operations & Monitoring
@@ -509,7 +509,7 @@ So that users can authenticate securely and their sessions persist across visits
 **Given** the webapp is loaded
 **When** Firebase Auth SDK is initialized
 **Then** it supports email/password and GitHub OAuth sign-in methods (FR26)
-**And** Firebase Auth is confined to `app.tycs.dev` only — the landing page at `tycs.dev` has no Firebase dependency (ARCH-3)
+**And** Firebase Auth is confined to `app.mycscompanion.dev` only — the landing page at `mycscompanion.dev` has no Firebase dependency (ARCH-3)
 **And** the backend auth plugin validates Firebase ID tokens on all protected API endpoints (NFR-S6)
 **And** the `GET /health` endpoint remains publicly accessible without authentication
 **And** user sessions persist across browser sessions via Firebase Auth persistence (FR27)
@@ -1304,7 +1304,7 @@ So that I understand how my data is collected, used, and protected.
 
 ## Epic 9: Landing Page & Marketing
 
-**Goal:** Visitors can discover tycs through an Astro landing page that communicates the value proposition with concrete proof, preview Milestone 1 content before signing up, initiate signup via CTA, and share via optimized Open Graph cards. SEO-optimized with visual consistency via shared Tailwind design tokens.
+**Goal:** Visitors can discover mycscompanion through an Astro landing page that communicates the value proposition with concrete proof, preview Milestone 1 content before signing up, initiate signup via CTA, and share via optimized Open Graph cards. SEO-optimized with visual consistency via shared Tailwind design tokens.
 
 **FRs covered:** FR46, FR47, FR48, FR49, FR50
 **ARCH requirements:** ARCH-3
@@ -1320,7 +1320,7 @@ So that the landing page is visually consistent with the webapp and loads fast.
 **Acceptance Criteria:**
 
 **Given** the `apps/website` Astro app is configured in the monorepo
-**When** the site is built and deployed to `tycs.dev`
+**When** the site is built and deployed to `mycscompanion.dev`
 **Then** it renders as a static site with zero client-side JavaScript dependencies on Firebase or the webapp (ARCH-3)
 **And** Tailwind CSS is configured with shared design tokens from the webapp for visual consistency
 **And** the dark-first color system is applied with green accent reserved for primary actions only (UX-9)
@@ -1336,12 +1336,12 @@ So that the landing page is visually consistent with the webapp and loads fast.
 ### Story 9.2: Value Proposition & Concrete Proof
 
 As a **visitor**,
-I want to see exactly what I'll build and achieve on tycs,
+I want to see exactly what I'll build and achieve on mycscompanion,
 So that I can decide whether this is right for me based on real evidence.
 
 **Acceptance Criteria:**
 
-**Given** a visitor lands on `tycs.dev`
+**Given** a visitor lands on `mycscompanion.dev`
 **When** the landing page renders
 **Then** the page communicates the core value proposition: build a database from scratch across 5 milestones (FR46)
 **And** concrete proof is displayed: code screenshots from actual milestones, benchmark output examples with real metrics, and the full 5-milestone list (FR46)
@@ -1377,8 +1377,8 @@ So that I can start building without navigating to a separate page first.
 
 **Given** a visitor clicks the signup CTA on the landing page
 **When** the CTA is activated
-**Then** the visitor is redirected to `app.tycs.dev` where Firebase Auth handles signup (FR48)
-**And** the landing page at `tycs.dev` has zero Firebase dependency — CTA is a simple link/redirect (ARCH-3)
+**Then** the visitor is redirected to `app.mycscompanion.dev` where Firebase Auth handles signup (FR48)
+**And** the landing page at `mycscompanion.dev` has zero Firebase dependency — CTA is a simple link/redirect (ARCH-3)
 **And** the CTA uses green accent as the sole primary action on the page (UX-9)
 **And** the CTA meets 44x44px minimum touch target size (UX-17)
 **And** the CTA is keyboard-accessible with visible focus indicator (NFR-A2)
@@ -1387,7 +1387,7 @@ So that I can start building without navigating to a separate page first.
 ### Story 9.5: SEO & Social Sharing
 
 As a **visitor**,
-I want to find tycs via search engines and see a compelling preview when someone shares it,
+I want to find mycscompanion via search engines and see a compelling preview when someone shares it,
 So that the platform is discoverable and shareable.
 
 **Acceptance Criteria:**

@@ -8,13 +8,13 @@ date: 2026-02-21
 author: Ducdo
 ---
 
-# Product Brief: tycs
+# Product Brief: mycscompanion
 
 <!-- Content will be appended sequentially through collaborative workflow steps -->
 
 ## Executive Summary
 
-tycs is a CS foundations learning webapp that teaches working software engineers to build real systems — databases, interpreters, OS components — through a "mega-project spine" approach with AI-guided Socratic tutoring. Instead of reading textbooks or watching lectures, learners build ONE ambitious project (starting with "Build Your Own Database") that naturally spans 7 of 9 core CS subjects. Every concept is encountered because you need it for your build, not because a syllabus says so.
+mycscompanion is a CS foundations learning webapp that teaches working software engineers to build real systems — databases, interpreters, OS components — through a "mega-project spine" approach with AI-guided Socratic tutoring. Instead of reading textbooks or watching lectures, learners build ONE ambitious project (starting with "Build Your Own Database") that naturally spans 7 of 9 core CS subjects. Every concept is encountered because you need it for your build, not because a syllabus says so.
 
 The product targets the 45-55% of the self-taught developer education market that is currently underserved: working engineers who are too advanced for Codecademy, too practical for MIT OpenCourseWare, and want more depth than LeetCode. With 82% of developers being at least partially self-taught and teachyourselfcs.com receiving over 1M visits annually, there is clear demand for a structured, interactive path through CS foundations — but no existing platform combines project-based depth, AI tutoring, and real-world system comparison in one experience.
 
@@ -51,7 +51,7 @@ No existing platform combines: project-based depth + AI tutoring + real-world sy
 
 ### Proposed Solution
 
-tycs teaches CS foundations through building real systems. The core mechanic is the **mega-project spine** — one ambitious, long-running project (starting with "Build Your Own Database") that serves as the vehicle for learning multiple CS subjects simultaneously. Starting with a simple key-value store, learners progressively add B-tree indexing, a query parser, transactions, and networking — each iteration teaching new CS concepts through real engineering need.
+mycscompanion teaches CS foundations through building real systems. The core mechanic is the **mega-project spine** — one ambitious, long-running project (starting with "Build Your Own Database") that serves as the vehicle for learning multiple CS subjects simultaneously. Starting with a simple key-value store, learners progressively add B-tree indexing, a query parser, transactions, and networking — each iteration teaching new CS concepts through real engineering need.
 
 **Core experience loop:**
 1. **Zero-decision start** — open the app, press "Continue Building," and get a structured session with one clear next action
@@ -87,7 +87,7 @@ The curriculum is invisible. There is no syllabus, no module list, no learning/b
 
 **Current pain:** He's tried the teachyourselfcs.com path twice. Both times he hit the wall around week 4 — dense textbook reading after a full workday, no feedback, no one to ask when stuck. He tried watching Berkeley OS lectures on YouTube but fell asleep. He knows the knowledge is out there but can't find a way to absorb it that fits his life.
 
-**What makes him say "this is exactly what I needed":** Opening tycs after dinner, pressing "Continue Building," and spending 45 minutes adding a buffer pool to his database — learning OS memory management because his build needs it, not because a syllabus says so. The AI tutor asks him "what happens if two threads try to flush the same dirty page?" and he realizes he just learned concurrency control through his own code.
+**What makes him say "this is exactly what I needed":** Opening mycscompanion after dinner, pressing "Continue Building," and spending 45 minutes adding a buffer pool to his database — learning OS memory management because his build needs it, not because a syllabus says so. The AI tutor asks him "what happens if two threads try to flush the same dirty page?" and he realizes he just learned concurrency control through his own code.
 
 **Represents:** ~25-30% of addressable market. Medium willingness to pay ($15-40/month). Already wants depth — just needs the right vehicle.
 
@@ -101,7 +101,7 @@ The curriculum is invisible. There is no syllabus, no module list, no learning/b
 
 **Current pain:** She subscribed to Educative for Grokking the System Design Interview but it felt like memorizing patterns, not building understanding. She tried Boot.dev but the gamification felt patronizing. She considered going back to school part-time but the cost and time commitment are prohibitive while working full-time and managing family obligations.
 
-**What makes her say "this is exactly what I needed":** After 6 weeks on tycs, she's built a working key-value store with B-tree indexing. In her next design review, when her team lead asks "how would you index this?" she answers from *experience* — "well, when I built my B-tree, the trade-off between node size and cache line alignment was..." Her lead is genuinely impressed.
+**What makes her say "this is exactly what I needed":** After 6 weeks on mycscompanion, she's built a working key-value store with B-tree indexing. In her next design review, when her team lead asks "how would you index this?" she answers from *experience* — "well, when I built my B-tree, the trade-off between node size and cache line alignment was..." Her lead is genuinely impressed.
 
 **Represents:** ~20-25% of addressable market. High willingness to pay ($30-80/month, often employer-funded). Pragmatic — needs career-relevant depth.
 
@@ -123,11 +123,11 @@ The curriculum is invisible. There is no syllabus, no module list, no learning/b
 
 ### Who We Are NOT Building For (v1)
 
-**Interview Preppers seeking speed over depth.** Developers who want to pass a FAANG interview in 30 days are better served by LeetCode and AlgoExpert. tycs builds deep understanding over months — the mega-project approach is deliberately slower than pattern drilling. A subset of preppers who want lasting understanding may find tycs, but we do not optimize for the "cram and pass" workflow.
+**Interview Preppers seeking speed over depth.** Developers who want to pass a FAANG interview in 30 days are better served by LeetCode and AlgoExpert. mycscompanion builds deep understanding over months — the mega-project approach is deliberately slower than pattern drilling. A subset of preppers who want lasting understanding may find mycscompanion, but we do not optimize for the "cram and pass" workflow.
 
-**Complete beginners who can't yet code.** tycs assumes you can write working code in at least one language. The mega-project requires reading and writing real programs from day one. Beginners should start with The Odin Project or freeCodeCamp and come to tycs when they have 1+ years of coding experience.
+**Complete beginners who can't yet code.** mycscompanion assumes you can write working code in at least one language. The mega-project requires reading and writing real programs from day one. Beginners should start with The Odin Project or freeCodeCamp and come to mycscompanion when they have 1+ years of coding experience.
 
-**Academic CS students seeking course credit.** tycs does not map to university syllabi, produce graded assignments, or offer accredited certificates. Students supplementing formal education may benefit, but the product is designed for working professionals, not academic contexts.
+**Academic CS students seeking course credit.** mycscompanion does not map to university syllabi, produce graded assignments, or offer accredited certificates. Students supplementing formal education may benefit, but the product is designed for working professionals, not academic contexts.
 
 ---
 
@@ -139,15 +139,15 @@ Working developers who feel like frauds because they lack a CS degree. The zero-
 
 #### Future Expansion: B2B — Engineering Team Leads
 
-As tycs matures, engineering managers who want to upskill their teams become a deliberate B2B expansion target. A team building the same mega-project, discussing trade-offs, and reviewing each other's implementations is a compelling team learning experience. Market data shows employer-funded learning budgets average $1,000-2,500/year per developer — Priya's "Career Upgrader" segment is frequently employer-funded. B2B team pricing (following the Educative/Pluralsight model) represents the highest-margin revenue path and should be planned as a Phase 3+ initiative, not an afterthought.
+As mycscompanion matures, engineering managers who want to upskill their teams become a deliberate B2B expansion target. A team building the same mega-project, discussing trade-offs, and reviewing each other's implementations is a compelling team learning experience. Market data shows employer-funded learning budgets average $1,000-2,500/year per developer — Priya's "Career Upgrader" segment is frequently employer-funded. B2B team pricing (following the Educative/Pluralsight model) represents the highest-margin revenue path and should be planned as a Phase 3+ initiative, not an afterthought.
 
 ---
 
 ### User Journey
 
 #### Discovery
-- **Organic search:** Marcus googles "learn CS foundations for self-taught developers" and finds tycs. The landing page speaks his language instantly — "Build a database. Learn 7 CS subjects. No textbooks." — and he's in.
-- **Social proof:** Priya's colleague shares a benchmark screenshot on Slack: "My B-tree just hit 25K inserts/sec." She asks how, and he points her to tycs.
+- **Organic search:** Marcus googles "learn CS foundations for self-taught developers" and finds mycscompanion. The landing page speaks his language instantly — "Build a database. Learn 7 CS subjects. No textbooks." — and he's in.
+- **Social proof:** Priya's colleague shares a benchmark screenshot on Slack: "My B-tree just hit 25K inserts/sec." She asks how, and he points her to mycscompanion.
 - **Community word-of-mouth:** A Hacker News post ("I built a database from scratch and accidentally learned 7 CS subjects") generates discussion. Jake sees it shared in his bootcamp alumni Discord.
 
 #### Onboarding: The Immediate Win (First 15 minutes)
@@ -167,7 +167,7 @@ This is the make-or-break moment. The goal is to defeat the intimidation of "You
 
 #### The Stuck Moment (Week 3-4 — The Critical Intervention)
 
-This is where 60-70% of learners abandon other platforms. tycs handles it differently through **The Stuck Advisor**:
+This is where 60-70% of learners abandon other platforms. mycscompanion handles it differently through **The Stuck Advisor**:
 
 - **Detection:** The system monitors pace, error rate, and time-on-task. When a learner is stuck for >10 minutes without progress, it intervenes proactively.
 - **Three paths offered:**
@@ -194,7 +194,7 @@ This is where 60-70% of learners abandon other platforms. tycs handles it differ
 
 ### User Success Metrics
 
-These measure whether tycs is creating real value for learners — the outcomes that matter.
+These measure whether mycscompanion is creating real value for learners — the outcomes that matter.
 
 | Metric | What It Measures | Target | Why It Matters |
 |---|---|---|---|
@@ -245,7 +245,7 @@ These measure whether tycs is creating real value for learners — the outcomes 
 | KPI | Measurement | Target | Frequency |
 |---|---|---|---|
 | **Full track completion** | % of users who complete all milestones in a mega-project | >15% (vs. 3-7% MOOC baseline) | Quarterly |
-| **Net Promoter Score (NPS)** | Survey: "How likely are you to recommend tycs?" | >50 | Quarterly |
+| **Net Promoter Score (NPS)** | Survey: "How likely are you to recommend mycscompanion?" | >50 | Quarterly |
 | **Organic referral rate** | % of new users from word-of-mouth / shared content | >30% | Monthly |
 | **Churn rate (paid users)** | Monthly paid user cancellation rate | <8% | Monthly |
 
@@ -391,4 +391,4 @@ This directly addresses onboarding intimidation — Jake (our "Eager Leveler" pe
 - Multiple entry points by background (frontend dev starts with query parser, DevOps starts with storage engine)
 - Content creation pipeline (export milestone journeys as technical articles)
 
-**The 3-year vision:** tycs is the recognized platform where working engineers go to deeply understand computer science — not by studying, but by building. A community of builders who've each constructed their own database, interpreter, or OS component, and can reason about systems from first-hand experience.
+**The 3-year vision:** mycscompanion is the recognized platform where working engineers go to deeply understand computer science — not by studying, but by building. A community of builders who've each constructed their own database, interpreter, or OS component, and can reason about systems from first-hand experience.

@@ -11,9 +11,9 @@ export const baseVitestConfig = defineConfig({
   },
   resolve: {
     alias: {
-      '@tycs/shared': path.resolve(__dirname, '../shared/src'),
-      '@tycs/execution': path.resolve(__dirname, '../execution/src'),
-      '@tycs/config': path.resolve(__dirname, '../config'),
+      '@mycscompanion/shared': path.resolve(__dirname, '../shared/src'),
+      '@mycscompanion/execution': path.resolve(__dirname, '../execution/src'),
+      '@mycscompanion/config': path.resolve(__dirname, '../config'),
     },
   },
 })

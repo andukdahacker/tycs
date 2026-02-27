@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node'
 
-const dsn = process.env['TYCS_SENTRY_DSN']
+const dsn = process.env['MCC_SENTRY_DSN']
 
 if (dsn) {
   Sentry.init({

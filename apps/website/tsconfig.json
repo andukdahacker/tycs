@@ -5,8 +5,8 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "noEmit": true,
     "paths": {
-      "@tycs/ui": ["../../packages/ui"],
-      "@tycs/ui/*": ["../../packages/ui/*"]
+      "@mycscompanion/ui": ["../../packages/ui"],
+      "@mycscompanion/ui/*": ["../../packages/ui/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]

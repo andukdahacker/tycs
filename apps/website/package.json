@@ -1,5 +1,5 @@
 {
-  "name": "@tycs/website",
+  "name": "@mycscompanion/website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
-    "@tycs/config": "workspace:*",
-    "@tycs/ui": "workspace:*",
+    "@mycscompanion/config": "workspace:*",
+    "@mycscompanion/ui": "workspace:*",
     "astro": "^5.9.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

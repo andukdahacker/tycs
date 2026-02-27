@@ -16,14 +16,14 @@
     "sourceMap": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@tycs/config": ["./packages/config"],
-      "@tycs/config/*": ["./packages/config/*"],
-      "@tycs/shared": ["./packages/shared/src"],
-      "@tycs/shared/*": ["./packages/shared/src/*"],
-      "@tycs/ui": ["./packages/ui"],
-      "@tycs/ui/*": ["./packages/ui/*"],
-      "@tycs/execution": ["./packages/execution/src"],
-      "@tycs/execution/*": ["./packages/execution/src/*"]
+      "@mycscompanion/config": ["./packages/config"],
+      "@mycscompanion/config/*": ["./packages/config/*"],
+      "@mycscompanion/shared": ["./packages/shared/src"],
+      "@mycscompanion/shared/*": ["./packages/shared/src/*"],
+      "@mycscompanion/ui": ["./packages/ui"],
+      "@mycscompanion/ui/*": ["./packages/ui/*"],
+      "@mycscompanion/execution": ["./packages/execution/src"],
+      "@mycscompanion/execution/*": ["./packages/execution/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

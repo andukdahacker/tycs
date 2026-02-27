@@ -15,22 +15,22 @@ describe('Admin Plugin', () => {
     vi.restoreAllMocks()
   })
 
-  describe('with TYCS_ADMIN_PASSWORD set', () => {
+  describe('with MCC_ADMIN_PASSWORD set', () => {
     let app: FastifyInstance
     const adminUser = 'admin'
     const adminPass = 'test-password-123'
 
     beforeAll(async () => {
-      process.env['TYCS_ADMIN_PASSWORD'] = adminPass
-      process.env['TYCS_ADMIN_USER'] = adminUser
+      process.env['MCC_ADMIN_PASSWORD'] = adminPass
+      process.env['MCC_ADMIN_USER'] = adminUser
       app = await buildApp()
       await app.ready()
     })
 
     afterAll(async () => {
       await app.close()
-      delete process.env['TYCS_ADMIN_PASSWORD']
-      delete process.env['TYCS_ADMIN_USER']
+      delete process.env['MCC_ADMIN_PASSWORD']
+      delete process.env['MCC_ADMIN_USER']
     })
 
     it('should return 401 when no credentials provided', async () => {
@@ -76,11 +76,11 @@ describe('Admin Plugin', () => {
     })
   })
 
-  describe('without TYCS_ADMIN_PASSWORD', () => {
+  describe('without MCC_ADMIN_PASSWORD', () => {
     let app: FastifyInstance
 
     beforeAll(async () => {
-      delete process.env['TYCS_ADMIN_PASSWORD']
+      delete process.env['MCC_ADMIN_PASSWORD']
       app = await buildApp()
       await app.ready()
     })

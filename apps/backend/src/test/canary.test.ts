@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
 import type { Kysely } from 'kysely'
 import { sql } from 'kysely'
-import type { DB } from '@tycs/shared'
+import type { DB } from '@mycscompanion/shared'
 import type { FastifyInstance } from 'fastify'
 import { createTestDb, beginTransaction, rollbackTransaction } from './test-db.js'
 import { createTestApp } from './test-app.js'
-import { createMockRedis } from '@tycs/config/test-utils/mock-redis'
+import { createMockRedis } from '@mycscompanion/config/test-utils/mock-redis'
 
 describe('Test Infrastructure Canary', () => {
   describe('Database', () => {
@@ -19,7 +19,7 @@ describe('Test Infrastructure Canary', () => {
       await testDb.destroy()
     })
 
-    it('should connect to tycs_test database', async () => {
+    it('should connect to mycscompanion_test database', async () => {
       const result = await sql`SELECT 1 as value`.execute(testDb)
       expect(result.rows[0]).toEqual({ value: 1 })
     })

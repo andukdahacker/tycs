@@ -4,9 +4,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_USER: tycs
-      POSTGRES_PASSWORD: tycs
-      POSTGRES_DB: tycs
+      POSTGRES_USER: mycscompanion
+      POSTGRES_PASSWORD: mycscompanion
+      POSTGRES_DB: mycscompanion
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -21,10 +21,10 @@ services:
       - "3000:3000"
     environment:
       MB_DB_TYPE: postgres
-      MB_DB_DBNAME: tycs
+      MB_DB_DBNAME: mycscompanion
       MB_DB_PORT: 5432
-      MB_DB_USER: tycs
-      MB_DB_PASS: tycs
+      MB_DB_USER: mycscompanion
+      MB_DB_PASS: mycscompanion
       MB_DB_HOST: postgres
     depends_on:
       - postgres

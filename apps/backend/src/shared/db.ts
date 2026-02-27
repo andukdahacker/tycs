@@ -1,4 +1,4 @@
-import type { DB } from '@tycs/shared'
+import type { DB } from '@mycscompanion/shared'
 import { Kysely, PostgresDialect } from 'kysely'
 import pg from 'pg'
 

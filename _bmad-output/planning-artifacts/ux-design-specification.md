@@ -2,10 +2,10 @@
 stepsCompleted: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 inputDocuments:
   - '_bmad-output/planning-artifacts/prd.md'
-  - '_bmad-output/planning-artifacts/product-brief-tycs-2026-02-21.md'
+  - '_bmad-output/planning-artifacts/product-brief-mycscompanion-2026-02-21.md'
 ---
 
-# UX Design Specification tycs
+# UX Design Specification mycscompanion
 
 **Author:** Ducdo
 **Date:** 2026-02-24
@@ -16,7 +16,7 @@ inputDocuments:
 
 ### Project Vision
 
-tycs is a CS foundations learning platform where working software engineers build a real database from scratch — progressing through 5 milestones from a simple key-value store to ACID transactions. The "invisible curriculum" philosophy means CS concepts are encountered because the build demands them, not because a syllabus dictates it. The product competes on depth and authenticity against textbooks (passive), MOOCs (low completion), CodeCrafters (no teaching), and Boot.dev (shallow gamification).
+mycscompanion is a CS foundations learning platform where working software engineers build a real database from scratch — progressing through 5 milestones from a simple key-value store to ACID transactions. The "invisible curriculum" philosophy means CS concepts are encountered because the build demands them, not because a syllabus dictates it. The product competes on depth and authenticity against textbooks (passive), MOOCs (low completion), CodeCrafters (no teaching), and Boot.dev (shallow gamification).
 
 The UX must serve a singular purpose: keep an engineer building after a full workday, evening after evening, milestone after milestone. Every design decision flows from this constraint — limited cognitive bandwidth, high intrinsic motivation, zero tolerance for friction.
 
@@ -42,7 +42,7 @@ The UX must serve a singular purpose: keep an engineer building after a full wor
 
 4. **Re-engagement without guilt** — Returning users (days to months absent) need zero-friction re-entry. The session summary and "Continue Building" flow must feel effortless and welcoming without acknowledging the absence. Pre-computed summaries injected into the AI tutor context enable the product to say "here's where you were" without making the user feel bad about leaving.
 
-5. **Two front doors with a blurred boundary** — The Astro landing page (convert skeptics with concrete proof) and the React webapp (get builders building) are separate deployments on separate subdomains (`tycs.dev` vs `app.tycs.dev`). The transition must feel invisible — no loading flash, no "different app" feeling. Complicating this: FR47 requires the landing page to preview real Milestone 1 content (editor, acceptance criteria, benchmarks), partially showing the product itself. The landing page is marketing AND product demo simultaneously.
+5. **Two front doors with a blurred boundary** — The Astro landing page (convert skeptics with concrete proof) and the React webapp (get builders building) are separate deployments on separate subdomains (`mycscompanion.dev` vs `app.mycscompanion.dev`). The transition must feel invisible — no loading flash, no "different app" feeling. Complicating this: FR47 requires the landing page to preview real Milestone 1 content (editor, acceptance criteria, benchmarks), partially showing the product itself. The landing page is marketing AND product demo simultaneously.
 
 6. **Skill floor redirect as emotional design** — Taylor's journey (wrong-fit user, <1 year experience) requires a graceful redirect that feels like respect, not rejection. The tone of "Go learn fundamentals first, come back when ready" must protect NPS while being genuinely helpful. This is a UX writing and emotional design challenge, not just product logic.
 
@@ -50,7 +50,7 @@ The UX must serve a singular purpose: keep an engineer building after a full wor
 
 ### Design Opportunities
 
-1. **Benchmark trajectory as emotional storytelling (Critical UX Investment)** — The performance visualization across milestones is the product's emotional core, primary sharing catalyst, and organic acquisition engine. "My database handles 25,000 inserts/sec" is the screenshot engineers post to Slack and Hacker News. No competitor offers this — CodeCrafters gives pass/fail, Boot.dev gives XP, Coursera gives percentages. tycs gives you a *performance number you own*. This deserves narrative-driven visual design: not a chart, but a story of a database growing up. This is a critical UX investment, not an optional enhancement.
+1. **Benchmark trajectory as emotional storytelling (Critical UX Investment)** — The performance visualization across milestones is the product's emotional core, primary sharing catalyst, and organic acquisition engine. "My database handles 25,000 inserts/sec" is the screenshot engineers post to Slack and Hacker News. No competitor offers this — CodeCrafters gives pass/fail, Boot.dev gives XP, Coursera gives percentages. mycscompanion gives you a *performance number you own*. This deserves narrative-driven visual design: not a chart, but a story of a database growing up. This is a critical UX investment, not an optional enhancement.
 
 2. **Scaffolding decay as visible capability growth** — The progressive reduction from 80% to 15% starter code can be visually communicated to reinforce learner confidence. Each milestone visually demonstrates "you needed less help this time." This mirrors the benchmark arc — internal evidence that the learner is growing.
 
@@ -68,8 +68,8 @@ Sessions end quietly. The primary persistence mechanism is periodic auto-save (e
 
 ### Platform Strategy
 
-- **Primary platform:** Desktop web application (React + Vite SPA) accessed via `app.tycs.dev`
-- **Marketing/landing:** Astro static site at `tycs.dev` with real product content previews
+- **Primary platform:** Desktop web application (React + Vite SPA) accessed via `app.mycscompanion.dev`
+- **Marketing/landing:** Astro static site at `mycscompanion.dev` with real product content previews
 - **Input method:** Mouse and keyboard primary — code editing is the core interaction
 - **Connectivity:** Always-online required (server-side code execution, AI tutor API). Clear offline messaging.
 - **Mobile strategy:** Read-only mode for progress review and AI tutor conversation history. No code editing on mobile — this is intentional, not a limitation.
@@ -91,7 +91,7 @@ Sessions end quietly. The primary persistence mechanism is periodic auto-save (e
 |---|---|---|
 | **First 5 minutes** | User sees "1,000 key-value pairs written to disk" from code they wrote with 80% scaffolding | Emotional shift from "I can't build a database" to "I just did." Miss this window and the user never returns. Canary metric: time from signup completion to first successful code submission — if >10 minutes, onboarding is broken. |
 | **First stuck moment** | AI tutor slides in quietly with a Socratic question via background SSE, not a popup or system alert | If intervention feels mechanical, the user closes the tab. If it feels like a supportive colleague, they push through. 7-10 minute window before abandonment. Requires instrumentation from day one: timestamp when user stops typing, timestamp when tutor triggers, timestamp when user resumes typing or closes tab. |
-| **First benchmark run** | Deliberate user-initiated action produces real performance numbers for code they wrote | The visceral "I built something real" signal. This is the emotional hook that separates tycs from tutorials. |
+| **First benchmark run** | Deliberate user-initiated action produces real performance numbers for code they wrote | The visceral "I built something real" signal. This is the emotional hook that separates mycscompanion from tutorials. |
 | **Milestone completion** | All acceptance criteria met, benchmark trajectory visualization updates with new data point | The "my database just leveled up" moment. Must drive intrinsic motivation to start the next milestone (>70% return rate target). |
 | **First "How the Pros Did It"** | Diff view shows user's implementation alongside SQLite/PostgreSQL | The "holy shit, I'm in the same ballpark as production code" revelation. Peak emotional moment. (Soft MVP) |
 | **Return after absence** | "Continue Building" with pre-computed session summary, AI tutor context-aware of where the user left off | Zero guilt, zero friction. The product says "here's where you were" without acknowledging the gap. Miss this and returning users don't return again. |
@@ -117,7 +117,7 @@ Core experience validation requires instrumentation built from day one, not retr
 
 ### Experience Principles
 
-1. **The workshop, not the classroom** — tycs feels like a quiet, well-lit workshop where you build things. Not a lecture hall, not a gamified app, not a tutorial. Tools are within reach. Help is available but not hovering. The work is yours.
+1. **The workshop, not the classroom** — mycscompanion feels like a quiet, well-lit workshop where you build things. Not a lecture hall, not a gamified app, not a tutorial. Tools are within reach. Help is available but not hovering. The work is yours.
 
 2. **Progressive revelation** — Show only what's needed right now. The AI tutor appears when stuck, not before. Benchmarks appear when requested, not constantly. The milestone brief is accessible, not forced. Complexity reveals itself as the learner is ready.
 
@@ -134,12 +134,12 @@ Core experience validation requires instrumentation built from day one, not retr
 **Core emotion: Earned competence** — The quiet, durable feeling of "I understand this because I built it." Not celebration, not delight, not excitement — earned confidence. The emotion an engineer feels when they look at a system they built and know how every part works. This is the emotional throughline of the entire product.
 
 **Supporting emotions:**
-- **Curiosity** — The dominant response to challenges, errors, and new concepts. "Why didn't this work?" and "How does the real thing handle this?" are the natural questions of a builder. tycs cultivates this instinct relentlessly.
+- **Curiosity** — The dominant response to challenges, errors, and new concepts. "Why didn't this work?" and "How does the real thing handle this?" are the natural questions of a builder. mycscompanion cultivates this instinct relentlessly.
 - **Satisfaction of understanding** — The anti-streak emotion. Not the anxious dopamine of "don't break your streak" but the calm, deep satisfaction of "I get how this works now." This feeling doesn't expire if you skip a day. It's still there when you come back three months later.
 - **Ownership** — "This is MY database, MY B-tree, MY benchmark score." Every interaction reinforces that the user built this. The product is a workshop, and the artifact belongs to the builder.
 - **Pride of craftsmanship** — The feeling an artisan has when showing their work to other artisans. Not competition, not comparison — mutual respect for the craft. When Marcus shares a benchmark screenshot, the emotion is "I'm a capable engineer who builds things to understand them," not "look how smart I am." The product's shareable artifacts must carry this tone.
 
-**Aspirational identity:** tycs makes users feel like the kind of engineer who goes deeper — curious, invested, hands-on. The sharing moment reflects aspirational identity: capable engineers who learn by building. Not students completing coursework.
+**Aspirational identity:** mycscompanion makes users feel like the kind of engineer who goes deeper — curious, invested, hands-on. The sharing moment reflects aspirational identity: capable engineers who learn by building. Not students completing coursework.
 
 ### Emotional Journey Mapping
 
@@ -249,7 +249,7 @@ This form factor supports the "supportive colleague" emotional goal: present whe
 Benchmark visualizations and milestone completions are designed as **screenshot-ready shareable artifacts:**
 
 - **Language is engineering, not academic:** "B-Tree Indexing: 12,400 range scan ops/sec" not "Milestone 3 Complete." "ACID Transactions: 8,000 ops/sec with serializable isolation" not "Module 5 — Passed."
-- **Visual design is portfolio-grade:** Clean, minimal, with the project name (tycs) subtly present but not dominating. The user's achievement is the hero, not the brand.
+- **Visual design is portfolio-grade:** Clean, minimal, with the project name (mycscompanion) subtly present but not dominating. The user's achievement is the hero, not the brand.
 - **Context is self-contained:** A screenshot of the benchmark trajectory should be understandable without explanation — axis labels, milestone names, performance units all visible.
 - **Social metadata:** When the product eventually supports sharing links, Open Graph cards should render the benchmark visualization with engineering-grade language, not marketing copy.
 
@@ -257,13 +257,13 @@ The sharing moment should make the viewer think "this person built something rea
 
 ### Emotional Design Principles
 
-1. **Engineer the absence of anxiety, not the presence of excitement** — Most learning platforms optimize for dopamine: streaks, badges, levels, notifications. tycs optimizes for the absence of negative emotions: no guilt, no anxiety, no comparison, no urgency. The positive emotions (competence, curiosity, pride) emerge naturally from building something real.
+1. **Engineer the absence of anxiety, not the presence of excitement** — Most learning platforms optimize for dopamine: streaks, badges, levels, notifications. mycscompanion optimizes for the absence of negative emotions: no guilt, no anxiety, no comparison, no urgency. The positive emotions (competence, curiosity, pride) emerge naturally from building something real.
 
 2. **Errors are data, not judgment** — Every compilation failure, runtime panic, and benchmark regression is diagnostic information presented with a human-readable interpretation layer. The UI never says "wrong" — it shows what happened, suggests where to look, and lets the builder reason about why.
 
 3. **Respect the builder's intelligence** — These are professional engineers. They don't need celebrations for small wins, tutorials for obvious things, or encouragement that feels patronizing. They need clear information, good tools, and to be left alone to build — with help available when they ask for it or when they're genuinely stuck.
 
-4. **The product disappears into the work** — The highest compliment for tycs's UX is "I barely noticed the product — I was just building my database." Every UI element that draws attention to itself instead of the user's code is suspect.
+4. **The product disappears into the work** — The highest compliment for mycscompanion's UX is "I barely noticed the product — I was just building my database." Every UI element that draws attention to itself instead of the user's code is suspect.
 
 5. **Time is not a metric** — The product has no clocks, no timers, no session lengths, no "time spent" counters. A 20-minute session that produces insight is better than a 3-hour session that produces frustration. The product measures progress in capabilities, not minutes.
 
@@ -275,7 +275,7 @@ The sharing moment should make the viewer think "this person built something rea
 
 #### Rustlings — "The Compiler as Teacher"
 
-Rustlings is the closest spiritual ancestor to tycs's learning philosophy. A CLI tool where you run `rustlings watch`, get a failing Rust exercise, and the compiler's error messages guide you to the fix. No UI chrome, no dashboard, no gamification — just the learner, the code, and feedback that teaches. The compiler IS the curriculum.
+Rustlings is the closest spiritual ancestor to mycscompanion's learning philosophy. A CLI tool where you run `rustlings watch`, get a failing Rust exercise, and the compiler's error messages guide you to the fix. No UI chrome, no dashboard, no gamification — just the learner, the code, and feedback that teaches. The compiler IS the curriculum.
 
 **What it does brilliantly:**
 - Errors are breadcrumbs, not failures — every compiler message is a learning moment
@@ -283,9 +283,9 @@ Rustlings is the closest spiritual ancestor to tycs's learning philosophy. A CLI
 - Progressive difficulty with no explicit "levels" — the exercises simply get harder
 - The tool stays completely invisible — you're learning Rust, not using a learning app
 
-**Relevance to tycs:** Validates the core philosophy that building IS the curriculum. Rustlings proves that the edit → error → fix → advance loop is emotionally compelling. tycs extends this pattern from CLI exercises to a sustained mega-project with richer feedback (benchmarks, AI tutor, pro comparisons).
+**Relevance to mycscompanion:** Validates the core philosophy that building IS the curriculum. Rustlings proves that the edit → error → fix → advance loop is emotionally compelling. mycscompanion extends this pattern from CLI exercises to a sustained mega-project with richer feedback (benchmarks, AI tutor, pro comparisons).
 
-**Boundary of the metaphor:** Rustlings exercises are tiny — fix one function, advance. tycs milestones are multi-session projects spanning days or weeks. The zero-decision progression translates well *within* a session (code loaded, next criteria highlighted), but *between* milestones there's a real transition moment that Rustlings doesn't model. Milestone completion → next milestone is not automatic auto-advance. It deserves its own deliberate design (see Milestone Completion Moment below).
+**Boundary of the metaphor:** Rustlings exercises are tiny — fix one function, advance. mycscompanion milestones are multi-session projects spanning days or weeks. The zero-decision progression translates well *within* a session (code loaded, next criteria highlighted), but *between* milestones there's a real transition moment that Rustlings doesn't model. Milestone completion → next milestone is not automatic auto-advance. It deserves its own deliberate design (see Milestone Completion Moment below).
 
 #### NotebookLM — "Grounded AI Collaboration"
 
@@ -297,7 +297,7 @@ Google's AI research tool where the AI is grounded in documents you upload. It d
 - Source citations visible — you can verify what the AI references
 - The AI augments your thinking, it doesn't replace it
 
-**Relevance to tycs:** Direct model for the Socratic AI tutor. The tutor should feel grounded in the current milestone (brief, acceptance criteria, user's code, background) — not like a general-purpose chatbot. The "grounded in your material" pattern is what makes the conversation feel trustworthy and relevant rather than generic.
+**Relevance to mycscompanion:** Direct model for the Socratic AI tutor. The tutor should feel grounded in the current milestone (brief, acceptance criteria, user's code, background) — not like a general-purpose chatbot. The "grounded in your material" pattern is what makes the conversation feel trustworthy and relevant rather than generic.
 
 #### Obsidian — "The Content IS the Interface"
 
@@ -310,11 +310,11 @@ A local-first markdown knowledge base where the writing surface dominates everyt
 - Progressive complexity — starts as a simple markdown editor, reveals power as you need it
 - Dark theme by default that developers trust
 
-**Relevance to tycs:** The purest expression of the "workshop atmosphere" principle. The code editor should dominate the workspace the way the writing surface dominates Obsidian. Chrome should be minimal, with advanced features (benchmark history, milestone overview, tutor) accessed through deliberate actions, not always visible. The product disappears into the building.
+**Relevance to mycscompanion:** The purest expression of the "workshop atmosphere" principle. The code editor should dominate the workspace the way the writing surface dominates Obsidian. Chrome should be minimal, with advanced features (benchmark history, milestone overview, tutor) accessed through deliberate actions, not always visible. The product disappears into the building.
 
 #### GitHub — "Developer UX Baseline"
 
-The platform every engineer in tycs's audience uses daily. Sets the baseline expectations for information hierarchy, code presentation, and progressive disclosure.
+The platform every engineer in mycscompanion's audience uses daily. Sets the baseline expectations for information hierarchy, code presentation, and progressive disclosure.
 
 **What it does brilliantly:**
 - Progressive disclosure: summary → details → raw (PR overview → diff → individual file changes)
@@ -323,7 +323,7 @@ The platform every engineer in tycs's audience uses daily. Sets the baseline exp
 - Familiar conventions that developers have internalized (tabs, markdown rendering, status indicators)
 - Never surprising in a bad way — reliability as a UX feature
 
-**Relevance to tycs:** The diff view pattern for "How the Pros Did It" should follow GitHub's diff conventions — developers already know how to read this format. Status indicators for acceptance criteria (met/unmet) should follow GitHub's check/x patterns. Don't invent new conventions when GitHub has trained the muscle memory.
+**Relevance to mycscompanion:** The diff view pattern for "How the Pros Did It" should follow GitHub's diff conventions — developers already know how to read this format. Status indicators for acceptance criteria (met/unmet) should follow GitHub's check/x patterns. Don't invent new conventions when GitHub has trained the muscle memory.
 
 #### Railway — "Quiet Competence Dashboard"
 
@@ -336,19 +336,19 @@ A deployment platform with a dashboard that shows exactly what's happening witho
 - Clean, dark-themed interface that developers trust for serious tools
 - The tool does its job and gets out of the way
 
-**Relevance to tycs:** Model for the contextual overview (motivation primer) and benchmark results display. Information density that feels organized, not overwhelming. Real-time streaming pattern for AI tutor SSE responses and compilation output — the interface should feel alive (like Railway's logs) without feeling frantic. The dark, clean aesthetic signals "serious tool" not "learning toy."
+**Relevance to mycscompanion:** Model for the contextual overview (motivation primer) and benchmark results display. Information density that feels organized, not overwhelming. Real-time streaming pattern for AI tutor SSE responses and compilation output — the interface should feel alive (like Railway's logs) without feeling frantic. The dark, clean aesthetic signals "serious tool" not "learning toy."
 
 #### Strava — "Activity Completion as Retention Engine" (Emotional Pattern Only)
 
-Not a dev tool, but Strava's activity completion pattern solves tycs's most critical retention moment: the milestone completion → next milestone transition. After finishing a run, Strava shows: accomplishment summary → trajectory context ("your 5th run this month, pace improving") → gentle forward pull ("your next goal is X"). This emotional pattern maps directly to tycs's milestone completion.
+Not a dev tool, but Strava's activity completion pattern solves mycscompanion's most critical retention moment: the milestone completion → next milestone transition. After finishing a run, Strava shows: accomplishment summary → trajectory context ("your 5th run this month, pace improving") → gentle forward pull ("your next goal is X"). This emotional pattern maps directly to mycscompanion's milestone completion.
 
-**Relevance to tycs:** The milestone completion moment needs the Strava completion pattern: (1) benchmark results summary, (2) trajectory visualization animating to include the new data point (the chart grows — the one place where subtle animation is justified), (3) preview of what's next. Not Strava's UI — its emotional architecture of completion → context → momentum.
+**Relevance to mycscompanion:** The milestone completion moment needs the Strava completion pattern: (1) benchmark results summary, (2) trajectory visualization animating to include the new data point (the chart grows — the one place where subtle animation is justified), (3) preview of what's next. Not Strava's UI — its emotional architecture of completion → context → momentum.
 
 ### Transferable UX Patterns
 
 #### Navigation & Information Architecture
 
-| Pattern | Source | Application in tycs |
+| Pattern | Source | Application in mycscompanion |
 |---|---|---|
 | Zero-decision progression | Rustlings | "Continue Building" as singular primary action. Within a session: code loaded, next criteria highlighted. No menu navigation. |
 | Progressive disclosure | GitHub | Summary (contextual overview) → workspace (active building) → detail (benchmark history, milestone overview) → raw (compiler output). Each level accessed by deliberate user action. |
@@ -357,10 +357,10 @@ Not a dev tool, but Strava's activity completion pattern solves tycs's most crit
 
 #### Interaction Patterns
 
-| Pattern | Source | Application in tycs |
+| Pattern | Source | Application in mycscompanion |
 |---|---|---|
 | Compiler-as-teacher feedback loop | Rustlings | Error output that teaches. The human-readable interpretation layer above raw compiler output extends Rustlings' philosophy to a richer format. |
-| Grounded AI conversation | NotebookLM | AI tutor grounded in current milestone context (brief, code, criteria, background). Not general-purpose — specifically about what the user is building right now. Adds Socratic questioning layer (NotebookLM answers directly; tycs asks questions). |
+| Grounded AI conversation | NotebookLM | AI tutor grounded in current milestone context (brief, code, criteria, background). Not general-purpose — specifically about what the user is building right now. Adds Socratic questioning layer (NotebookLM answers directly; mycscompanion asks questions). |
 | Real-time streaming | Railway | Compilation output and AI tutor responses stream in real-time via SSE. The interface feels alive and responsive, like Railway's deployment logs. |
 | Diff view for comparison | GitHub | "How the Pros Did It" uses GitHub-style diff conventions. Split or unified diff view. Developers already know how to read this — don't reinvent it. |
 | Status indicators | GitHub | Acceptance criteria use check/x indicators following GitHub's familiar visual language for passed/failed checks. |
@@ -369,7 +369,7 @@ Not a dev tool, but Strava's activity completion pattern solves tycs's most crit
 
 #### Visual & Emotional Patterns
 
-| Pattern | Source | Application in tycs |
+| Pattern | Source | Application in mycscompanion |
 |---|---|---|
 | Dark, developer-trust aesthetic | Obsidian, Railway, GitHub | Dark theme as default. Light theme available as option (accessibility, bright environments). Clean typography. Monospace for code. Visual language says "serious tool for serious engineers." |
 | Workspace dominance | Obsidian | Code editor takes 70%+ of screen real estate in workspace mode. Supporting panels (tutor, brief, output) are collapsible and secondary. |
@@ -378,24 +378,24 @@ Not a dev tool, but Strava's activity completion pattern solves tycs's most crit
 
 #### Keyboard & Power User Patterns
 
-| Pattern | Source | Application in tycs |
+| Pattern | Source | Application in mycscompanion |
 |---|---|---|
 | Monaco's built-in keybindings | VS Code / Monaco | Use Monaco's native command palette (`Cmd+Shift+P`) for editor actions. Do not create a conflicting product-level command palette. |
 | Product shortcuts | Standard dev tools | Small set of product-level shortcuts: `Cmd+Enter` to run code, `Cmd+Shift+Enter` to run benchmark. Documented in a `?` keyboard shortcut overlay. |
-| No custom command palette for MVP | Obsidian (deferred) | Obsidian's command palette is powerful but tycs has a simpler feature surface. Monaco already provides editor-level palette. Evaluate product-level palette post-launch if feature surface grows. |
+| No custom command palette for MVP | Obsidian (deferred) | Obsidian's command palette is powerful but mycscompanion has a simpler feature surface. Monaco already provides editor-level palette. Evaluate product-level palette post-launch if feature surface grows. |
 
 ### Anti-Patterns to Avoid
 
-| Anti-Pattern | Seen In | Why It Fails for tycs |
+| Anti-Pattern | Seen In | Why It Fails for mycscompanion |
 |---|---|---|
 | Gamification chrome (XP, badges, streaks, levels) | Boot.dev, Duolingo, Codecademy | Creates streak anxiety and dopamine dependence. Signals "learning toy" not "engineering tool." Directly contradicts the anti-metrics philosophy. Professional engineers find it patronizing. |
-| Course navigation sidebar with module lists | Coursera, Udemy, Educative | Creates decision paralysis and makes the experience feel academic. tycs has ONE project with ONE next action. A syllabus sidebar undermines the zero-decision principle. |
-| "Welcome back!" / absence acknowledgment | Most SaaS products | Triggers guilt and highlights the gap. tycs treats every return as if you stepped away for coffee. |
+| Course navigation sidebar with module lists | Coursera, Udemy, Educative | Creates decision paralysis and makes the experience feel academic. mycscompanion has ONE project with ONE next action. A syllabus sidebar undermines the zero-decision principle. |
+| "Welcome back!" / absence acknowledgment | Most SaaS products | Triggers guilt and highlights the gap. mycscompanion treats every return as if you stepped away for coffee. |
 | Confetti, celebration animations, "Great job!" popups | Codecademy, Khan Academy | Patronizing for professional engineers. The benchmark number going up IS the celebration. |
-| Passive video/lecture content | Coursera, MIT OCW | Breaks the building-is-the-curriculum philosophy. tycs never asks you to watch or read before building. Concept explanation happens through the AI tutor in context, not through pre-requisite content. |
-| Leaderboards or social comparison | LeetCode, HackerRank | Amplifies imposter syndrome. tycs deliberately avoids comparing users to each other. Each builder's journey is their own. |
+| Passive video/lecture content | Coursera, MIT OCW | Breaks the building-is-the-curriculum philosophy. mycscompanion never asks you to watch or read before building. Concept explanation happens through the AI tutor in context, not through pre-requisite content. |
+| Leaderboards or social comparison | LeetCode, HackerRank | Amplifies imposter syndrome. mycscompanion deliberately avoids comparing users to each other. Each builder's journey is their own. |
 | Feature-heavy onboarding tours | Most SaaS products | Engineers hate product tours. Drop them into the workspace with the code. Progressive revelation handles feature discovery. |
-| Light/bright "friendly" UI as sole option | Many edtech platforms | Signals "learning app for beginners." tycs's audience trusts dark, code-centric interfaces. Dark as default, light as option. |
+| Light/bright "friendly" UI as sole option | Many edtech platforms | Signals "learning app for beginners." mycscompanion's audience trusts dark, code-centric interfaces. Dark as default, light as option. |
 | Skeleton UI that misrepresents layout | Modern SaaS trend | For the workspace, showing a fake editor skeleton while Monaco loads sets wrong expectations. Better: show real content (milestone brief) first, then load the editor beside it. Content before tools, not skeletons before content. |
 | Blending overview and workspace into one screen | Dashboard-heavy SaaS | The contextual overview (status, motivation) and the workspace (code, building) serve different purposes. Blending them creates clutter. Two distinct full-screen modes with a hard boundary. |
 
@@ -410,8 +410,8 @@ Not a dev tool, but Strava's activity completion pattern solves tycs's most crit
 - Obsidian's invisible persistence → auto-save without indicators
 - Strava's completion emotional pattern → milestone completion moment design
 
-**Adapt for tycs:**
-- NotebookLM's grounded AI → AI tutor grounded in milestone context, but with Socratic questioning layer (NotebookLM answers directly; tycs asks questions)
+**Adapt for mycscompanion:**
+- NotebookLM's grounded AI → AI tutor grounded in milestone context, but with Socratic questioning layer (NotebookLM answers directly; mycscompanion asks questions)
 - Railway's dashboard density → contextual overview uses high-density patterns, but limited to exactly 4 data points + 1 action. Presented as a separate full-screen mode, not blended with workspace.
 - Obsidian's workspace loading → show milestone brief first while Monaco initializes. Content before tools as a deliberate loading sequence.
 
@@ -460,7 +460,7 @@ Not a dev tool, but Strava's activity completion pattern solves tycs's most crit
   /config     — Shared ESLint, TypeScript, Tailwind config + design tokens
 ```
 
-- `packages/config` — Shared Tailwind config with tycs design tokens (colors, typography, spacing, dark/light theme definitions). Both `apps/webapp` and `apps/website` import from here. The shared config mechanism follows whatever Tailwind version the architecture document selects (Tailwind v4 uses CSS-first configuration).
+- `packages/config` — Shared Tailwind config with mycscompanion design tokens (colors, typography, spacing, dark/light theme definitions). Both `apps/webapp` and `apps/website` import from here. The shared config mechanism follows whatever Tailwind version the architecture document selects (Tailwind v4 uses CSS-first configuration).
 - `apps/webapp` — shadcn/ui components copied here, customized for the learning workspace
 - `apps/website` — Astro landing page uses the same Tailwind config for visual consistency. Static HTML with minimal JS. Visual consistency comes from shared design tokens, not shared components.
 
@@ -534,7 +534,7 @@ Using `react-resizable-panels` (which shadcn/ui's `Resizable` component wraps). 
 
 ### Cross-Package Visual Consistency
 
-The Astro landing page (`tycs.dev`) and React webapp (`app.tycs.dev`) must feel like the same product despite being separate deployments on separate subdomains:
+The Astro landing page (`mycscompanion.dev`) and React webapp (`app.mycscompanion.dev`) must feel like the same product despite being separate deployments on separate subdomains:
 
 - **Shared Tailwind config:** Same color palette, typography, spacing tokens across both packages. Defined once in `packages/config`.
 - **Critical color match:** The landing page CTA section background color must be literally identical to the webapp's initial load background color. Even a 50ms flash of a different shade of dark gray during the subdomain transition breaks the magic. This specific value is defined once in the shared config and must never diverge.
@@ -547,7 +547,7 @@ The Astro landing page (`tycs.dev`) and React webapp (`app.tycs.dev`) must feel 
 
 **"Write code, run the benchmark, watch your database get faster."**
 
-This is the sentence users say to friends. The sentence Marcus types in Slack. The sentence that appears in HN comments. Every element of tycs's UX exists to make this sentence come true, over and over, across 5 milestones.
+This is the sentence users say to friends. The sentence Marcus types in Slack. The sentence that appears in HN comments. Every element of mycscompanion's UX exists to make this sentence come true, over and over, across 5 milestones.
 
 The defining experience breaks down into three atomic beats:
 
@@ -555,13 +555,13 @@ The defining experience breaks down into three atomic beats:
 2. **Run the benchmark** — A deliberate action. The user decides they're ready to see how their system performs. They press "Run Benchmark" and wait with anticipation.
 3. **Watch your database get faster** — The numbers appear. Ops/sec went up. Latency went down. The trajectory chart adds a new point. The user's system measurably improved because THEY understood something better and wrote better code.
 
-This loop is what makes tycs different from every competitor. CodeCrafters gives pass/fail. Boot.dev gives XP points. Coursera gives a completion percentage. tycs gives you a *performance number that proves your understanding.*
+This loop is what makes mycscompanion different from every competitor. CodeCrafters gives pass/fail. Boot.dev gives XP points. Coursera gives a completion percentage. mycscompanion gives you a *performance number that proves your understanding.*
 
 ### User Mental Model
 
 **Primary mental model: "I'm learning CS tonight."**
 
-Users come to tycs with an educational intent. Marcus opens the app thinking "I'm going to learn CS" — not "I'm going to work on my software project." This is a crucial distinction: tycs is framed as *learning*, and the database is the vehicle, not the destination.
+Users come to mycscompanion with an educational intent. Marcus opens the app thinking "I'm going to learn CS" — not "I'm going to work on my software project." This is a crucial distinction: mycscompanion is framed as *learning*, and the database is the vehicle, not the destination.
 
 But the product's mechanism is building. The user never reads a lesson, watches a video, or takes a quiz. They write code. The CS understanding emerges through the act of building — encountering B-trees because their database needs indexing, learning about crash recovery because their WAL needs to survive failures.
 
@@ -623,7 +623,7 @@ The "Why This Matters" opening transforms the brief from a coding task into a le
 
 ### Novel vs. Established UX Patterns
 
-tycs's defining experience combines **familiar patterns in a novel composition.** No single element is unprecedented — code editors, benchmarks, AI chat, and diff views all exist. The innovation is in how they compose into a single, continuous loop that serves both learning and building simultaneously.
+mycscompanion's defining experience combines **familiar patterns in a novel composition.** No single element is unprecedented — code editors, benchmarks, AI chat, and diff views all exist. The innovation is in how they compose into a single, continuous loop that serves both learning and building simultaneously.
 
 **Established patterns (adopt directly):**
 
@@ -635,7 +635,7 @@ tycs's defining experience combines **familiar patterns in a novel composition.*
 | Diff view for code comparison | GitHub PRs, VS Code | Side-by-side or unified diff. Developers read these daily. |
 | Performance metrics dashboard | Any APM tool (Datadog, New Relic, Railway) | Numbers go up or down. Trend lines show improvement over time. |
 
-**Novel compositions (what makes tycs unique):**
+**Novel compositions (what makes mycscompanion unique):**
 
 | Novel Pattern | What's New | How We Teach It |
 |---|---|---|
@@ -652,7 +652,7 @@ The defining experience unfolds in a precise sequence. Five beats cover the core
 
 #### Beat 1: Initiation — "Open the app, continue building"
 
-**Trigger:** User opens `app.tycs.dev` or returns to an existing tab.
+**Trigger:** User opens `app.mycscompanion.dev` or returns to an existing tab.
 
 **Sequence:**
 1. Auth check (Firebase, automatic — no login screen if session is valid)
@@ -800,7 +800,7 @@ When numbers go DOWN (user introduced a regression), display without alarm:
 
 #### Brand Accent: Green
 
-A single green accent color defines the tycs brand. This is the color of action — "Continue Building," "Run," "Run Benchmark." Everything else recedes into grayscale. The green says "go build."
+A single green accent color defines the mycscompanion brand. This is the color of action — "Continue Building," "Run," "Run Benchmark." Everything else recedes into grayscale. The green says "go build."
 
 **Accent green character:** Not neon (too aggressive), not lime (too playful), not forest (too muted). A medium-bright emerald-green with slight teal undertone — energetic but professional. Think terminal cursor green evolved for a modern UI. Calibrated for dark backgrounds.
 
@@ -810,7 +810,7 @@ Uses **shadcn/ui's existing token naming convention** to avoid fighting the comp
 
 **shadcn/ui token mapping:**
 
-| shadcn Token | CSS Variable | Role in tycs | Character |
+| shadcn Token | CSS Variable | Role in mycscompanion | Character |
 |---|---|---|---|
 | `primary` | `--primary` | Brand green. Primary actions: "Continue Building," "Run," "Run Benchmark" | Emerald-green, medium-bright, slight teal/cool undertone |
 | `primary-foreground` | `--primary-foreground` | Text on primary buttons | Dark/black for contrast on green |
@@ -1048,8 +1048,8 @@ The "first 15 minutes" flow. Every state transition is automatic — zero decisi
 
 ```mermaid
 flowchart TD
-    A["tycs.dev — Landing Page"] -->|"CTA: Start Building"| B["GitHub OAuth Popup"]
-    B -->|"Auth Success"| C["Redirect → app.tycs.dev"]
+    A["mycscompanion.dev — Landing Page"] -->|"CTA: Start Building"| B["GitHub OAuth Popup"]
+    B -->|"Auth Success"| C["Redirect → app.mycscompanion.dev"]
     B -->|"Auth Cancel"| A
     B -->|"Auth Error (popup blocked,<br/>GitHub down, timeout)"| ERR["Generic Error State:<br/>'Something went wrong. Try again.'<br/>+ Retry button"]
     ERR -->|"Retry"| B
@@ -1139,7 +1139,7 @@ Alex's journey. Zero friction, zero guilt, zero temporal references.
 
 ```mermaid
 flowchart TD
-    A["User visits app.tycs.dev"] --> B{"Firebase Auth:<br/>Valid session?"}
+    A["User visits app.mycscompanion.dev"] --> B{"Firebase Auth:<br/>Valid session?"}
     B -->|"No / expired"| C["Login: GitHub OAuth"]
     C --> D["Load User State"]
     B -->|"Valid (auto-refresh)"| D
@@ -1170,14 +1170,14 @@ Sam's journey. Two deployments, one seamless experience. The landing page is mar
 
 ```mermaid
 flowchart TD
-    A["tycs.dev (Astro)"] --> B["Hero + Code Preview + Benchmark"]
+    A["mycscompanion.dev (Astro)"] --> B["Hero + Code Preview + Benchmark"]
     B -->|"Scroll"| C["Milestone Roadmap"]
     C -->|"Scroll"| D["Social Proof"]
-    B -->|"CTA: Start Building"| E["Milestone 1 Preview<br/>(still on tycs.dev)"]
+    B -->|"CTA: Start Building"| E["Milestone 1 Preview<br/>(still on mycscompanion.dev)"]
     C -->|"CTA: Start Building"| E
     D -->|"CTA: Start Building"| E
     E -->|"CTA: Sign Up to Build"| F["GitHub OAuth"]
-    F -->|"Success"| G["Redirect → app.tycs.dev"]
+    F -->|"Success"| G["Redirect → app.mycscompanion.dev"]
     G --> H["→ Flow 1 (questionnaire onward)"]
 ```
 
@@ -1185,11 +1185,11 @@ flowchart TD
 - Landing page (all scroll positions): **"Start Building"** — consistent, one label
 - Milestone 1 preview: **"Sign Up to Build"** — different label because it's a different action (auth required). Clear boundary.
 
-**Milestone 1 preview boundary:** Static content only on `tycs.dev` — no Monaco editor, no code execution, no live interaction. Shows: brief excerpt, acceptance criteria list, starter code (read-only styled as code block), sample benchmark result. It's a screenshot-quality preview, not a functional workspace.
+**Milestone 1 preview boundary:** Static content only on `mycscompanion.dev` — no Monaco editor, no code execution, no live interaction. Shows: brief excerpt, acceptance criteria list, starter code (read-only styled as code block), sample benchmark result. It's a screenshot-quality preview, not a functional workspace.
 
-**Cross-subdomain Firebase Auth constraint:** Firebase Auth default (`localStorage`) does not persist across subdomains. Implementation requires **server-side session cookie setup** scoped to `*.tycs.dev`:
-- Option A (recommended): Firebase Admin SDK issues session cookie on auth, scoped to `*.tycs.dev`. Cookie persists across subdomains.
-- Option B: OAuth happens on `tycs.dev`, token passed to `app.tycs.dev` via URL parameter on redirect. Less clean but avoids server-side cookie management.
+**Cross-subdomain Firebase Auth constraint:** Firebase Auth default (`localStorage`) does not persist across subdomains. Implementation requires **server-side session cookie setup** scoped to `*.mycscompanion.dev`:
+- Option A (recommended): Firebase Admin SDK issues session cookie on auth, scoped to `*.mycscompanion.dev`. Cookie persists across subdomains.
+- Option B: OAuth happens on `mycscompanion.dev`, token passed to `app.mycscompanion.dev` via URL parameter on redirect. Less clean but avoids server-side cookie management.
 - Document this as an architecture decision to be made during implementation.
 
 **Visual continuity across subdomains:**
@@ -1206,7 +1206,7 @@ Taylor's journey. Tone is everything. Redirect must feel like respect, not rejec
 ```mermaid
 flowchart TD
     A["Questionnaire:<br/>Experience < 1 year"] --> B["Skill Floor Check"]
-    B --> B1["Framing: 'Let's make sure<br/>tycs is the right fit right now.'"]
+    B --> B1["Framing: 'Let's make sure<br/>mycscompanion is the right fit right now.'"]
     B1 --> B2["2-3 Code Comprehension Questions<br/>(Go snippets, multiple choice)"]
     B2 -->|"Pass (2/3+)"| C["Continue → Flow 1<br/>(workspace load)"]
     B2 -->|"Fail (0-1)"| D["Graceful Redirect"]

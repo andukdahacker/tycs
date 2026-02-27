@@ -3,13 +3,13 @@ stepsCompleted: [1, 2, 3, 4, 5, 6, 7, 8]
 status: 'complete'
 completedAt: '2026-02-25'
 inputDocuments:
-  - '_bmad-output/planning-artifacts/product-brief-tycs-2026-02-21.md'
+  - '_bmad-output/planning-artifacts/product-brief-mycscompanion-2026-02-21.md'
   - '_bmad-output/planning-artifacts/prd.md'
   - '_bmad-output/planning-artifacts/ux-design-specification.md'
   - '_bmad-output/planning-artifacts/research/market-cs-learning-webapp-research-2026-02-21.md'
   - '_bmad-output/planning-artifacts/research/technical-cs-learning-webapp-research-2026-02-21.md'
 workflowType: 'architecture'
-project_name: 'tycs'
+project_name: 'mycscompanion'
 user_name: 'Ducdo'
 date: '2026-02-25'
 ---
@@ -63,11 +63,11 @@ The UX specification imposes several architectural constraints beyond typical fr
 - **Solo founder operation:** Architecture must be operationally simple — no Kubernetes, no multi-region. External tools (Bull Board, Metabase, Sentry) for admin. 7 subsystems is the ceiling for operational sustainability.
 - **Cost ceiling:** ≤$0.65/user/month at 100 users. AI API costs are the largest variable.
 - **Content is code:** Milestone content (starter code, reference implementations, acceptance criteria) flows through a CI pipeline (FR44). Content CI and production code execution **share the same Docker execution environment** — the content CI runner needs access to the same container images and toolchain as production workers. This is a shared infrastructure dependency.
-- **Cross-subdomain auth eliminated:** All auth lives on `app.tycs.dev` only. The landing page at `tycs.dev` is a pure static site with CTA redirects — no auth needed. This was resolved in Step 4 (Auth & Security decisions).
+- **Cross-subdomain auth eliminated:** All auth lives on `app.mycscompanion.dev` only. The landing page at `mycscompanion.dev` is a pure static site with CTA redirects — no auth needed. This was resolved in Step 4 (Auth & Security decisions).
 
 ### Cross-Cutting Concerns Identified
 
-1. **Cross-subdomain authentication** — **Eliminated.** All auth confined to `app.tycs.dev`. Landing page is pure static with CTA redirects. No cross-subdomain mechanism needed.
+1. **Cross-subdomain authentication** — **Eliminated.** All auth confined to `app.mycscompanion.dev`. Landing page is pure static with CTA redirects. No cross-subdomain mechanism needed.
 2. **SSE connection management** — AI tutor streaming, compilation output, benchmark results all use SSE. Background SSE per active session for stuck detection. Connection lifecycle, reconnection, and cleanup need a unified pattern.
 3. **Error classification** — User-code errors (compilation failures, runtime panics) are expected diagnostic data shown in the terminal. Platform errors (API failures, queue errors) are unexpected and go to Sentry. Two completely different handling paths through the entire stack.
 4. **Rate limiting** — Code submissions (10/min/user), AI tutor (30/min/user). Enforced at the API layer, needs Redis-backed counters.
@@ -94,7 +94,7 @@ Full-stack TypeScript monorepo (Turborepo + pnpm) with three applications: React
 
 ### Selected Approach: Manual Assembly
 
-**Rationale:** The tycs stack is too specific for any community starter to provide net time savings. Manual assembly using targeted CLIs where they add value (`create-vite`, `create-astro`) and hand-scaffolding where they don't (Turborepo root, Fastify backend) ensures every dependency is intentional, every pattern matches the PRD, and there's zero cleanup of unwanted opinions.
+**Rationale:** The mycscompanion stack is too specific for any community starter to provide net time savings. Manual assembly using targeted CLIs where they add value (`create-vite`, `create-astro`) and hand-scaffolding where they don't (Turborepo root, Fastify backend) ensures every dependency is intentional, every pattern matches the PRD, and there's zero cleanup of unwanted opinions.
 
 **Package Manager:** pnpm (locked). Turborepo works best with pnpm workspaces — hoisting behavior is more predictable, and the technical research already assumes pnpm.
 
@@ -102,7 +102,7 @@ Full-stack TypeScript monorepo (Turborepo + pnpm) with three applications: React
 
 ```bash
 # Step 1: Manual Turborepo root (3 files — no create-turbo CLI)
-mkdir tycs && cd tycs
+mkdir mycscompanion && cd mycscompanion
 # Create: package.json (pnpm workspaces), turbo.json (pipeline), tsconfig.base.json
 pnpm init
 
@@ -138,7 +138,7 @@ cd packages/ui && npx shadcn@latest init && cd ../..
 **Styling Solution:**
 - Tailwind CSS v4 (theme preset owned by `packages/ui`)
 - shadcn/ui components in `packages/ui` (shared across webapp and website)
-- Astro website uses `@astrojs/react` for React island components (Button, Card for landing page) and imports Tailwind preset from `@tycs/ui` for token consistency
+- Astro website uses `@astrojs/react` for React island components (Button, Card for landing page) and imports Tailwind preset from `@mycscompanion/ui` for token consistency
 - **Font loading strategy is per-app:** `font-display: swap` for Astro (prioritize LCP), `font-display: optional` for React webapp (prevent FOUT for daily users)
 
 **Build Tooling:**
@@ -150,15 +150,15 @@ cd packages/ui && npx shadcn@latest init && cd ../..
 **Testing Framework:**
 - Vitest (Vite-native) — base config in `packages/config`, extended per-app
 - Playwright for E2E — to be configured post-scaffold
-- Base Vitest config must properly resolve workspace package imports (`@tycs/shared`, `@tycs/ui`)
+- Base Vitest config must properly resolve workspace package imports (`@mycscompanion/shared`, `@mycscompanion/ui`)
 
 **Code Organization:**
 ```
-tycs/
+mycscompanion/
 ├── apps/
 │   ├── backend/     # Fastify API server (manual scaffold, plugin-based domains)
-│   ├── webapp/      # React + Vite SPA (consumes @tycs/ui)
-│   └── website/     # Astro static site (React islands from @tycs/ui)
+│   ├── webapp/      # React + Vite SPA (consumes @mycscompanion/ui)
+│   └── website/     # Astro static site (React islands from @mycscompanion/ui)
 ├── packages/
 │   ├── ui/          # shadcn/ui components + Tailwind theme preset (design tokens)
 │   ├── shared/      # Shared types, constants, utilities
@@ -187,7 +187,7 @@ tycs/
 **Critical Decisions (Block Implementation):**
 - Hybrid Railway + Fly.io deployment topology
 - Fly.io Machines API for code execution (Railway cannot do Docker-in-Docker)
-- Firebase Auth confined to `app.tycs.dev` (no cross-subdomain auth)
+- Firebase Auth confined to `app.mycscompanion.dev` (no cross-subdomain auth)
 - Kysely migrations with `kysely-codegen` for type generation
 - Fastify plugin architecture (6 domain plugins)
 - SSE via `fastify-sse-v2` with Redis pub/sub for worker↔API streaming
@@ -207,7 +207,7 @@ tycs/
 
 ### Authentication & Security
 
-**Auth Boundary:** All authentication lives on `app.tycs.dev`. The landing page at `tycs.dev` is a pure Astro static site with CTA buttons that redirect to `app.tycs.dev/sign-in`. This eliminates cross-subdomain auth entirely — no session cookies scoped to `*.tycs.dev`, no token relay. Firebase Auth SDK runs only in the React SPA.
+**Auth Boundary:** All authentication lives on `app.mycscompanion.dev`. The landing page at `mycscompanion.dev` is a pure Astro static site with CTA buttons that redirect to `app.mycscompanion.dev/sign-in`. This eliminates cross-subdomain auth entirely — no session cookies scoped to `*.mycscompanion.dev`, no token relay. Firebase Auth SDK runs only in the React SPA.
 
 **API Authorization:** Every Fastify API route (except health check) requires a Firebase Bearer token. A global `onRequest` hook:
 1. Extracts `Authorization: Bearer <token>` from the request header
@@ -276,8 +276,8 @@ type ExecutionEvent = {
 | worker | Worker service | BullMQ processor. Calls Fly.io Machines API for code execution. |
 | postgres | Managed PostgreSQL | Automatic backups, point-in-time recovery. |
 | redis | Managed Redis | BullMQ, rate limiting, session cache, pub/sub. |
-| webapp | Static site | Vite build. SPA fallback for browser history routing. `app.tycs.dev`. |
-| website | Static site | Astro build. `tycs.dev`. |
+| webapp | Static site | Vite build. SPA fallback for browser history routing. `app.mycscompanion.dev`. |
+| website | Static site | Astro build. `mycscompanion.dev`. |
 
 ### Data Architecture
 
@@ -392,8 +392,8 @@ Railway (web infrastructure)        Fly.io (code execution)
 ├── worker (BullMQ processor)           ├── golang:1.23-alpine OCI image
 ├── postgres (managed)                  ├── Firecracker VM isolation
 ├── redis (managed)                     ├── spawned per submission via REST API
-├── webapp (static, app.tycs.dev)       └── destroyed after completion
-└── website (static, tycs.dev)
+├── webapp (static, app.mycscompanion.dev)       └── destroyed after completion
+└── website (static, mycscompanion.dev)
 ```
 
 Railway handles the "boring" infrastructure (managed database, managed Redis, static hosting, git-push deploys). Fly.io handles the specialized workload (ephemeral isolated code execution via Firecracker VMs). The worker on Railway calls Fly's REST API to spawn/manage execution VMs.
@@ -616,12 +616,12 @@ These patterns prevent conflicts when multiple AI agents implement different par
 | Fastify plugins | `camelCase` function | `executionPlugin` in `execution-plugin.ts` |
 | Zustand stores | `use{Name}Store` | `useWorkspaceUIStore`, `useEditorStore` |
 | TanStack Query keys | `[domain, action, params]` | `['workspace', 'get', milestoneId]` |
-| Environment variables | `TYCS_` prefix for app vars | `TYCS_FLY_API_TOKEN`. Third-party vars keep standard names (`ANTHROPIC_API_KEY`). |
+| Environment variables | `MCC_` prefix for app vars | `MCC_FLY_API_TOKEN`. Third-party vars keep standard names (`ANTHROPIC_API_KEY`). |
 
 **Import Path Conventions:**
-- Internal packages: `import { ... } from '@tycs/shared'`, `'@tycs/ui'`, `'@tycs/execution'`, `'@tycs/config'`
+- Internal packages: `import { ... } from '@mycscompanion/shared'`, `'@mycscompanion/ui'`, `'@mycscompanion/execution'`, `'@mycscompanion/config'`
 - Within an app: relative paths only — no `@/` aliases (Vite and Fastify resolve aliases differently)
-- `tsconfig.json` `paths` configured for `@tycs/*` packages only
+- `tsconfig.json` `paths` configured for `@mycscompanion/*` packages only
 
 ### Structure Patterns
 
@@ -814,7 +814,7 @@ Always `it()`, never `test()`. `describe` mirrors module structure.
 4. Co-locate test files as `{source}.test.ts`
 5. Follow cursor pagination for any list endpoint
 6. Add new Fastify plugins to the ordered registration list in `server.ts` with a position comment
-7. Use `@tycs/*` for package imports, relative paths within apps
+7. Use `@mycscompanion/*` for package imports, relative paths within apps
 8. Never log user code or AI conversations at `info` level or above
 
 **Anti-Patterns (never do these):**
@@ -823,14 +823,14 @@ Always `it()`, never `test()`. `describe` mirrors module structure.
 - `?page=2&limit=20` — offset pagination
 - `UserCard.spec.tsx` or `__tests__/UserCard.test.tsx` — wrong test location/naming
 - `const userId: number = 1` — integer IDs
-- `import * from '@tycs/ui'` — barrel import from UI package
+- `import * from '@mycscompanion/ui'` — barrel import from UI package
 
 ## Project Structure & Boundaries
 
 ### Complete Project Directory Structure
 
 ```
-tycs/
+mycscompanion/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                        # Lint, typecheck, test, build (all apps)
@@ -851,7 +851,7 @@ tycs/
 │   │   ├── Dockerfile                    # Production API image (Railway)
 │   │   ├── .dockerignore                 # Excludes node_modules, tests, .env*
 │   │   ├── .env.example                  # DATABASE_URL, REDIS_URL, FIREBASE_SERVICE_ACCOUNT,
-│   │   │                                 # ANTHROPIC_API_KEY, TYCS_FLY_API_TOKEN
+│   │   │                                 # ANTHROPIC_API_KEY, MCC_FLY_API_TOKEN
 │   │   ├── migrations/                   # Kysely migration files (kysely-ctl)
 │   │   │   └── *.ts
 │   │   └── src/
@@ -990,12 +990,12 @@ tycs/
 │           │   └── index.astro           # Landing page
 │           ├── layouts/
 │           │   └── Base.astro
-│           └── components/               # React islands (from @tycs/ui)
+│           └── components/               # React islands (from @mycscompanion/ui)
 │
 ├── packages/
 │   ├── ui/
 │   │   ├── README.md                     # No barrel file — import components individually
-│   │   ├── package.json                  # name: @tycs/ui
+│   │   ├── package.json                  # name: @mycscompanion/ui
 │   │   ├── tailwind.preset.ts            # Shared design tokens
 │   │   └── src/
 │   │       ├── components/               # shadcn/ui components
@@ -1008,7 +1008,7 @@ tycs/
 │   │
 │   ├── shared/
 │   │   ├── README.md                     # Agent orientation: public API via index.ts
-│   │   ├── package.json                  # name: @tycs/shared, scripts: { db:types }
+│   │   ├── package.json                  # name: @mycscompanion/shared, scripts: { db:types }
 │   │   └── src/
 │   │       ├── index.ts                  # Barrel file — public API
 │   │       ├── to-camel-case.ts          # DB→API key transformer
@@ -1021,7 +1021,7 @@ tycs/
 │   │
 │   ├── execution/
 │   │   ├── README.md                     # Agent orientation: execution domain contract
-│   │   ├── package.json                  # name: @tycs/execution
+│   │   ├── package.json                  # name: @mycscompanion/execution
 │   │   └── src/
 │   │       ├── index.ts                  # Barrel file — public API
 │   │       ├── events.ts                 # ExecutionEvent discriminated union
@@ -1033,10 +1033,10 @@ tycs/
 │   │
 │   └── config/
 │       ├── README.md                     # Agent orientation: shared configs + test utils
-│       ├── package.json                  # name: @tycs/config
+│       ├── package.json                  # name: @mycscompanion/config
 │       ├── eslint.config.js
 │       ├── tsconfig.base.json
-│       ├── vitest.config.ts              # Base Vitest (resolves @tycs/* imports)
+│       ├── vitest.config.ts              # Base Vitest (resolves @mycscompanion/* imports)
 │       └── test-utils/
 │           ├── index.ts
 │           ├── test-query-client.ts      # createTestQueryClient() + TestProviders
@@ -1105,10 +1105,10 @@ tycs/
 |---|---|---|
 | Firebase Auth | `plugins/auth/firebase.ts` (server), `lib/firebase.ts` (client) | Service account / client config |
 | Anthropic API | `plugins/tutor/services/anthropic.ts` | `ANTHROPIC_API_KEY` |
-| Fly.io Machines | `plugins/execution/services/fly-machines.ts` | `TYCS_FLY_API_TOKEN` |
+| Fly.io Machines | `plugins/execution/services/fly-machines.ts` | `MCC_FLY_API_TOKEN` |
 | Redis | `shared/redis.ts` | `REDIS_URL` |
 | PostgreSQL | `shared/db.ts` (Kysely) | `DATABASE_URL` |
-| Sentry | Fastify error handler + webapp error boundary | `TYCS_SENTRY_DSN` |
+| Sentry | Fastify error handler + webapp error boundary | `MCC_SENTRY_DSN` |
 
 ### Data Flow: Code Submission
 
@@ -1257,7 +1257,7 @@ pnpm --filter shared db:types       # Regenerate Kysely types
 - Reference this architecture document for detailed decisions
 - Follow all naming, structure, and test patterns exactly
 - Respect plugin isolation — never import across plugin boundaries
-- Use `@tycs/*` for package imports, relative paths within apps
+- Use `@mycscompanion/*` for package imports, relative paths within apps
 
 **First Implementation Priority:** Project scaffold — Turborepo + pnpm + apps + packages, `docker-compose.yml`, base configs. Then Day 1 de-risk: Firebase Auth + Fly Machines "hello world" Go compilation to validate the entire execution path.
 
@@ -1283,7 +1283,7 @@ pnpm --filter shared db:types       # Regenerate Kysely types
 |---|---|
 | Deployment | Hybrid Railway (web infra) + Fly.io (code execution) |
 | Code execution | Fly Machines API — ephemeral Firecracker VMs |
-| Auth | Firebase Auth on `app.tycs.dev` only, Bearer token + Fastify hook |
+| Auth | Firebase Auth on `app.mycscompanion.dev` only, Bearer token + Fastify hook |
 | Database | PostgreSQL (Railway managed) + Kysely + `kysely-codegen` |
 | API | Fastify with 6 plugin domains, REST, `fastify-sse-v2` for streaming |
 | Frontend state | TanStack Query (server) + Zustand (2 UI stores) |

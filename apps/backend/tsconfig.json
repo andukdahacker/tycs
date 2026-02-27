@@ -7,12 +7,12 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "paths": {
-      "@tycs/shared": ["../../packages/shared/src"],
-      "@tycs/shared/*": ["../../packages/shared/src/*"],
-      "@tycs/execution": ["../../packages/execution/src"],
-      "@tycs/execution/*": ["../../packages/execution/src/*"],
-      "@tycs/config": ["../../packages/config"],
-      "@tycs/config/*": ["../../packages/config/*"]
+      "@mycscompanion/shared": ["../../packages/shared/src"],
+      "@mycscompanion/shared/*": ["../../packages/shared/src/*"],
+      "@mycscompanion/execution": ["../../packages/execution/src"],
+      "@mycscompanion/execution/*": ["../../packages/execution/src/*"],
+      "@mycscompanion/config": ["../../packages/config"],
+      "@mycscompanion/config/*": ["../../packages/config/*"]
     }
   },
   "include": ["src/**/*.ts"]

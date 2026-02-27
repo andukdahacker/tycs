@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { TRACKS, MILESTONES } from '@tycs/shared'
+import { TRACKS, MILESTONES } from '@mycscompanion/shared'
 import { db, destroyDb } from '../shared/db.js'
 import { generateId } from '../shared/id.js'
 

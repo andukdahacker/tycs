@@ -165,13 +165,13 @@ func runTests() {
 		fmt.Printf("FAIL: could not create store: %v\n", err)
 		os.Exit(1)
 	}
-	if err := store.Put("name", "tycs"); err != nil {
+	if err := store.Put("name", "mycscompanion"); err != nil {
 		fmt.Printf("FAIL: put error: %v\n", err)
 	}
-	if val, ok := store.Get("name"); ok && val == "tycs" {
+	if val, ok := store.Get("name"); ok && val == "mycscompanion" {
 		fmt.Println("PASS: put-and-get")
 	} else {
-		fmt.Printf("FAIL: expected 'tycs', got '%s' (found=%v)\n", val, ok)
+		fmt.Printf("FAIL: expected 'mycscompanion', got '%s' (found=%v)\n", val, ok)
 	}
 	store.Close()
 	os.Remove(dataFile)

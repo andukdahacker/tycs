@@ -34,18 +34,18 @@ So that broken code cannot merge to main.
       ```
     - Use `ubuntu-latest` runner
     - **Service containers:**
-      - PostgreSQL 16: `postgres:16` image with `POSTGRES_USER=tycs`, `POSTGRES_PASSWORD=tycs`, `POSTGRES_DB=tycs`, health check, exposed on default port 5432
+      - PostgreSQL 16: `postgres:16` image with `POSTGRES_USER=mycscompanion`, `POSTGRES_PASSWORD=mycscompanion`, `POSTGRES_DB=mycscompanion`, health check, exposed on default port 5432
       - Redis 7: `redis:7` image with health check, exposed on default port 6379
     - **CRITICAL**: In GitHub Actions, service containers are accessible on `localhost` directly (not port-mapped like docker-compose). The DATABASE_URL must use port `5432` (not `5433` like local dev).
     - Environment variables for the job:
       ```yaml
       env:
-        DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+        DATABASE_URL: postgresql://mycscompanion:mycscompanion@localhost:5432/mycscompanion
         REDIS_URL: redis://localhost:6379
         NODE_ENV: test
         LOG_LEVEL: silent
       ```
-    - **CRITICAL**: The backend test global-setup creates `tycs_test` from the service container's `tycs` DB (connecting to `localhost:5432/tycs` to issue `CREATE DATABASE tycs_test`). The test workers then use `DATABASE_URL` overridden to `tycs_test` in vitest config's `test.env`. Since the global-setup hardcodes `localhost:5433` for dev, we need to handle CI differently — see Task 2.
+    - **CRITICAL**: The backend test global-setup creates `mycscompanion_test` from the service container's `mycscompanion` DB (connecting to `localhost:5432/mycscompanion` to issue `CREATE DATABASE mycscompanion_test`). The test workers then use `DATABASE_URL` overridden to `mycscompanion_test` in vitest config's `test.env`. Since the global-setup hardcodes `localhost:5433` for dev, we need to handle CI differently — see Task 2.
 
   - [x] 1.2 Pipeline steps (in exact order):
     ```yaml
@@ -100,8 +100,8 @@ So that broken code cannot merge to main.
       ```typescript
       const isCI = process.env['CI'] === 'true'
       const PG_PORT = isCI ? '5432' : '5433'
-      const DEV_DB_URL = `postgresql://tycs:tycs@localhost:${PG_PORT}/tycs`
-      const TEST_DB_URL = `postgresql://tycs:tycs@localhost:${PG_PORT}/tycs_test`
+      const DEV_DB_URL = `postgresql://mycscompanion:mycscompanion@localhost:${PG_PORT}/mycscompanion`
+      const TEST_DB_URL = `postgresql://mycscompanion:mycscompanion@localhost:${PG_PORT}/mycscompanion_test`
       ```
     - Replace both hardcoded `DEV_DB_URL` and `TEST_DB_URL` constants with the dynamic versions above. Keep ALL other code (pool creation, CREATE DATABASE, migration runner) unchanged.
     - **Why `CI` env var, not `DATABASE_URL` parsing**: The `globalSetup` function runs outside Vitest worker processes, so `test.env` values from vitest config are NOT available in `process.env` during global setup. The `CI` env var is the simplest reliable signal.
@@ -113,7 +113,7 @@ So that broken code cannot merge to main.
       // ...
       test: {
         env: {
-          DATABASE_URL: `postgresql://tycs:tycs@localhost:${pgPort}/tycs_test`,
+          DATABASE_URL: `postgresql://mycscompanion:mycscompanion@localhost:${pgPort}/mycscompanion_test`,
           REDIS_URL: 'redis://localhost:6379',
           NODE_ENV: 'test',
           LOG_LEVEL: 'silent',
@@ -300,9 +300,9 @@ So that broken code cannot merge to main.
           postgres:
             image: postgres:16
             env:
-              POSTGRES_USER: tycs
-              POSTGRES_PASSWORD: tycs
-              POSTGRES_DB: tycs
+              POSTGRES_USER: mycscompanion
+              POSTGRES_PASSWORD: mycscompanion
+              POSTGRES_DB: mycscompanion
             options: >-
               --health-cmd pg_isready
               --health-interval 10s
@@ -320,7 +320,7 @@ So that broken code cannot merge to main.
             ports:
               - 6379:6379
         env:
-          DATABASE_URL: postgresql://tycs:tycs@localhost:5432/tycs
+          DATABASE_URL: postgresql://mycscompanion:mycscompanion@localhost:5432/mycscompanion
           REDIS_URL: redis://localhost:6379
           NODE_ENV: test
           LOG_LEVEL: silent
@@ -379,10 +379,10 @@ So that broken code cannot merge to main.
 - [x] Task 7: Validate complete CI pipeline (AC: #1-#7)
   - [x] 7.1 **CRITICAL — Fix pre-existing build/lint failures before CI can work:**
     - Story 1.5 debug log noted these pre-existing issues:
-      - `@tycs/webapp` build failure due to Tailwind CSS v4/Vite resolution in `@tycs/ui`
-      - `@tycs/website` lint errors in `.astro/` generated files
+      - `@mycscompanion/webapp` build failure due to Tailwind CSS v4/Vite resolution in `@mycscompanion/ui`
+      - `@mycscompanion/website` lint errors in `.astro/` generated files
     - **Run `pnpm build` and `pnpm lint` FIRST** to check if these still fail.
-    - If webapp build fails: investigate Tailwind CSS v4 + `@tycs/ui` resolution. Fix the root cause (likely a missing Vite plugin config or package export). CI CANNOT ship with a broken build step.
+    - If webapp build fails: investigate Tailwind CSS v4 + `@mycscompanion/ui` resolution. Fix the root cause (likely a missing Vite plugin config or package export). CI CANNOT ship with a broken build step.
     - If website lint fails on `.astro/` generated files: add `.astro/` to the website's ESLint ignore pattern (generated code should not be linted). This is a one-line fix in `apps/website/eslint.config.js` or `.eslintignore`.
     - These fixes are required scope for this story — CI is useless if lint/build fail on pre-existing issues.
   - [x] 7.2 Verify all new files are syntactically valid:
@@ -479,7 +479,7 @@ Workspaces without a script are silently skipped by Turborepo.
 
 **What was established:**
 - `apps/backend/vitest.config.ts` — backend Vitest config with `test.env` overrides for `DATABASE_URL` (port 5433) and `REDIS_URL`
-- `apps/backend/src/test/global-setup.ts` — creates `tycs_test` database and runs Kysely migrations. **Currently hardcodes port 5433** — this story MUST make it CI-aware.
+- `apps/backend/src/test/global-setup.ts` — creates `mycscompanion_test` database and runs Kysely migrations. **Currently hardcodes port 5433** — this story MUST make it CI-aware.
 - `apps/backend/src/test/test-db.ts` — per-test transaction utilities (reads `DATABASE_URL` from `process.env` — already dynamic)
 - `apps/backend/src/test/test-app.ts` — Fastify inject helper via `buildApp()`
 - `apps/backend/src/test/canary.test.ts` — infrastructure canary (DB, transaction, inject, Redis mock)
@@ -491,7 +491,7 @@ Workspaces without a script are silently skipped by Turborepo.
 - 23 tests passing across 2 workspaces (shared: 13, backend: 10)
 
 **Critical fix needed from Story 1.5:**
-> global-setup.ts hardcodes `DEV_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs'` and `TEST_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs_test'`
+> global-setup.ts hardcodes `DEV_DB_URL = 'postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion'` and `TEST_DB_URL = 'postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion_test'`
 > In CI, PostgreSQL service container exposes on port 5432. This MUST be made dynamic.
 
 **Story 1.5 downstream notes:**
@@ -550,7 +550,7 @@ apps/webapp/package.json                     # ADD @axe-core/playwright devDep
 **Files to POTENTIALLY FIX (pre-existing issues from Story 1.5):**
 ```
 apps/website/eslint.config.js (or similar)   # FIX — exclude .astro/ generated files from lint
-apps/webapp/ (Tailwind/Vite config)          # FIX — resolve @tycs/ui build failure if still present
+apps/webapp/ (Tailwind/Vite config)          # FIX — resolve @mycscompanion/ui build failure if still present
 ```
 
 **Files NOT to touch:**
@@ -608,8 +608,8 @@ Claude Opus 4.6
 
 ### Debug Log References
 
-- Pre-existing webapp build failure: `@tycs/ui` missing `tailwindcss` devDependency — `@import 'tailwindcss'` in `globals.css` couldn't resolve. Fixed by adding `tailwindcss` as devDep of `@tycs/ui`.
-- Pre-existing webapp build failure: `@tycs/config/tailwind-tokens.css` not exported from `@tycs/config` package.json `exports` field. Fixed by adding CSS export entry. Also added `@tycs/config` as dependency of `@tycs/ui` and `@tycs/website` for pnpm resolution.
+- Pre-existing webapp build failure: `@mycscompanion/ui` missing `tailwindcss` devDependency — `@import 'tailwindcss'` in `globals.css` couldn't resolve. Fixed by adding `tailwindcss` as devDep of `@mycscompanion/ui`.
+- Pre-existing webapp build failure: `@mycscompanion/config/tailwind-tokens.css` not exported from `@mycscompanion/config` package.json `exports` field. Fixed by adding CSS export entry. Also added `@mycscompanion/config` as dependency of `@mycscompanion/ui` and `@mycscompanion/website` for pnpm resolution.
 - Pre-existing website lint failure: `.astro/` generated files failing ESLint rules (no-explicit-any, consistent-type-imports, etc). Fixed by adding `.astro/**` to ignores in website's `eslint.config.js`.
 
 ### Completion Notes List
@@ -645,7 +645,7 @@ Claude Opus 4.6
 - `apps/backend/vitest.config.ts` — CI-aware DATABASE_URL port
 - `apps/website/eslint.config.js` — Exclude `.astro/` generated files from lint
 - `apps/webapp/package.json` — Added `@axe-core/playwright` devDep
-- `packages/ui/package.json` — Added `tailwindcss` devDep, `@tycs/config` dependency
+- `packages/ui/package.json` — Added `tailwindcss` devDep, `@mycscompanion/config` dependency
 - `packages/config/package.json` — Added `tailwind-tokens.css` export
-- `apps/website/package.json` — Added `@tycs/config` dependency
+- `apps/website/package.json` — Added `@mycscompanion/config` dependency
 - `pnpm-lock.yaml` — Updated lockfile

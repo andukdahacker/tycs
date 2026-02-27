@@ -36,7 +36,7 @@ So that the platform is observable and deployable from day one.
     ```typescript
     import * as Sentry from '@sentry/node'
 
-    const dsn = process.env['TYCS_SENTRY_DSN']
+    const dsn = process.env['MCC_SENTRY_DSN']
 
     if (dsn) {
       Sentry.init({
@@ -53,7 +53,7 @@ So that the platform is observable and deployable from day one.
     - Named export `Sentry` for reuse in app.ts error handler
     - **CRITICAL:** `enabled: false` in development/test — prevents noise and test interference
     - `tracesSampleRate: 0` — architecture explicitly says no APM for MVP
-    - Gracefully no-ops when `TYCS_SENTRY_DSN` is not set (local dev without Sentry)
+    - Gracefully no-ops when `MCC_SENTRY_DSN` is not set (local dev without Sentry)
 
   - [x]1.3 Update `apps/backend/src/server.ts` — import instrument FIRST + Sentry flush on shutdown:
     ```typescript
@@ -170,11 +170,11 @@ So that the platform is observable and deployable from day one.
 
     async function adminPlugin(fastify: FastifyInstance): Promise<void> {
       // Basic auth for /admin routes
-      const adminUser = process.env['TYCS_ADMIN_USER'] ?? 'admin'
-      const adminPass = process.env['TYCS_ADMIN_PASSWORD']
+      const adminUser = process.env['MCC_ADMIN_USER'] ?? 'admin'
+      const adminPass = process.env['MCC_ADMIN_PASSWORD']
 
       if (!adminPass) {
-        fastify.log.warn('TYCS_ADMIN_PASSWORD not set — Bull Board disabled')
+        fastify.log.warn('MCC_ADMIN_PASSWORD not set — Bull Board disabled')
         return
       }
 
@@ -184,7 +184,7 @@ So that the platform is observable and deployable from day one.
             throw new Error('Unauthorized')
           }
         },
-        authenticate: { realm: 'tycs-admin' },
+        authenticate: { realm: 'mycscompanion-admin' },
       })
 
       // Bull Board setup — empty queues, filled in Epic 3
@@ -211,7 +211,7 @@ So that the platform is observable and deployable from day one.
     - **Do NOT use `export default`** — named exports only per project-context
     - **Architecture:** Bull Board at `/admin/queues` with basic auth
     - Empty queues array — functional dashboard that shows "no queues" until Epic 3
-    - `TYCS_ADMIN_PASSWORD` required — gracefully disables in local dev if not set
+    - `MCC_ADMIN_PASSWORD` required — gracefully disables in local dev if not set
     - `basicAuth` validate signature requires 4 params: `(username, password, req, reply)` — prefix unused with `_`
     - Bull Board `setBasePath` sets the internal base path. Do NOT also pass `{ prefix: '/admin/queues' }` to `register()` — this would double-prefix to `/admin/queues/admin/queues`
 
@@ -263,17 +263,17 @@ So that the platform is observable and deployable from day one.
         - "3000:3000"
       environment:
         MB_DB_TYPE: postgres
-        MB_DB_DBNAME: tycs
+        MB_DB_DBNAME: mycscompanion
         MB_DB_PORT: 5432
-        MB_DB_USER: tycs
-        MB_DB_PASS: tycs
+        MB_DB_USER: mycscompanion
+        MB_DB_PASS: mycscompanion
         MB_DB_HOST: postgres
       depends_on:
         - postgres
     ```
     - **Port 3000**: Metabase default. Does NOT conflict — the Fastify backend runs on port 3001 locally.
     - Connects to the same PostgreSQL via Docker network (`postgres` hostname)
-    - Uses the `tycs` database directly for analytics queries
+    - Uses the `mycscompanion` database directly for analytics queries
     - `latest` tag for free/open-source Metabase — no license required
     - **Not started by default** with `pnpm dev` — users run `docker compose up metabase` when needed
 
@@ -335,19 +335,19 @@ So that the platform is observable and deployable from day one.
   - [x]7.1 UPDATE existing `.env.example` at project root (file already exists — append new vars, do NOT overwrite):
     ```bash
     # ============================================
-    # tycs Environment Variables
+    # mycscompanion Environment Variables
     # Copy to .env and fill in values as needed.
     # ============================================
 
     # --- Database (Story 1.2) ---
-    DATABASE_URL=postgresql://tycs:tycs@localhost:5433/tycs
+    DATABASE_URL=postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion
 
     # --- Redis (Story 1.4) ---
     REDIS_URL=redis://localhost:6379
 
     # --- Sentry (Story 1.7) ---
     # Get DSN from https://sentry.io → Project Settings → Client Keys
-    TYCS_SENTRY_DSN=
+    MCC_SENTRY_DSN=
 
     # --- Firebase Server (Story 2.1) ---
     # Service account JSON (base64 encoded or path)
@@ -355,18 +355,18 @@ So that the platform is observable and deployable from day one.
 
     # --- Firebase Client (Story 2.1) ---
     # Firebase web app config JSON
-    TYCS_FIREBASE_CONFIG=
+    MCC_FIREBASE_CONFIG=
 
     # --- Anthropic AI (Story 6.1) ---
     ANTHROPIC_API_KEY=
 
     # --- Fly.io Execution (Story 3.2) ---
-    TYCS_FLY_API_TOKEN=
+    MCC_FLY_API_TOKEN=
 
     # --- Admin (Story 1.7) ---
     # Required for Bull Board access at /admin/queues
-    TYCS_ADMIN_USER=admin
-    TYCS_ADMIN_PASSWORD=
+    MCC_ADMIN_USER=admin
+    MCC_ADMIN_PASSWORD=
 
     # --- General ---
     NODE_ENV=development
@@ -377,7 +377,7 @@ So that the platform is observable and deployable from day one.
     ```
     - Documents ALL known environment variables with story references
     - No actual secrets — only structure and local dev defaults
-    - `TYCS_` prefix for all custom env vars per project-context naming convention
+    - `MCC_` prefix for all custom env vars per project-context naming convention
     - Third-party vars keep standard names (`ANTHROPIC_API_KEY`, `DATABASE_URL`)
 
   - [x]7.2 Ensure `.env` is in `.gitignore` (already is) and `.env.example` is NOT gitignored
@@ -435,7 +435,7 @@ So that the platform is observable and deployable from day one.
   - [x]10.3 Run `pnpm test` — all existing tests pass (no regression)
   - [x]10.4 Run `pnpm build` — all workspaces build successfully
   - [x]10.5 Verify Bull Board route: Start backend, navigate to `http://localhost:3001/admin/queues` — returns 401 without credentials, shows empty dashboard with credentials
-  - [x]10.6 Verify Sentry integration: Set `TYCS_SENTRY_DSN` to a test DSN, trigger an error, confirm it appears in Sentry dashboard (or verify `Sentry.captureException` is called in tests)
+  - [x]10.6 Verify Sentry integration: Set `MCC_SENTRY_DSN` to a test DSN, trigger an error, confirm it appears in Sentry dashboard (or verify `Sentry.captureException` is called in tests)
   - [x]10.7 Verify pino JSON: `NODE_ENV=production tsx src/server.ts` outputs JSON log lines
   - [x]10.8 Verify Metabase: `docker compose up metabase` starts Metabase on port 3000, connects to PostgreSQL
   - [x]10.9 Verify deployment configs: All `railway.toml` files are valid TOML
@@ -459,7 +459,7 @@ So that the platform is observable and deployable from day one.
 **Bull Board (Architecture):**
 - Route: `/admin/queues` with basic auth via `@fastify/basic-auth`
 - Empty queues array — Epic 3 adds real queues dynamically
-- Protected by `TYCS_ADMIN_PASSWORD` env var — disabled gracefully when not set
+- Protected by `MCC_ADMIN_PASSWORD` env var — disabled gracefully when not set
 - Do NOT create a BullMQ `Queue` instance just for the dashboard — wait for Epic 3
 - Do NOT use `fastify-plugin` (fp) — admin plugin must be SCOPED to `/admin` prefix. Using fp would leak basicAuth hook globally, breaking all routes
 - Do NOT pass both `setBasePath` AND `{ prefix }` — this double-prefixes the routes
@@ -483,7 +483,7 @@ So that the platform is observable and deployable from day one.
 - TLS handled by Railway edge — no app-level TLS config
 
 **Environment Variables (project-context naming):**
-- Custom vars: `TYCS_` prefix (`TYCS_SENTRY_DSN`, `TYCS_ADMIN_PASSWORD`, `TYCS_FLY_API_TOKEN`)
+- Custom vars: `MCC_` prefix (`MCC_SENTRY_DSN`, `MCC_ADMIN_PASSWORD`, `MCC_FLY_API_TOKEN`)
 - Third-party keep standard names (`ANTHROPIC_API_KEY`, `DATABASE_URL`, `REDIS_URL`)
 - `.env.example` committed, `.env` gitignored
 
@@ -494,7 +494,7 @@ So that the platform is observable and deployable from day one.
 - Do NOT create BullMQ `Queue` instances in this story — no queues exist yet (Epic 3)
 - Do NOT configure app-level TLS/HTTPS — Railway handles this
 - Do NOT use `console.log` — use pino via Fastify logger (`request.log` or `fastify.log`)
-- Do NOT hardcode Sentry DSN — always from `TYCS_SENTRY_DSN` env var
+- Do NOT hardcode Sentry DSN — always from `MCC_SENTRY_DSN` env var
 - Do NOT use `Sentry.init()` inside `app.ts` — it must be in `instrument.ts` imported first
 - Do NOT add Metabase to the default `docker compose up` — it's optional for local dev
 - Do NOT store secrets in `railway.toml` — only structure and commands
@@ -564,7 +564,7 @@ apps/backend/src/worker/worker.ts          # ADD — import instrument.ts first,
 apps/backend/src/app.ts                    # ADD — setErrorHandler, trustProxy, admin plugin registration
 apps/backend/package.json                  # ADD — @sentry/node, @bull-board/*, @fastify/basic-auth deps + update start scripts
 docker-compose.yml                         # ADD — Metabase service entry
-.env                                       # UPDATE — add TYCS_ADMIN_USER, TYCS_ADMIN_PASSWORD, ensure all vars documented
+.env                                       # UPDATE — add MCC_ADMIN_USER, MCC_ADMIN_PASSWORD, ensure all vars documented
 ```
 
 **Files NOT to touch:**
@@ -605,9 +605,9 @@ docker-compose.yml                         # ADD — Metabase service entry
 - [Source: _bmad-output/planning-artifacts/architecture.md#Railway-Service-Topology — 6 services, deployment config]
 - [Source: _bmad-output/planning-artifacts/architecture.md#Process-Patterns — Error handler pattern with Sentry]
 - [Source: _bmad-output/planning-artifacts/architecture.md#Communication-Patterns — Logging levels (error→Sentry, warn, info, debug)]
-- [Source: _bmad-output/planning-artifacts/architecture.md#External-Integration-Points — Sentry DSN as TYCS_SENTRY_DSN]
+- [Source: _bmad-output/planning-artifacts/architecture.md#External-Integration-Points — Sentry DSN as MCC_SENTRY_DSN]
 - [Source: _bmad-output/project-context.md#Error-Handling — Two-path error classification]
-- [Source: _bmad-output/project-context.md#Code-Quality — TYCS_ prefix for custom env vars]
+- [Source: _bmad-output/project-context.md#Code-Quality — MCC_ prefix for custom env vars]
 - [Source: _bmad-output/project-context.md#Anti-Patterns — No console.log, no separate apps/worker]
 - [Source: _bmad-output/implementation-artifacts/1-6-ci-cd-pipeline-and-quality-gates.md — CI pipeline, downstream notes for 1.7]
 - [Source: apps/backend/src/app.ts — Current Fastify setup, plugin registration order]

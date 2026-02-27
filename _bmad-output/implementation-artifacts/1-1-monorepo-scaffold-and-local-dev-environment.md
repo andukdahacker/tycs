@@ -27,48 +27,48 @@ So that I have a working development environment to build features against.
   - [x] 1.1 Create root `package.json` with: pnpm workspaces (`apps/*`, `packages/*` — NOT `content/`), `engines: { "node": ">=20.0.0" }`, `"packageManager": "pnpm@10.30.2"` (Corepack), `"typecheck": "turbo typecheck"` script
   - [x] 1.2 Create `pnpm-workspace.yaml` matching the same workspace definitions
   - [x] 1.3 Create `turbo.json` with pipelines: `dev`, `build`, `test`, `lint`, `typecheck`
-  - [x] 1.4 Create `tsconfig.base.json` with strict mode, `paths` for `@tycs/*` packages
+  - [x] 1.4 Create `tsconfig.base.json` with strict mode, `paths` for `@mycscompanion/*` packages
   - [x] 1.5 Create `.nvmrc` with `20`
   - [x] 1.6 Create `.npmrc` with `engine-strict=true`
   - [x] 1.7 Create `.gitignore` (node_modules, dist, .env.local, .env, coverage, .turbo). Ensure `content/` is NOT ignored.
   - [x] Verify: `pnpm ls --depth 0` shows expected workspaces
 
 - [x] Task 2: Create `packages/config` — shared tooling configs (AC: tsconfig, ESLint)
-  - [x] 2.1 Create `packages/config/package.json` with name `@tycs/config`, add `"typecheck": "tsc --noEmit"` script
+  - [x] 2.1 Create `packages/config/package.json` with name `@mycscompanion/config`, add `"typecheck": "tsc --noEmit"` script
   - [x] 2.2 Create shared ESLint flat config (`eslint.config.js`) — TypeScript + React rules. Must include: `no-console: 'error'` (use pino for logging), no-default-export rule enforcement
   - [x] 2.3 Create shared `tsconfig.base.json` for packages to extend
-  - [x] 2.4 Create shared Vitest base config (`vitest.config.ts`): resolves `@tycs/*` imports, `include: ['**/*.test.{ts,tsx}']` (enforce co-located `.test.ts` convention), `restoreMocks: true` (global `vi.restoreAllMocks()` — every test inherits this)
+  - [x] 2.4 Create shared Vitest base config (`vitest.config.ts`): resolves `@mycscompanion/*` imports, `include: ['**/*.test.{ts,tsx}']` (enforce co-located `.test.ts` convention), `restoreMocks: true` (global `vi.restoreAllMocks()` — every test inherits this)
   - [x] 2.5 Create Tailwind CSS v4 design tokens CSS file (see Design System section). This defines the shared color palette, typography scale, and spacing tokens. Both `packages/ui` and consuming apps import from here.
   - [x] 2.6 Create `test-utils/index.ts` barrel — empty scaffold for canonical mock factories (msw v2 handlers, Firebase Auth mock, Anthropic mock, EventSource mock — populated in Story 1.5)
 
 - [x] Task 3: Create `packages/shared` (AC: workspace resolution)
-  - [x] 3.1 Create `packages/shared/package.json` with name `@tycs/shared`, add `"typecheck": "tsc --noEmit"` script
+  - [x] 3.1 Create `packages/shared/package.json` with name `@mycscompanion/shared`, add `"typecheck": "tsc --noEmit"` script
   - [x] 3.2 Create `packages/shared/tsconfig.json` extending base
   - [x] 3.3 Create `packages/shared/src/index.ts` barrel export
   - [x] 3.4 Create `packages/shared/src/to-camel-case.ts` — deep snake_case → camelCase converter for DB query results. Signature: `function toCamelCase<T>(data: T): CamelCaseKeys<T>`. Must have explicit return type. Must handle nested objects and arrays (Kysely results are often nested via joins). Mark input param as `readonly`.
   - [x] 3.5 Create `packages/shared/src/types/index.ts` — placeholder for shared types (DB types added in Story 1.3). Use `T | null` for absent values — never `undefined`.
 
 - [x] Task 4: Create `packages/ui` — shadcn/ui + Tailwind (AC: workspace resolution)
-  - [x] 4.1 Create `packages/ui/package.json` with name `@tycs/ui`, add `"typecheck": "tsc --noEmit"` script
+  - [x] 4.1 Create `packages/ui/package.json` with name `@mycscompanion/ui`, add `"typecheck": "tsc --noEmit"` script
   - [x] 4.2 Create `packages/ui/tsconfig.json` extending base
   - [x] 4.3 Initialize shadcn/ui (`npx shadcn@latest init`) — configure for dark mode, CSS variables, New York style. Verify it uses unified `radix-ui` package (not legacy individual `@radix-ui/react-*` packages).
-  - [x] 4.4 Create `src/globals.css` — import design tokens from `@tycs/config`, define all CSS custom properties for shadcn/ui token mapping (see Design System section)
+  - [x] 4.4 Create `src/globals.css` — import design tokens from `@mycscompanion/config`, define all CSS custom properties for shadcn/ui token mapping (see Design System section)
   - [x] 4.5 Install Inter + JetBrains Mono fonts (Latin subset only, 400/600/700 for Inter, 400/700 for JetBrains Mono)
   - [x] Note: NO barrel file (`index.ts`) in this package — import components individually for tree-shaking
 
 - [x] Task 5: Create `packages/execution` (AC: workspace resolution)
-  - [x] 5.1 Create `packages/execution/package.json` with name `@tycs/execution`, add `"typecheck": "tsc --noEmit"` script
+  - [x] 5.1 Create `packages/execution/package.json` with name `@mycscompanion/execution`, add `"typecheck": "tsc --noEmit"` script
   - [x] 5.2 Create `packages/execution/tsconfig.json` extending base
   - [x] 5.3 Create `packages/execution/src/index.ts` barrel export — placeholder types for Fly Machine config and SSE events (discriminated union). Mark shared types as `readonly`.
 
 - [x] Task 6: Create `apps/webapp` — React + Vite SPA (AC: workspace resolution, pnpm dev)
   - [x] 6.1 Scaffold with `pnpm create vite@7 apps/webapp --template react-swc-ts` (pin Vite 7 — do NOT pull Vite 8 beta)
-  - [x] 6.2 Configure `tsconfig.json` extending base, add `@tycs/*` paths, add `"typecheck": "tsc --noEmit"` script to `package.json`
+  - [x] 6.2 Configure `tsconfig.json` extending base, add `@mycscompanion/*` paths, add `"typecheck": "tsc --noEmit"` script to `package.json`
   - [x] 6.3 Configure Vite with React SWC plugin, add `@tailwindcss/vite` plugin for Tailwind CSS v4
   - [x] 6.4 Install React Router v7 (`react-router`), configure browser history mode (SPA mode — SSR disabled, client-side routing only)
-  - [x] 6.5 Import `globals.css` from `@tycs/ui` for design tokens
+  - [x] 6.5 Import `globals.css` from `@mycscompanion/ui` for design tokens
   - [x] 6.6 Set `font-display: optional` for web fonts (NOT `swap` — that's Astro only)
-  - [x] 6.7 Add `@tycs/ui`, `@tycs/shared` as workspace dependencies
+  - [x] 6.7 Add `@mycscompanion/ui`, `@mycscompanion/shared` as workspace dependencies
   - [x] 6.8 Create minimal App.tsx with router outlet and placeholder route
   - [x] Verify: `pnpm --filter webapp dev` starts Vite HMR server
 
@@ -78,17 +78,17 @@ So that I have a working development environment to build features against.
   - [x] 7.3 Configure Tailwind CSS v4 via `@tailwindcss/vite` plugin in `astro.config.mjs` (do NOT use deprecated `@astrojs/tailwind` integration — that was for Tailwind v3)
   - [x] 7.4 Configure `tsconfig.json` extending base, add `"typecheck": "tsc --noEmit"` script to `package.json`
   - [x] 7.5 Set `font-display: swap` for web fonts (prioritize LCP)
-  - [x] 7.6 Add `@tycs/ui` as workspace dependency (for React island components)
+  - [x] 7.6 Add `@mycscompanion/ui` as workspace dependency (for React island components)
   - [x] 7.7 Create minimal index page
   - [x] Verify: `pnpm --filter website dev` starts Astro dev server
 
 - [x] Task 8: Create `apps/backend` — core server scaffold (AC: workspace resolution, pnpm dev)
-  - [x] 8.1 Create `apps/backend/package.json` with name `@tycs/backend`, add `"typecheck": "tsc --noEmit"` script. Dependencies: `fastify`, `pino`, `ioredis`. Dev dependencies: `@types/node`, `tsx`.
+  - [x] 8.1 Create `apps/backend/package.json` with name `@mycscompanion/backend`, add `"typecheck": "tsc --noEmit"` script. Dependencies: `fastify`, `pino`, `ioredis`. Dev dependencies: `@types/node`, `tsx`.
   - [x] 8.2 Create `apps/backend/tsconfig.json` extending base
   - [x] 8.3 Hand-scaffold `src/server.ts` — minimal Fastify init with pino JSON logging, CORS for webapp origin. Do NOT use `nodemon` or `ts-node-dev` — use Node.js `--watch` flag (Node 20+ built-in).
   - [x] 8.4 Create `GET /health` endpoint returning direct object: `{ status: 'ok' }` (no wrapper — never `{ data: ..., success: true }`)
   - [x] 8.5 Add scripts: `"start:api": "node dist/server.js"`, `"start:worker": "node dist/worker/worker.js"`, `"dev": "tsx --watch src/server.ts"`
-  - [x] 8.6 Add `@tycs/shared`, `@tycs/execution` as workspace dependencies
+  - [x] 8.6 Add `@mycscompanion/shared`, `@mycscompanion/execution` as workspace dependencies
   - [x] Verify: `pnpm --filter backend dev` starts Fastify with `--watch`
 
 - [x] Task 9: Create `apps/backend` — plugin architecture and worker scaffold (AC: workspace resolution)
@@ -105,10 +105,10 @@ So that I have a working development environment to build features against.
     - `DATABASE_URL=postgresql://...` (configured in Story 1.2)
     - `REDIS_URL=redis://localhost:6379` (configured in Story 1.4)
     - `FIREBASE_SERVICE_ACCOUNT=` (server-side, configured in Story 2.1)
-    - `TYCS_FIREBASE_CONFIG=` (client-side webapp, configured in Story 2.1)
+    - `MCC_FIREBASE_CONFIG=` (client-side webapp, configured in Story 2.1)
     - `ANTHROPIC_API_KEY=` (third-party standard name, configured in Story 6.1)
-    - `TYCS_FLY_API_TOKEN=` (custom var, configured in Story 3.2)
-    - `TYCS_SENTRY_DSN=` (custom var, configured in Story 1.7)
+    - `MCC_FLY_API_TOKEN=` (custom var, configured in Story 3.2)
+    - `MCC_SENTRY_DSN=` (custom var, configured in Story 1.7)
   - [x] Verify: `docker compose up -d` starts both containers
 
 - [x] Task 11: Root README and final validation (AC: README)
@@ -128,7 +128,7 @@ So that I have a working development environment to build features against.
 - **4 packages only:** `ui`, `shared`, `execution`, `config`. Never create additional packages.
 - **3 apps only:** `backend`, `webapp`, `website`. Never create `apps/worker/`.
 - **`content/` is NOT a workspace.** Never add to `pnpm-workspace.yaml`. No `package.json`, no TypeScript.
-- **Import paths:** `@tycs/*` for cross-package. Relative paths within apps — NO `@/` aliases.
+- **Import paths:** `@mycscompanion/*` for cross-package. Relative paths within apps — NO `@/` aliases.
 - **Barrel files:** Every module exports via `index.ts`. Exception: `packages/ui` has NO barrel — import components individually.
 - **Named exports only.** No default exports anywhere. ESLint enforces this.
 - **No `any` type.** No TS `enum` (use union types). No `as` casting (use `satisfies` or `as const`).
@@ -156,7 +156,7 @@ So that I have a working development environment to build features against.
 | Constants | `SCREAMING_SNAKE_CASE` | `MAX_MESSAGE_LENGTH` |
 | Types/interfaces | `PascalCase`, no `I` prefix | `Submission` |
 | Zustand stores | `use{Name}Store` | `useWorkspaceUIStore` |
-| Env vars (custom) | `TYCS_` prefix | `TYCS_FLY_API_TOKEN` |
+| Env vars (custom) | `MCC_` prefix | `MCC_FLY_API_TOKEN` |
 | Env vars (third-party) | Standard name | `ANTHROPIC_API_KEY` |
 | Entity IDs | `cuid2` | Exception: `users.id` = Firebase UID |
 
@@ -291,7 +291,7 @@ Principle: Green is the ONLY color with personality. Everything else is grayscal
 **File Structure:**
 
 ```
-tycs/
+mycscompanion/
 ├── apps/
 │   ├── backend/                          # [Task 8-9]
 │   │   ├── src/
@@ -402,8 +402,8 @@ Claude Opus 4.6
 
 - Backend `pino-pretty` missing on first `pnpm dev` — added as devDependency
 - PostgreSQL port 5432 conflict on local machine — initially remapped to 5433:5432, reverted to default 5432:5432 in code review
-- `@tycs/ui` and `@tycs/website` typecheck failed with TS18003 (no inputs) — added `src/lib/utils.ts` and `src/env.d.ts` respectively
-- ESLint could not resolve `@tycs/config` as ESM from sibling workspaces — switched to relative path imports in per-workspace `eslint.config.js`
+- `@mycscompanion/ui` and `@mycscompanion/website` typecheck failed with TS18003 (no inputs) — added `src/lib/utils.ts` and `src/env.d.ts` respectively
+- ESLint could not resolve `@mycscompanion/config` as ESM from sibling workspaces — switched to relative path imports in per-workspace `eslint.config.js`
 - `Readonly<T>` on `toCamelCase` generic param caused inference issues with `null`/`unknown` — removed wrapper, documented readonly contract via JSDoc
 
 ### Completion Notes List

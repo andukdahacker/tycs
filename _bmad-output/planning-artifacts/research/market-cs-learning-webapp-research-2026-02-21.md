@@ -406,7 +406,7 @@ The minority who continue develop a sustainable practice:
 **Emotional state:** Confident, curious, invested
 **Actions:** Consistent 5-10 hour/week practice, building projects, teaching others
 
-**Key Insight for tycs:** The mega-project spine approach directly addresses the Stage 4 failure point by ensuring that every concept is encountered through building, not through abstract study. The "wall" hits differently when you are debugging your own B-tree implementation versus reading about B-tree properties in a textbook. The question shifts from "why do I need to learn this?" to "how do I fix my implementation?" -- a much more motivating frame. [Analysis]
+**Key Insight for mycscompanion:** The mega-project spine approach directly addresses the Stage 4 failure point by ensuring that every concept is encountered through building, not through abstract study. The "wall" hits differently when you are debugging your own B-tree implementation versus reading about B-tree properties in a textbook. The question shifts from "why do I need to learn this?" to "how do I fix my implementation?" -- a much more motivating frame. [Analysis]
 
 ---
 
@@ -540,7 +540,7 @@ Analysis of community discussions, platform user bases, and survey data reveals 
 - **Current platforms:** LeetCode, AlgoExpert, NeetCode, Grokking the System Design Interview
 - **Learning style:** Practice problems, pattern recognition, timed sessions
 - **CS depth desired:** Moderate -- enough to pass interviews, not deep understanding
-- **Relevance to tycs:** Low-Medium. These learners want narrow, fast results. The mega-project approach may feel too slow. However, a subset recognizes that shallow LeetCode prep does not build lasting understanding and might be drawn to a deeper approach.
+- **Relevance to mycscompanion:** Low-Medium. These learners want narrow, fast results. The mega-project approach may feel too slow. However, a subset recognizes that shallow LeetCode prep does not build lasting understanding and might be drawn to a deeper approach.
 
 **Segment B: "The Knowledge Seeker" (25-30% of addressable market)**
 
@@ -550,7 +550,7 @@ Analysis of community discussions, platform user bases, and survey data reveals 
 - **Current platforms:** teachyourselfcs.com books, MIT OCW, nand2tetris, Crafting Interpreters
 - **Learning style:** Deep reading, building from scratch, understanding internals
 - **CS depth desired:** High -- wants to understand at a fundamental level
-- **Relevance to tycs:** Very High. This is the core target audience. These learners already want depth and project-based learning but lack structure, feedback, and community.
+- **Relevance to mycscompanion:** Very High. This is the core target audience. These learners already want depth and project-based learning but lack structure, feedback, and community.
 
 **Segment C: "The Career Upgrader" (20-25% of addressable market)**
 
@@ -560,7 +560,7 @@ Analysis of community discussions, platform user bases, and survey data reveals 
 - **Current platforms:** Educative, Pluralsight, O'Reilly, Boot.dev
 - **Learning style:** Guided projects, real-world applications, minimum viable theory
 - **CS depth desired:** Moderate-High -- enough to be effective in systems roles
-- **Relevance to tycs:** High. The mega-project approach directly serves this segment -- building a database teaches exactly the knowledge needed for systems/infrastructure roles.
+- **Relevance to mycscompanion:** High. The mega-project approach directly serves this segment -- building a database teaches exactly the knowledge needed for systems/infrastructure roles.
 
 **Segment D: "The Imposter Syndrome Sufferer" (15-20% of addressable market)**
 
@@ -570,7 +570,7 @@ Analysis of community discussions, platform user bases, and survey data reveals 
 - **Current platforms:** Codecademy, Udemy (bought many courses), various YouTube channels
 - **Learning style:** Needs encouragement, gentle scaffolding, visible progress
 - **CS depth desired:** Low-Medium -- wants confidence more than depth
-- **Relevance to tycs:** Medium. The zero-decision start and visible progress (benchmark improvements, working system) could powerfully address imposter syndrome. But the mega-project approach might feel intimidating initially.
+- **Relevance to mycscompanion:** Medium. The zero-decision start and visible progress (benchmark improvements, working system) could powerfully address imposter syndrome. But the mega-project approach might feel intimidating initially.
 
 [Analysis -- segments synthesized from multiple data sources and community observation]
 
@@ -602,11 +602,11 @@ _Source: [https://www.statista.com/topics/3115/e-learning-and-digital-education/
 
 ---
 
-### Cross-Cutting Analysis and Strategic Implications for tycs
+### Cross-Cutting Analysis and Strategic Implications for mycscompanion
 
 **Key Insights for Product Strategy:**
 
-1. **The mega-project spine directly addresses the #1 pain point** -- the disconnect between theory and practice. By making CS concepts emergent from building a real system, tycs eliminates the "why does this matter?" problem that kills motivation on traditional platforms.
+1. **The mega-project spine directly addresses the #1 pain point** -- the disconnect between theory and practice. By making CS concepts emergent from building a real system, mycscompanion eliminates the "why does this matter?" problem that kills motivation on traditional platforms.
 
 2. **The primary target segment (Knowledge Seekers + Career Upgraders) represents approximately 45-55% of the addressable market** and has medium-to-high willingness to pay. These learners are underserved by current platforms -- they are too advanced for Codecademy, too practical for MIT OCW, and want more depth than LeetCode.
 
@@ -666,18 +666,18 @@ _Source: [https://www.statista.com/topics/3115/e-learning-and-digital-education/
 - **Key weaknesses:**
   - **No teaching content or explanations** -- purely test-driven. If you get stuck, you are on your own (or must use external resources). There is no tutor, no curriculum, no theory explanation.
   - **Isolated projects, not a learning journey** -- building Redis is separate from building SQLite. There is no overarching narrative connecting CS concepts across projects.
-  - **No concept scaffolding** -- assumes you already have enough knowledge to figure out implementations. This works for senior engineers but fails for the primary tycs audience (self-taught devs filling CS gaps).
+  - **No concept scaffolding** -- assumes you already have enough knowledge to figure out implementations. This works for senior engineers but fails for the primary mycscompanion audience (self-taught devs filling CS gaps).
   - **No feedback beyond pass/fail tests** -- no code review, no "here's how PostgreSQL solved this differently," no trade-off analysis.
   - **No AI assistance or Socratic guidance** -- when stuck, users often resort to looking at solution repos on GitHub, which undermines the learning value.
   - **Limited depth per project** -- each challenge covers one system at a surface-to-moderate level. You build a basic Redis, not a production-grade one. There is no progressive deepening.
   - **Pricing friction** -- $40/month is steep for what amounts to a test runner with challenge descriptions. Community sentiment includes complaints about value-for-money.
-- **How tycs differentiates:**
-  - **Mega-project spine vs. isolated projects:** tycs connects all CS concepts through one ambitious project (e.g., building a database), where each milestone naturally teaches multiple subjects. CodeCrafters offers disconnected "build X" challenges.
-  - **Socratic AI tutor vs. no guidance:** tycs provides context-aware AI that explains concepts, asks probing questions, and scaffolds understanding. CodeCrafters leaves you entirely alone.
-  - **Trade-off explorer vs. pass/fail:** tycs compares your implementation to real-world systems (PostgreSQL, Redis, SQLite) and analyzes trade-offs. CodeCrafters only tells you if tests pass.
-  - **Benchmark battles vs. binary completion:** tycs provides performance benchmarks so you can see your system improve. CodeCrafters has no performance dimension.
-  - **Progressive depth vs. surface-level:** tycs deepens understanding through iterative improvement of one system. CodeCrafters moves you to a different system.
-  - **Zero-decision start vs. choose-your-challenge:** tycs eliminates decision paralysis with a clear "continue building" flow. CodeCrafters requires choosing a project, language, and figuring out your own approach.
+- **How mycscompanion differentiates:**
+  - **Mega-project spine vs. isolated projects:** mycscompanion connects all CS concepts through one ambitious project (e.g., building a database), where each milestone naturally teaches multiple subjects. CodeCrafters offers disconnected "build X" challenges.
+  - **Socratic AI tutor vs. no guidance:** mycscompanion provides context-aware AI that explains concepts, asks probing questions, and scaffolds understanding. CodeCrafters leaves you entirely alone.
+  - **Trade-off explorer vs. pass/fail:** mycscompanion compares your implementation to real-world systems (PostgreSQL, Redis, SQLite) and analyzes trade-offs. CodeCrafters only tells you if tests pass.
+  - **Benchmark battles vs. binary completion:** mycscompanion provides performance benchmarks so you can see your system improve. CodeCrafters has no performance dimension.
+  - **Progressive depth vs. surface-level:** mycscompanion deepens understanding through iterative improvement of one system. CodeCrafters moves you to a different system.
+  - **Zero-decision start vs. choose-your-challenge:** mycscompanion eliminates decision paralysis with a clear "continue building" flow. CodeCrafters requires choosing a project, language, and figuring out your own approach.
 
 _Source: [https://codecrafters.io](https://codecrafters.io)_ [High Confidence]
 _Source: [https://news.ycombinator.com/item?id=35429675](https://news.ycombinator.com/item?id=35429675) (HN discussions on CodeCrafters)_ [High Confidence]
@@ -706,12 +706,12 @@ _Source: [https://www.ycombinator.com/companies/codecrafters](https://www.ycombi
   - **Backend-web focused** -- curriculum is oriented toward "getting a backend job" rather than deep CS understanding. System design coverage is interview-prep flavored.
   - **No AI tutor** -- relies on exercise structure and community for support.
   - **Browser-only environment** -- no local development workflow, which feels constraining for experienced developers.
-- **How tycs differentiates:**
-  - **Depth vs. breadth:** tycs goes deep on CS internals through building real systems. Boot.dev covers more topics at a shallower level.
-  - **Mega-project spine vs. exercise sequences:** tycs provides the cohesion of building one ambitious system. Boot.dev sequences many small exercises.
-  - **AI tutor vs. community-only support:** tycs provides Socratic AI guidance at the moment of frustration.
-  - **Professional tone vs. gamification:** tycs targets working engineers with a professional learning experience, not gamified progression.
-  - **Trade-off exploration vs. correct-answer exercises:** tycs teaches engineering judgment through comparing approaches. Boot.dev teaches skills through right/wrong exercises.
+- **How mycscompanion differentiates:**
+  - **Depth vs. breadth:** mycscompanion goes deep on CS internals through building real systems. Boot.dev covers more topics at a shallower level.
+  - **Mega-project spine vs. exercise sequences:** mycscompanion provides the cohesion of building one ambitious system. Boot.dev sequences many small exercises.
+  - **AI tutor vs. community-only support:** mycscompanion provides Socratic AI guidance at the moment of frustration.
+  - **Professional tone vs. gamification:** mycscompanion targets working engineers with a professional learning experience, not gamified progression.
+  - **Trade-off exploration vs. correct-answer exercises:** mycscompanion teaches engineering judgment through comparing approaches. Boot.dev teaches skills through right/wrong exercises.
 
 _Source: [https://www.boot.dev](https://www.boot.dev)_ [High Confidence]
 _Source: [https://blog.boot.dev/](https://blog.boot.dev/)_ [High Confidence]
@@ -738,13 +738,13 @@ _Source: [https://www.reddit.com/r/learnprogramming/](https://www.reddit.com/r/l
   - **Academic orientation** -- recommends academic textbooks (CSAPP, SICP, Ostep) that can feel dense and disconnected from practical engineering.
   - **No project-based learning** -- purely textbook-and-lecture based. Building things is not part of the recommended approach.
   - **No accountability or motivation mechanisms** -- entirely self-directed.
-- **How tycs differentiates:**
-  - **Interactive platform vs. static reading list:** tycs IS the learning experience. teachyourselfcs.com points you to learning experiences elsewhere.
-  - **Project-based vs. textbook-based:** tycs teaches through building. teachyourselfcs.com teaches through reading and watching.
-  - **AI-supported vs. no support:** tycs provides help when stuck. teachyourselfcs.com offers nothing.
-  - **Manageable scope vs. overwhelming:** tycs structures learning into a progressive mega-project with clear milestones. teachyourselfcs.com presents a mountain of 9 subjects.
-  - **Practical CS vs. academic CS:** tycs connects every concept to a working system you are building. teachyourselfcs.com connects concepts to academic exercises.
-  - **tycs can complement teachyourselfcs.com** -- students who discover the reading list but are intimidated by it could find tycs to be the interactive, guided execution of those same concepts.
+- **How mycscompanion differentiates:**
+  - **Interactive platform vs. static reading list:** mycscompanion IS the learning experience. teachyourselfcs.com points you to learning experiences elsewhere.
+  - **Project-based vs. textbook-based:** mycscompanion teaches through building. teachyourselfcs.com teaches through reading and watching.
+  - **AI-supported vs. no support:** mycscompanion provides help when stuck. teachyourselfcs.com offers nothing.
+  - **Manageable scope vs. overwhelming:** mycscompanion structures learning into a progressive mega-project with clear milestones. teachyourselfcs.com presents a mountain of 9 subjects.
+  - **Practical CS vs. academic CS:** mycscompanion connects every concept to a working system you are building. teachyourselfcs.com connects concepts to academic exercises.
+  - **mycscompanion can complement teachyourselfcs.com** -- students who discover the reading list but are intimidated by it could find mycscompanion to be the interactive, guided execution of those same concepts.
 
 _Source: [https://teachyourselfcs.com/](https://teachyourselfcs.com/)_ [High Confidence]
 _Source: [https://bradfieldcs.com/](https://bradfieldcs.com/)_ [High Confidence]
@@ -768,16 +768,16 @@ _Source: [https://news.ycombinator.com/item?id=22286340](https://news.ycombinato
   - Over 1.5 million learners by 2024
 - **Key weaknesses:**
   - **Web development focused, not CS foundations** -- does not cover operating systems, computer architecture, compilers, networking theory, or algorithm analysis in depth.
-  - **Limited CS theory** -- teaches practical programming skills, not the theoretical foundations that tycs targets.
+  - **Limited CS theory** -- teaches practical programming skills, not the theoretical foundations that mycscompanion targets.
   - **Not for experienced developers** -- curriculum starts from beginner level and focuses on getting a first web dev job.
   - **No AI tutor** -- relies on community support (Discord) which can be inconsistent.
   - **No systems-level content** -- does not teach how to build a database, interpreter, or OS component.
-- **How tycs differentiates:**
-  - **CS fundamentals vs. web development:** Entirely different content domain. tycs teaches the "under the hood" knowledge that The Odin Project does not cover.
-  - **Target audience:** tycs targets working engineers wanting depth. The Odin Project targets beginners wanting breadth.
-  - **Mega-project approach at systems level vs. multiple web projects:** tycs builds one deep system. TOP builds many web applications.
-  - **AI tutor vs. community-only:** tycs provides scalable, instant support. TOP depends on volunteer community members.
-  - **Complementary positioning:** A developer who completed The Odin Project and got a web dev job is precisely the tycs target audience 2-3 years later, when they want deeper CS knowledge.
+- **How mycscompanion differentiates:**
+  - **CS fundamentals vs. web development:** Entirely different content domain. mycscompanion teaches the "under the hood" knowledge that The Odin Project does not cover.
+  - **Target audience:** mycscompanion targets working engineers wanting depth. The Odin Project targets beginners wanting breadth.
+  - **Mega-project approach at systems level vs. multiple web projects:** mycscompanion builds one deep system. TOP builds many web applications.
+  - **AI tutor vs. community-only:** mycscompanion provides scalable, instant support. TOP depends on volunteer community members.
+  - **Complementary positioning:** A developer who completed The Odin Project and got a web dev job is precisely the mycscompanion target audience 2-3 years later, when they want deeper CS knowledge.
 
 _Source: [https://www.theodinproject.com/](https://www.theodinproject.com/)_ [High Confidence]
 _Source: [https://www.theodinproject.com/about](https://www.theodinproject.com/about)_ [High Confidence]
@@ -805,11 +805,11 @@ _Source: [https://github.com/TheOdinProject](https://github.com/TheOdinProject)_
   - **Mentor availability is inconsistent** -- some language tracks have active mentors, others have long wait times.
   - **No AI assistance** -- relies on human mentors who may take days to respond.
   - **Limited challenge depth** -- exercises are typically algorithmic puzzles, not system-building challenges.
-- **How tycs differentiates:**
-  - **System-building vs. exercise-solving:** tycs builds real systems. Exercism solves isolated exercises.
-  - **CS curriculum vs. language practice:** tycs teaches computer science through projects. Exercism teaches language proficiency through exercises.
-  - **AI tutor vs. human mentors:** tycs provides instant, context-aware AI support. Exercism depends on volunteer mentors with variable response times.
-  - **Depth vs. breadth:** tycs goes deep on one system. Exercism goes wide across many small problems.
+- **How mycscompanion differentiates:**
+  - **System-building vs. exercise-solving:** mycscompanion builds real systems. Exercism solves isolated exercises.
+  - **CS curriculum vs. language practice:** mycscompanion teaches computer science through projects. Exercism teaches language proficiency through exercises.
+  - **AI tutor vs. human mentors:** mycscompanion provides instant, context-aware AI support. Exercism depends on volunteer mentors with variable response times.
+  - **Depth vs. breadth:** mycscompanion goes deep on one system. Exercism goes wide across many small problems.
 
 _Source: [https://exercism.org/](https://exercism.org/)_ [High Confidence]
 _Source: [https://exercism.org/about](https://exercism.org/about)_ [High Confidence]
@@ -837,10 +837,10 @@ _Source: [https://github.com/exercism](https://github.com/exercism)_ [High Confi
   - **"Hand-holding" problem** -- users report feeling capable during exercises but unable to build independently afterward.
   - **Limited real-world applicability** -- exercises feel disconnected from actual engineering work.
   - **High churn** -- the subscription model and shallow content lead to short engagement periods.
-- **How tycs differentiates:**
-  - **Deep CS vs. surface coding:** tycs teaches CS internals through building systems. Codecademy teaches coding syntax through guided exercises.
-  - **Independence vs. hand-holding:** tycs develops engineering judgment and independent problem-solving. Codecademy guides every step.
-  - **Working engineers vs. beginners:** tycs targets professionals wanting depth. Codecademy targets beginners wanting breadth.
+- **How mycscompanion differentiates:**
+  - **Deep CS vs. surface coding:** mycscompanion teaches CS internals through building systems. Codecademy teaches coding syntax through guided exercises.
+  - **Independence vs. hand-holding:** mycscompanion develops engineering judgment and independent problem-solving. Codecademy guides every step.
+  - **Working engineers vs. beginners:** mycscompanion targets professionals wanting depth. Codecademy targets beginners wanting breadth.
   - **Mega-project vs. micro-exercises:** Fundamentally different learning modalities.
 
 _Source: [https://www.codecademy.com/](https://www.codecademy.com/)_ [High Confidence]
@@ -870,12 +870,12 @@ _Source: [https://www.g2.com/products/codecademy/reviews](https://www.g2.com/pro
   - **No AI tutor or personalized guidance** -- relies on forums and community.
   - **Certification-driven approach** can encourage completion over understanding.
   - **Limited systems-level content** -- no "build a database" or "build a compiler" tracks.
-- **How tycs differentiates:**
+- **How mycscompanion differentiates:**
   - **CS fundamentals vs. web development:** Different content domains entirely.
-  - **Depth vs. certification breadth:** tycs goes deep on systems. freeCodeCamp covers web development broadly.
-  - **AI-guided vs. self-directed:** tycs provides AI support. freeCodeCamp relies on forums.
+  - **Depth vs. certification breadth:** mycscompanion goes deep on systems. freeCodeCamp covers web development broadly.
+  - **AI-guided vs. self-directed:** mycscompanion provides AI support. freeCodeCamp relies on forums.
   - **Working engineer target vs. beginner target:** Different audience segments.
-  - **Complementary, not competitive:** Like The Odin Project, freeCodeCamp alumni are future tycs users.
+  - **Complementary, not competitive:** Like The Odin Project, freeCodeCamp alumni are future mycscompanion users.
 
 _Source: [https://www.freecodecamp.org/](https://www.freecodecamp.org/)_ [High Confidence]
 _Source: [https://www.freecodecamp.org/news/](https://www.freecodecamp.org/news/)_ [High Confidence]
@@ -902,12 +902,12 @@ _Source: [https://www.youtube.com/@freecodecamp](https://www.youtube.com/@freeco
   - **Academic pacing** -- designed for a semester course, not for working engineers studying part-time.
   - **No AI assistance** -- entirely self-directed.
   - **Hardware focus** -- while fascinating, building logic gates is less directly applicable to most software engineering careers than building a database or compiler.
-- **How tycs differentiates:**
-  - **Software systems vs. hardware-up:** tycs starts from software systems that working engineers encounter (databases, interpreters). Nand2tetris starts from logic gates.
+- **How mycscompanion differentiates:**
+  - **Software systems vs. hardware-up:** mycscompanion starts from software systems that working engineers encounter (databases, interpreters). Nand2tetris starts from logic gates.
   - **Practical career relevance:** Building a database is directly applicable to software engineering. Building a CPU from NAND gates, while intellectually valuable, is less directly applicable.
-  - **AI-supported vs. unsupported:** tycs provides guidance. Nand2tetris does not.
-  - **Modern tooling vs. dated tools:** tycs offers an integrated modern development experience.
-  - **Shared philosophy:** Both share the "build the whole thing" philosophy. tycs can reference nand2tetris as a spiritual predecessor while targeting a different (more practical) domain.
+  - **AI-supported vs. unsupported:** mycscompanion provides guidance. Nand2tetris does not.
+  - **Modern tooling vs. dated tools:** mycscompanion offers an integrated modern development experience.
+  - **Shared philosophy:** Both share the "build the whole thing" philosophy. mycscompanion can reference nand2tetris as a spiritual predecessor while targeting a different (more practical) domain.
 
 _Source: [https://www.nand2tetris.org/](https://www.nand2tetris.org/)_ [High Confidence]
 _Source: [https://www.coursera.org/learn/build-a-computer](https://www.coursera.org/learn/build-a-computer)_ [High Confidence]
@@ -935,11 +935,11 @@ _Source: [https://mitpress.mit.edu/9780262640688/the-elements-of-computing-syste
   - **Variable course quality** -- community-contributed courses vary significantly.
   - **No cohesive curriculum** -- individual courses without a connecting narrative.
   - **Shallow systems coverage** -- system design courses teach interview patterns, not actual system implementation.
-- **How tycs differentiates:**
-  - **Building vs. reading:** tycs builds real systems. Educative reads about them with small exercises.
-  - **Deep understanding vs. interview patterns:** tycs produces genuine understanding. Educative produces interview readiness.
-  - **Mega-project narrative vs. isolated courses:** tycs connects all learning through one project. Educative offers independent courses.
-  - **Trade-off exploration vs. pattern matching:** tycs teaches engineering judgment. Educative teaches recognizable patterns.
+- **How mycscompanion differentiates:**
+  - **Building vs. reading:** mycscompanion builds real systems. Educative reads about them with small exercises.
+  - **Deep understanding vs. interview patterns:** mycscompanion produces genuine understanding. Educative produces interview readiness.
+  - **Mega-project narrative vs. isolated courses:** mycscompanion connects all learning through one project. Educative offers independent courses.
+  - **Trade-off exploration vs. pattern matching:** mycscompanion teaches engineering judgment. Educative teaches recognizable patterns.
 
 _Source: [https://www.educative.io/](https://www.educative.io/)_ [High Confidence]
 _Source: [https://www.g2.com/products/educative/reviews](https://www.g2.com/products/educative/reviews)_ [Medium Confidence]
@@ -966,11 +966,11 @@ _Source: [https://www.g2.com/products/educative/reviews](https://www.g2.com/prod
   - **Anxiety-inducing** -- competitive atmosphere and difficulty ratings create stress.
   - **Shallow learning** -- solutions that pass tests may not reflect deep understanding.
   - **No connection to real engineering** -- the problems rarely resemble actual engineering work.
-- **How tycs differentiates:**
-  - **Understanding vs. pattern matching:** tycs builds deep, transferable understanding through system building. LeetCode builds interview-specific pattern recognition.
-  - **Engineering judgment vs. algorithmic puzzles:** tycs teaches trade-offs and design decisions. LeetCode teaches optimal solutions to constrained problems.
-  - **Portfolio artifact vs. nothing:** tycs produces a deployable, demonstrable system. LeetCode produces a solved problem count.
-  - **Complementary potential:** tycs-trained developers would perform exceptionally in system design interviews, while LeetCode-trained developers might still struggle with systems-level questions.
+- **How mycscompanion differentiates:**
+  - **Understanding vs. pattern matching:** mycscompanion builds deep, transferable understanding through system building. LeetCode builds interview-specific pattern recognition.
+  - **Engineering judgment vs. algorithmic puzzles:** mycscompanion teaches trade-offs and design decisions. LeetCode teaches optimal solutions to constrained problems.
+  - **Portfolio artifact vs. nothing:** mycscompanion produces a deployable, demonstrable system. LeetCode produces a solved problem count.
+  - **Complementary potential:** mycscompanion-trained developers would perform exceptionally in system design interviews, while LeetCode-trained developers might still struggle with systems-level questions.
 
 _Source: [https://leetcode.com/](https://leetcode.com/)_ [High Confidence]
 _Source: [https://www.reddit.com/r/cscareerquestions/](https://www.reddit.com/r/cscareerquestions/) (extensive LeetCode discussions)_ [High Confidence]
@@ -997,12 +997,12 @@ _Source: [https://www.reddit.com/r/cscareerquestions/](https://www.reddit.com/r/
   - **Isolation** -- learning alone with minimal peer interaction in most courses.
   - **Dated content** -- many popular CS courses have video content from 2012-2018 that has not been updated.
   - **No AI support** -- reliant on discussion forums that are often abandoned.
-- **How tycs differentiates:**
-  - **Building vs. watching:** tycs learns through implementation. MOOCs learn through lectures.
-  - **Completion rates:** tycs's project-based approach with AI support should dramatically outperform MOOC completion rates.
-  - **Practical vs. academic:** tycs connects to professional engineering practice. MOOCs connect to academic assessment.
-  - **AI tutor vs. no support:** tycs provides help at the moment of frustration, directly addressing the #1 MOOC dropout cause.
-  - **Modern vs. dated:** tycs provides a modern, interactive experience. Many MOOC CS courses feel archival.
+- **How mycscompanion differentiates:**
+  - **Building vs. watching:** mycscompanion learns through implementation. MOOCs learn through lectures.
+  - **Completion rates:** mycscompanion's project-based approach with AI support should dramatically outperform MOOC completion rates.
+  - **Practical vs. academic:** mycscompanion connects to professional engineering practice. MOOCs connect to academic assessment.
+  - **AI tutor vs. no support:** mycscompanion provides help at the moment of frustration, directly addressing the #1 MOOC dropout cause.
+  - **Modern vs. dated:** mycscompanion provides a modern, interactive experience. Many MOOC CS courses feel archival.
 
 _Source: [https://www.coursera.org/](https://www.coursera.org/)_ [High Confidence]
 _Source: [https://www.edx.org/](https://www.edx.org/)_ [High Confidence]
@@ -1030,11 +1030,11 @@ _Source: [https://www.insidehighered.com/news/2019/01/16/study-offers-data-show-
   - **Limited depth for professional development** -- covers fundamentals well but does not go into systems internals.
   - **No coding environment** -- teaches concepts abstractly, not through implementation.
   - **Not career-relevant** -- learning does not produce artifacts useful for professional work.
-- **How tycs differentiates:**
-  - **Implementation vs. conceptualization:** tycs builds real systems. Brilliant teaches concepts through interactive puzzles.
-  - **Professional context vs. general education:** tycs is designed for working engineers. Brilliant is designed for general learners.
-  - **Code-centric vs. visualization-centric:** tycs learning happens through writing code. Brilliant learning happens through interactive diagrams.
-  - **Career output vs. intellectual enrichment:** tycs produces portfolio artifacts and professional skills. Brilliant produces conceptual understanding.
+- **How mycscompanion differentiates:**
+  - **Implementation vs. conceptualization:** mycscompanion builds real systems. Brilliant teaches concepts through interactive puzzles.
+  - **Professional context vs. general education:** mycscompanion is designed for working engineers. Brilliant is designed for general learners.
+  - **Code-centric vs. visualization-centric:** mycscompanion learning happens through writing code. Brilliant learning happens through interactive diagrams.
+  - **Career output vs. intellectual enrichment:** mycscompanion produces portfolio artifacts and professional skills. Brilliant produces conceptual understanding.
 
 _Source: [https://brilliant.org/](https://brilliant.org/)_ [High Confidence]
 _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High Confidence]
@@ -1044,20 +1044,20 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
 #### 13. Additional Notable Competitors
 
 **Crafting Interpreters (craftinginterpreters.com)**
-- Free online book by Robert Nystrom (Google) that guides readers through building two complete interpreters. Excellent quality, project-based, but entirely self-directed with no platform, feedback, or AI assistance. Covers only interpreters/compilers, not broader CS. tycs differentiates by providing a platform experience, AI guidance, and broader CS coverage through the mega-project approach.
+- Free online book by Robert Nystrom (Google) that guides readers through building two complete interpreters. Excellent quality, project-based, but entirely self-directed with no platform, feedback, or AI assistance. Covers only interpreters/compilers, not broader CS. mycscompanion differentiates by providing a platform experience, AI guidance, and broader CS coverage through the mega-project approach.
 - _Source: [https://craftinginterpreters.com/](https://craftinginterpreters.com/)_ [High Confidence]
 
 **OSSU (Open Source Society University)**
-- A community-curated, free curriculum aggregating open courses from multiple universities into a complete CS degree equivalent. Comprehensive but overwhelming (estimated 2+ years full-time). No platform, no support, no interactivity. Just a reading list on GitHub (160,000+ stars). tycs differentiates by providing an actual platform with guided implementation, AI support, and project-based learning rather than a list of external courses.
+- A community-curated, free curriculum aggregating open courses from multiple universities into a complete CS degree equivalent. Comprehensive but overwhelming (estimated 2+ years full-time). No platform, no support, no interactivity. Just a reading list on GitHub (160,000+ stars). mycscompanion differentiates by providing an actual platform with guided implementation, AI support, and project-based learning rather than a list of external courses.
 - _Source: [https://github.com/ossu/computer-science](https://github.com/ossu/computer-science)_ [High Confidence]
 
 **Pluralsight / O'Reilly Learning**
-- Enterprise-focused professional development platforms with extensive video/book libraries. Priced for corporate budgets ($29-45/month individual, significant enterprise pricing). Broad technology coverage but not specifically CS-foundations focused. Video-based, not project-based. tycs differentiates through its project-based approach and CS-foundations focus.
+- Enterprise-focused professional development platforms with extensive video/book libraries. Priced for corporate budgets ($29-45/month individual, significant enterprise pricing). Broad technology coverage but not specifically CS-foundations focused. Video-based, not project-based. mycscompanion differentiates through its project-based approach and CS-foundations focus.
 - _Source: [https://www.pluralsight.com/](https://www.pluralsight.com/)_ [High Confidence]
 - _Source: [https://www.oreilly.com/](https://www.oreilly.com/)_ [High Confidence]
 
 **Frontend Masters**
-- High-quality video course platform with some CS fundamentals content (e.g., "The Last Algorithms Course You'll Need" by ThePrimeagen, "Complete Intro to Computer Science" by Brian Holt). Excellent production quality and instructor reputation. Priced at $39/month or $390/year. Video-based, not project-based. Limited CS depth. tycs differentiates through building real systems rather than watching lectures about concepts.
+- High-quality video course platform with some CS fundamentals content (e.g., "The Last Algorithms Course You'll Need" by ThePrimeagen, "Complete Intro to Computer Science" by Brian Holt). Excellent production quality and instructor reputation. Priced at $39/month or $390/year. Video-based, not project-based. Limited CS depth. mycscompanion differentiates through building real systems rather than watching lectures about concepts.
 - _Source: [https://frontendmasters.com/](https://frontendmasters.com/)_ [High Confidence]
 
 ---
@@ -1071,12 +1071,12 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
 - _Source: [https://www.khanacademy.org/khan-labs](https://www.khanacademy.org/khan-labs)_ [High Confidence]
 
 **AI-Augmented Coding Platforms (GitHub Copilot, Cursor, etc.)**
-- AI coding assistants like GitHub Copilot ($10-19/month), Cursor (free-$20/month), and others provide real-time code assistance but are NOT educational platforms. They help you write code faster, not understand CS concepts. However, they represent a competitive threat because developers may use AI assistants as ad-hoc tutors (asking "explain this algorithm" or "why does this B-tree implementation work?"). tycs differentiates by providing structured, progressive learning through AI, not just on-demand answers.
+- AI coding assistants like GitHub Copilot ($10-19/month), Cursor (free-$20/month), and others provide real-time code assistance but are NOT educational platforms. They help you write code faster, not understand CS concepts. However, they represent a competitive threat because developers may use AI assistants as ad-hoc tutors (asking "explain this algorithm" or "why does this B-tree implementation work?"). mycscompanion differentiates by providing structured, progressive learning through AI, not just on-demand answers.
 - _Source: [https://github.com/features/copilot](https://github.com/features/copilot)_ [High Confidence]
 - _Source: [https://cursor.com/](https://cursor.com/)_ [High Confidence]
 
 **ChatGPT / Claude as Self-Study Companions**
-- Many developers already use general-purpose AI (ChatGPT, Claude) as study partners for CS topics. These tools can explain concepts, review code, and answer questions. The threat is real: "Why pay for a CS platform when I can ask Claude to teach me?" However, general AI lacks: structured curriculum, progressive project scaffolding, benchmark testing, peer comparison to real systems, and accountability/progress tracking. tycs differentiates by wrapping AI guidance into a structured learning experience that general-purpose AI cannot replicate.
+- Many developers already use general-purpose AI (ChatGPT, Claude) as study partners for CS topics. These tools can explain concepts, review code, and answer questions. The threat is real: "Why pay for a CS platform when I can ask Claude to teach me?" However, general AI lacks: structured curriculum, progressive project scaffolding, benchmark testing, peer comparison to real systems, and accountability/progress tracking. mycscompanion differentiates by wrapping AI guidance into a structured learning experience that general-purpose AI cannot replicate.
 - _Source: [https://www.reddit.com/r/learnprogramming/](https://www.reddit.com/r/learnprogramming/) (discussions on using ChatGPT for CS learning)_ [High Confidence]
 
 ---
@@ -1088,7 +1088,7 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
 ```
                         HIGH THEORY DEPTH
                               |
-         OSSU                 |          tycs (target position)
+         OSSU                 |          mycscompanion (target position)
          teachyourselfcs.com  |         /
          MIT OCW / Coursera   |        /
          Brilliant.org        |       /
@@ -1109,7 +1109,7 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
                         LOW THEORY DEPTH
 ```
 
-**Key insight:** tycs occupies the upper-right quadrant -- high theory depth combined with high practical application. This quadrant is currently unoccupied. CodeCrafters is the closest but lacks theory depth (no explanations, no curriculum). The theoretical platforms (teachyourselfcs.com, MIT OCW) lack practical application. tycs fills this gap.
+**Key insight:** mycscompanion occupies the upper-right quadrant -- high theory depth combined with high practical application. This quadrant is currently unoccupied. CodeCrafters is the closest but lacks theory depth (no explanations, no curriculum). The theoretical platforms (teachyourselfcs.com, MIT OCW) lack practical application. mycscompanion fills this gap.
 
 #### Positioning Analysis: Guided Structure vs. Self-Directed
 
@@ -1117,7 +1117,7 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
                        HIGHLY GUIDED
                               |
          Codecademy           |     Boot.dev
-         Brilliant.org        |     tycs (target position)
+         Brilliant.org        |     mycscompanion (target position)
                               |
     -------- INDIVIDUAL ------+------------ COMMUNITY-DRIVEN -----
                               |
@@ -1130,7 +1130,7 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
                        SELF-DIRECTED
 ```
 
-**Key insight:** tycs aims for "guided but not hand-holding" -- structured progression with AI support, positioned between the fully-guided (Codecademy) and fully-self-directed (teachyourselfcs.com) extremes. The AI tutor provides guidance without prescribing every step.
+**Key insight:** mycscompanion aims for "guided but not hand-holding" -- structured progression with AI support, positioned between the fully-guided (Codecademy) and fully-self-directed (teachyourselfcs.com) extremes. The AI tutor provides guidance without prescribing every step.
 
 #### Positioning Analysis: Free vs. Premium
 
@@ -1139,14 +1139,14 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
   |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
   fCC   TOP   Exercism   Brilliant   Boot.dev   Educative   CodeCrafters
   OSSU  n2t   (freemium) ($25/mo)    ($29/mo)   ($47/mo)    ($40/mo)
-  tycs.com              Codecademy   LeetCode    Pluralsight
+  mycscompanion.com              Codecademy   LeetCode    Pluralsight
                         ($35/mo)     Premium     ($29/mo)
                                      ($35/mo)
 
-  tycs target: $20-35/month or $200-300/year
+  mycscompanion target: $20-35/month or $200-300/year
 ```
 
-**Key insight:** tycs should position in the $20-35/month range -- below CodeCrafters and Educative but above free alternatives. This pricing acknowledges that the target audience (working engineers with income) will pay for genuine value, while undercutting the closest competitor (CodeCrafters). A free tier with limited milestones would capture the "free first, pay later" funnel.
+**Key insight:** mycscompanion should position in the $20-35/month range -- below CodeCrafters and Educative but above free alternatives. This pricing acknowledges that the target audience (working engineers with income) will pay for genuine value, while undercutting the closest competitor (CodeCrafters). A free tier with limited milestones would capture the "free first, pay later" funnel.
 
 ---
 
@@ -1154,9 +1154,9 @@ _Source: [https://brilliant.org/courses/](https://brilliant.org/courses/)_ [High
 
 #### Threat 1: CodeCrafters Expanding into Education (HIGH THREAT)
 
-CodeCrafters is the most direct competitor and is well-funded (Y Combinator). If they add explanations, AI tutoring, and connected curricula, they would directly compete with tycs's value proposition. Their existing brand, content, and community would give them a significant head start.
+CodeCrafters is the most direct competitor and is well-funded (Y Combinator). If they add explanations, AI tutoring, and connected curricula, they would directly compete with mycscompanion's value proposition. Their existing brand, content, and community would give them a significant head start.
 
-**Mitigation:** tycs must differentiate through the mega-project spine (one deep system vs. many surface-level systems), the Socratic AI tutor, and the trade-off explorer. These are architectural decisions that would be difficult for CodeCrafters to retrofit.
+**Mitigation:** mycscompanion must differentiate through the mega-project spine (one deep system vs. many surface-level systems), the Socratic AI tutor, and the trade-off explorer. These are architectural decisions that would be difficult for CodeCrafters to retrofit.
 
 _Source: [https://www.ycombinator.com/companies/codecrafters](https://www.ycombinator.com/companies/codecrafters)_ [High Confidence]
 
@@ -1164,19 +1164,19 @@ _Source: [https://www.ycombinator.com/companies/codecrafters](https://www.ycombi
 
 Developers increasingly use ChatGPT, Claude, and Copilot as learning tools. The "just ask AI" approach is free, flexible, and available immediately. As AI improves, the quality of ad-hoc CS explanations will continue to increase.
 
-**Mitigation:** tycs wraps AI into a structured experience (curriculum, progress tracking, benchmarks, peer comparison) that general AI cannot replicate. The value is in the structure, not just the AI. General AI also cannot run your code against benchmarks, compare it to PostgreSQL, or track your long-term learning progress.
+**Mitigation:** mycscompanion wraps AI into a structured experience (curriculum, progress tracking, benchmarks, peer comparison) that general AI cannot replicate. The value is in the structure, not just the AI. General AI also cannot run your code against benchmarks, compare it to PostgreSQL, or track your long-term learning progress.
 
 #### Threat 3: Boot.dev Adding Depth and Projects (MEDIUM THREAT)
 
-Boot.dev has strong community presence and a growing content library. If they expand into systems-building projects (e.g., "build a database in Go"), they could encroach on tycs's territory. Their gamification and community advantages would be hard to match.
+Boot.dev has strong community presence and a growing content library. If they expand into systems-building projects (e.g., "build a database in Go"), they could encroach on mycscompanion's territory. Their gamification and community advantages would be hard to match.
 
-**Mitigation:** tycs's mega-project spine is a fundamentally different approach than adding one-off projects to an exercise-based platform. The connected narrative, progressive depth, and trade-off exploration are structural differentiators.
+**Mitigation:** mycscompanion's mega-project spine is a fundamentally different approach than adding one-off projects to an exercise-based platform. The connected narrative, progressive depth, and trade-off exploration are structural differentiators.
 
 #### Threat 4: University Programs Going Online and Interactive (LOW-MEDIUM THREAT)
 
 If universities create truly interactive, project-based versions of their CS courses (beyond current MOOCs), they would combine institutional credibility with practical learning. Georgia Tech's OMSCS ($7,000 total) shows this direction.
 
-**Mitigation:** University programs are slow to innovate, cannot iterate on UX quickly, and carry academic overhead (grading, semesters, prerequisites). tycs's advantage is agility, modern UX, and focus on working engineers' needs.
+**Mitigation:** University programs are slow to innovate, cannot iterate on UX quickly, and carry academic overhead (grading, semesters, prerequisites). mycscompanion's advantage is agility, modern UX, and focus on working engineers' needs.
 
 _Source: [https://omscs.gatech.edu/](https://omscs.gatech.edu/)_ [High Confidence]
 
@@ -1188,15 +1188,15 @@ The mega-project curriculum concept could be replicated as an open-source projec
 
 ---
 
-### Market Differentiation -- tycs Unique Position
+### Market Differentiation -- mycscompanion Unique Position
 
-#### What Makes tycs Genuinely Different from Everything Else
+#### What Makes mycscompanion Genuinely Different from Everything Else
 
 **1. The Mega-Project Spine: Learning Through Building One Deep System**
 
 No existing platform offers a curriculum where ALL CS concepts are learned through progressively building a single, ambitious real-world system. CodeCrafters offers isolated "build X" challenges. Boot.dev offers sequential exercises. The Odin Project offers multiple web projects. Nand2tetris offers one vertical project but in the hardware-to-software domain.
 
-tycs's approach -- "Build Your Own Database" as a journey that teaches data structures, algorithms, operating systems concepts, networking, compilers (query parsing), and distributed systems -- is genuinely novel. The mega-project provides:
+mycscompanion's approach -- "Build Your Own Database" as a journey that teaches data structures, algorithms, operating systems concepts, networking, compilers (query parsing), and distributed systems -- is genuinely novel. The mega-project provides:
 - **Narrative coherence:** Every concept connects to the same system you are building
 - **Progressive depth:** Your system gets more sophisticated as your understanding deepens
 - **Natural motivation:** "My database can now handle 10,000 inserts/sec" is inherently more motivating than "I completed chapter 7"
@@ -1204,7 +1204,7 @@ tycs's approach -- "Build Your Own Database" as a journey that teaches data stru
 
 **2. Context-Aware Socratic AI Tutor**
 
-While several platforms are adding AI features (Educative, Khan Academy, Codecademy), none offer a deeply context-aware Socratic tutor specifically designed for CS systems learning. tycs's AI knows:
+While several platforms are adding AI features (Educative, Khan Academy, Codecademy), none offer a deeply context-aware Socratic tutor specifically designed for CS systems learning. mycscompanion's AI knows:
 - Your current project state and code
 - Your learning history and demonstrated understanding
 - The specific CS concept you are encountering
@@ -1231,7 +1231,7 @@ Running a learner's implementation against standardized benchmarks and tracking 
 
 **5. Zero-Decision Start and Session Scaffolding**
 
-While Boot.dev has a linear path and The Odin Project has an opinionated curriculum, neither offers the "open app, press one button, start building" experience that tycs targets. The combination of:
+While Boot.dev has a linear path and The Odin Project has an opinionated curriculum, neither offers the "open app, press one button, start building" experience that mycscompanion targets. The combination of:
 - No decision required to start a session
 - Pre-structured session format (recall, build, compare, preview)
 - AI-managed pacing and difficulty
@@ -1255,21 +1255,21 @@ No current platform specifically serves this "post-beginner, pre-expert" CS lear
 
 #### Opportunity 2: "Portfolio Piece" as Acquisition Driver
 
-A developer who builds a working database through tycs has an extraordinary portfolio piece and conversation starter. Unlike LeetCode stats or course certificates, "I built a database from scratch with B-tree indexing, a query parser, and transaction support" is:
+A developer who builds a working database through mycscompanion has an extraordinary portfolio piece and conversation starter. Unlike LeetCode stats or course certificates, "I built a database from scratch with B-tree indexing, a query parser, and transaction support" is:
 - Immediately impressive in job interviews
 - Demonstrable (you can run it, benchmark it, show the code)
 - Naturally shareable on social media and Hacker News
 - A genuine differentiator in a sea of to-do app portfolios
 
-This creates a organic acquisition loop: developers share their tycs projects, which attracts other developers to the platform. [High Confidence]
+This creates a organic acquisition loop: developers share their mycscompanion projects, which attracts other developers to the platform. [High Confidence]
 
 #### Opportunity 3: Employer-Funded Learning Budgets
 
-Working engineers at mid-to-large companies often have $1,000-2,500/year in professional development budgets. tycs's pricing ($200-300/year target) fits easily within these budgets, and the systems-engineering focus makes it easy for developers to justify to their managers ("I'm learning database internals which directly applies to our data layer work"). Enterprise/team plans could significantly increase revenue per user. [Medium Confidence]
+Working engineers at mid-to-large companies often have $1,000-2,500/year in professional development budgets. mycscompanion's pricing ($200-300/year target) fits easily within these budgets, and the systems-engineering focus makes it easy for developers to justify to their managers ("I'm learning database internals which directly applies to our data layer work"). Enterprise/team plans could significantly increase revenue per user. [Medium Confidence]
 
 #### Opportunity 4: CS Education Market Growth
 
-The global online education market continues to grow at approximately 10-15% CAGR, with programming/CS education growing faster due to AI-driven demand for deeper technical skills. The AI boom specifically is driving increased interest in systems programming, performance optimization, and understanding "what happens under the hood" -- exactly what tycs teaches. [Medium Confidence]
+The global online education market continues to grow at approximately 10-15% CAGR, with programming/CS education growing faster due to AI-driven demand for deeper technical skills. The AI boom specifically is driving increased interest in systems programming, performance optimization, and understanding "what happens under the hood" -- exactly what mycscompanion teaches. [Medium Confidence]
 
 _Source: [https://www.statista.com/topics/3115/e-learning-and-digital-education/](https://www.statista.com/topics/3115/e-learning-and-digital-education/)_ [Medium Confidence]
 
@@ -1285,7 +1285,7 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 
 ---
 
-### SWOT Analysis for tycs
+### SWOT Analysis for mycscompanion
 
 #### Strengths
 
@@ -1294,7 +1294,7 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 | **Unique mega-project spine approach** | No direct competitor offers this. Genuinely novel pedagogical approach that addresses the #1 pain point (theory/practice disconnect). |
 | **AI-native design** | Built from the ground up with AI tutoring, not bolted on. Can leverage the latest LLM capabilities (Claude, GPT-4) for Socratic guidance. |
 | **Clear target audience** | Well-defined segment (self-taught/bootcamp-grad engineers, 25-34, 2-8 years experience) with validated pain points and willingness to pay. |
-| **Founder-market fit** | Ducdo is personally experiencing the problem tycs solves, providing authentic insight into the target audience's needs and frustrations. |
+| **Founder-market fit** | Ducdo is personally experiencing the problem mycscompanion solves, providing authentic insight into the target audience's needs and frustrations. |
 | **Trade-off explorer is genuinely unique** | No competitor teaches engineering judgment through systematic comparison to production systems. |
 | **Benchmark battles provide natural virality** | Quantitative results ("my database does X ops/sec") are inherently shareable and impressive. |
 | **Complementary to existing ecosystem** | Not directly competing with The Odin Project, freeCodeCamp, or LeetCode -- serving a different need for the same audience. |
@@ -1317,7 +1317,7 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 | **Underserved post-bootcamp segment** | Millions of developers who completed beginner programs and need CS depth. No existing platform specifically serves this need with project-based learning. |
 | **AI timing advantage** | LLM technology has only recently become capable enough for quality Socratic tutoring. First movers who build AI-native learning experiences will establish brand and data advantages. |
 | **Employer-funded learning** | B2B potential through team/enterprise plans funded by professional development budgets. |
-| **Portfolio-driven virality** | tycs projects are naturally shareable and impressive, creating organic acquisition loops. |
+| **Portfolio-driven virality** | mycscompanion projects are naturally shareable and impressive, creating organic acquisition loops. |
 | **Content expansion** | After validating the database track, can expand to interpreter, OS, and distributed systems tracks, each opening new audience segments. |
 | **Community-as-moat** | An engaged community of builders creates network effects that are difficult for competitors to replicate. |
 
@@ -1327,7 +1327,7 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 |--------|----------|------------|
 | **CodeCrafters adds education features** | High | Differentiate through mega-project depth, Socratic AI, and trade-off explorer -- structural advantages hard to retrofit. |
 | **General AI replaces structured learning** | Medium-High | AI is the ingredient, not the product. Structure, curriculum, benchmarks, and progress tracking are the product. |
-| **Boot.dev adds systems projects** | Medium | Boot.dev's gamification-first, exercise-based architecture would require fundamental redesign to match tycs's approach. |
+| **Boot.dev adds systems projects** | Medium | Boot.dev's gamification-first, exercise-based architecture would require fundamental redesign to match mycscompanion's approach. |
 | **Price sensitivity in down market** | Medium | Free tier captures funnel; pricing below CodeCrafters ($40/mo) and Educative ($47/mo) with demonstrably superior value. |
 | **Open-source replication** | Low-Medium | Platform features (AI tutor, benchmarks, trade-off explorer) create value that static curricula cannot match. |
 | **Content creation bottleneck** | Medium | Start narrow (one track), validate, then expand. Community contributions can eventually supplement official content. |
@@ -1359,14 +1359,14 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 |-----------|---------|-------------|-------|
 | **LeetCode** | Low -- same audience, different need | **Low** | Interview prep, not learning. Complementary. |
 | **Coursera/edX** | Low -- CS courses, different format | **Low** | Lecture-based, academic. Different experience. |
-| **The Odin Project** | Low -- project-based, different content | **Low** | Web dev focused. Feeder to tycs audience. |
-| **freeCodeCamp** | Low -- free education, different content | **Low** | Web dev focused. Feeder to tycs audience. |
+| **The Odin Project** | Low -- project-based, different content | **Low** | Web dev focused. Feeder to mycscompanion audience. |
+| **freeCodeCamp** | Low -- free education, different content | **Low** | Web dev focused. Feeder to mycscompanion audience. |
 
 #### Wildcard Threats
 
 | Threat | Probability | Impact | Notes |
 |--------|------------|--------|-------|
-| **ChatGPT/Claude as ad-hoc tutor** | Happening now | Medium | Free, flexible, but unstructured. tycs adds structure. |
+| **ChatGPT/Claude as ad-hoc tutor** | Happening now | Medium | Free, flexible, but unstructured. mycscompanion adds structure. |
 | **Big Tech entering CS education** | Low | High | Google, Microsoft, or Meta creating a "build real systems" platform. Unlikely given their focus, but devastating if it happens. |
 | **University partnerships with platforms** | Medium | Medium | Stanford/MIT partnering with Coursera to create truly interactive CS courses. Slow to execute. |
 
@@ -1383,7 +1383,7 @@ The availability of AI tutoring technology (LLMs) makes it possible for the firs
 | Market positioning maps | Medium-High | Analytical synthesis; axis placements are subjective but grounded in feature analysis |
 | Competitive threats | Medium-High | Threat assessments are forward-looking and inherently uncertain |
 | SWOT analysis | High | Grounded in competitive data from this research and customer insights from Step 2 |
-| Differentiation analysis | High | Based on direct comparison of documented platform features and tycs's proposed features |
+| Differentiation analysis | High | Based on direct comparison of documented platform features and mycscompanion's proposed features |
 
 **Research Gaps Identified:**
 - No live web verification was available during this research session. Pricing, feature sets, and user counts should be verified against current platform states.

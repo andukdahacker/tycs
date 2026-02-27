@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
 
 function Home(): React.ReactElement {
-  return <div><h1>tycs</h1></div>
+  return <div><h1>mycscompanion</h1></div>
 }
 
 function App(): React.ReactElement {

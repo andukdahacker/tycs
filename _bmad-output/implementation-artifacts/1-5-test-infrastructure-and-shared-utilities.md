@@ -13,12 +13,12 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 ## Acceptance Criteria
 
 1. **Given** the test command is run (`pnpm test`), **When** Vitest executes test files, **Then** it discovers co-located test files using the `{source}.test.ts` convention (ARCH-14).
-2. **And** a test database setup utility creates an isolated test database (`tycs_test`).
+2. **And** a test database setup utility creates an isolated test database (`mycscompanion_test`).
 3. **And** a per-test transaction rollback wrapper ensures tests do not leak state.
 4. **And** a Fastify inject helper enables HTTP-level integration tests without a running server.
 5. **And** a Redis mock utility is available for tests that interact with Redis.
 6. **And** a canary test validates the full test infrastructure (DB connection, transaction rollback, Fastify inject) works end-to-end.
-7. **And** test utilities are exported from `@tycs/config/test-utils`.
+7. **And** test utilities are exported from `@mycscompanion/config/test-utils`.
 8. **And** Playwright is installed and configured for E2E testing with a base config targeting Chromium (ARCH-14).
 9. **And** a Playwright test helper sets up authenticated browser context using Firebase Auth test tokens.
 10. **And** a sample E2E canary test validates that the Playwright infrastructure works (navigates to health endpoint).
@@ -27,8 +27,8 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 ## Tasks / Subtasks
 
 - [x] Task 1: Install test dependencies (AC: #1, #5, #7, #8)
-  - [x] 1.1 Backend test deps: `pnpm --filter backend add -D @tycs/config`
-    - Backend needs `@tycs/config` as workspace dependency to import `test-utils` and `vitest.config`
+  - [x] 1.1 Backend test deps: `pnpm --filter backend add -D @mycscompanion/config`
+    - Backend needs `@mycscompanion/config` as workspace dependency to import `test-utils` and `vitest.config`
     - vitest is already in root devDeps and accessible to all workspaces via hoisting
   - [x] 1.2 Webapp test deps: `pnpm --filter webapp add -D @testing-library/react @testing-library/dom @testing-library/jest-dom jsdom`
     - Required for component testing infrastructure (AC #7 — `createTestQueryClient`, `TestProviders`)
@@ -40,17 +40,17 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
     - Required for `createTestQueryClient()` and `TestProviders` (AC #7)
     - This is a runtime dependency — not devDep (webapp will use it in Story 3+)
   - [x] 1.5 Config package deps: `pnpm --filter config add -D @testing-library/react @testing-library/jest-dom @tanstack/react-query react react-dom`
-    - The `test-utils/` in `@tycs/config` needs these as devDeps to compile `TestProviders` and `createTestQueryClient`
+    - The `test-utils/` in `@mycscompanion/config` needs these as devDeps to compile `TestProviders` and `createTestQueryClient`
     - React is a peerDep-like requirement for `@testing-library/react`
 
 - [x] Task 2: Create Vitest config for `apps/backend` (AC: #1, #2)
   - [x] 2.1 Create `apps/backend/vitest.config.ts`:
-    - Import and merge `baseVitestConfig` from `@tycs/config/vitest.config` (same pattern as `packages/shared/vitest.config.ts`)
+    - Import and merge `baseVitestConfig` from `@mycscompanion/config/vitest.config` (same pattern as `packages/shared/vitest.config.ts`)
     - Set `test.env` to override environment variables for test workers:
       ```typescript
       test: {
         env: {
-          DATABASE_URL: 'postgresql://tycs:tycs@localhost:5433/tycs_test',
+          DATABASE_URL: 'postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion_test',
           REDIS_URL: 'redis://localhost:6379',
           NODE_ENV: 'test',
           LOG_LEVEL: 'silent',
@@ -59,8 +59,8 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
         setupFiles: ['./src/test/setup.ts'],
       }
       ```
-    - **CRITICAL**: `test.env` sets env vars BEFORE test modules are imported. This ensures `db.ts` and `redis.ts` don't throw when evaluated. The `DATABASE_URL` points to `tycs_test` (not the dev `tycs` database).
-    - **CRITICAL**: The `baseVitestConfig` resolves `@tycs/shared` and `@tycs/config` aliases via `resolve.alias`. Backend uses `moduleResolution: NodeNext` with `.js` extensions in source code — but Vitest resolves via Vite's bundler pipeline, which strips `.js` extensions automatically. No additional config needed.
+    - **CRITICAL**: `test.env` sets env vars BEFORE test modules are imported. This ensures `db.ts` and `redis.ts` don't throw when evaluated. The `DATABASE_URL` points to `mycscompanion_test` (not the dev `mycscompanion` database).
+    - **CRITICAL**: The `baseVitestConfig` resolves `@mycscompanion/shared` and `@mycscompanion/config` aliases via `resolve.alias`. Backend uses `moduleResolution: NodeNext` with `.js` extensions in source code — but Vitest resolves via Vite's bundler pipeline, which strips `.js` extensions automatically. No additional config needed.
     - Exclude `e2e/` from Vitest discovery (E2E uses Playwright runner, not Vitest)
   - [x] 2.2 Add test script to `apps/backend/package.json`:
     - `"test": "vitest run"`
@@ -70,19 +70,19 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 - [x] Task 3: Create test database global setup (AC: #2)
   - [x] 3.1 Create `apps/backend/src/test/global-setup.ts`:
     - This runs ONCE before all test files (in the main Vitest process, not workers)
-    - Connect to PostgreSQL using the **dev** `DATABASE_URL` (`postgresql://tycs:tycs@localhost:5433/tycs`) — NOT `tycs_test`
-    - Why dev URL? Because `tycs_test` might not exist yet. We connect to the default `tycs` database to issue `CREATE DATABASE` commands.
+    - Connect to PostgreSQL using the **dev** `DATABASE_URL` (`postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion`) — NOT `mycscompanion_test`
+    - Why dev URL? Because `mycscompanion_test` might not exist yet. We connect to the default `mycscompanion` database to issue `CREATE DATABASE` commands.
     - Steps:
-      1. Create a `pg.Pool` connection to `tycs` database
-      2. Check if `tycs_test` exists: `SELECT 1 FROM pg_database WHERE datname = 'tycs_test'`
-      3. If not exists: `CREATE DATABASE tycs_test`
+      1. Create a `pg.Pool` connection to `mycscompanion` database
+      2. Check if `mycscompanion_test` exists: `SELECT 1 FROM pg_database WHERE datname = 'mycscompanion_test'`
+      3. If not exists: `CREATE DATABASE mycscompanion_test`
       4. Close the pool
-      5. Run Kysely migrations against `tycs_test`:
-         - Create a Kysely instance with `DATABASE_URL` pointing to `tycs_test`
+      5. Run Kysely migrations against `mycscompanion_test`:
+         - Create a Kysely instance with `DATABASE_URL` pointing to `mycscompanion_test`
          - Use Kysely's `Migrator` with `FileMigrationProvider` pointing to `apps/backend/migrations/`
          - Call `migrator.migrateToLatest()`
          - Destroy the Kysely instance
-    - Return a teardown function that drops `tycs_test` — **NO, do NOT drop**. Dropping and recreating on every test run is slow. Keep the DB between runs; transaction rollback handles isolation.
+    - Return a teardown function that drops `mycscompanion_test` — **NO, do NOT drop**. Dropping and recreating on every test run is slow. Keep the DB between runs; transaction rollback handles isolation.
     - Import paths: Use absolute `path.resolve` for migration folder, NOT relative imports (globalSetup runs from the Vitest process root)
     - The `Migrator` + `FileMigrationProvider` approach avoids shelling out to `kysely-ctl` (which loads its own `kysely.config.ts` that reads the dev `.env` file — wrong DATABASE_URL)
   - [x] 3.2 Implementation pattern:
@@ -94,21 +94,21 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
     import { fileURLToPath } from 'node:url'
 
     const __dirname = path.dirname(fileURLToPath(import.meta.url))
-    const TEST_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs_test'
-    const DEV_DB_URL = 'postgresql://tycs:tycs@localhost:5433/tycs'
+    const TEST_DB_URL = 'postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion_test'
+    const DEV_DB_URL = 'postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion'
 
     export async function setup(): Promise<void> {
-      // 1. Ensure tycs_test database exists
+      // 1. Ensure mycscompanion_test database exists
       const adminPool = new pg.Pool({ connectionString: DEV_DB_URL })
       const result = await adminPool.query(
-        "SELECT 1 FROM pg_database WHERE datname = 'tycs_test'"
+        "SELECT 1 FROM pg_database WHERE datname = 'mycscompanion_test'"
       )
       if (result.rows.length === 0) {
-        await adminPool.query('CREATE DATABASE tycs_test')
+        await adminPool.query('CREATE DATABASE mycscompanion_test')
       }
       await adminPool.end()
 
-      // 2. Run migrations against tycs_test
+      // 2. Run migrations against mycscompanion_test
       const db = new Kysely<Record<string, never>>({
         dialect: new PostgresDialect({
           pool: new pg.Pool({ connectionString: TEST_DB_URL }),
@@ -127,7 +127,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
       if (error) throw error
     }
     ```
-  - [x] 3.3 **IMPORTANT**: The `Kysely<Record<string, never>>` generic is intentional — the `DB` type from `@tycs/shared` requires `kysely-codegen` to have been run, which generates `packages/shared/src/types/db.ts`. In CI, this file may not exist yet. Using `Record<string, never>` avoids the type dependency while still running migrations correctly (migrations don't need typed queries).
+  - [x] 3.3 **IMPORTANT**: The `Kysely<Record<string, never>>` generic is intentional — the `DB` type from `@mycscompanion/shared` requires `kysely-codegen` to have been run, which generates `packages/shared/src/types/db.ts`. In CI, this file may not exist yet. Using `Record<string, never>` avoids the type dependency while still running migrations correctly (migrations don't need typed queries).
 
 - [x] Task 4: Create per-test setup and transaction utilities (AC: #3)
   - [x] 4.1 Create `apps/backend/src/test/setup.ts`:
@@ -136,13 +136,13 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
     - Call `vi.restoreAllMocks()` in `afterEach` (project-context requirement)
     - Note: `restoreMocks: true` is already in `baseVitestConfig`, but the explicit `afterEach` is a safety net and matches project-context's explicit requirement
   - [x] 4.2 Create `apps/backend/src/test/test-db.ts` — per-test transaction rollback:
-    - Export `createTestDb()`: Creates a Kysely instance with `pool.max = 1` pointing to `tycs_test`
+    - Export `createTestDb()`: Creates a Kysely instance with `pool.max = 1` pointing to `mycscompanion_test`
       - `max: 1` is **CRITICAL** — ensures all queries go through the same connection, so transaction state (BEGIN/ROLLBACK) is shared across all queries in the test
     - Export `withTestTransaction(db, fn)`: Higher-order wrapper that runs `fn` inside a transaction and rolls back
     - Export `createTestTransaction(db)` / `rollbackTestTransaction(db)`: Imperative BEGIN/ROLLBACK for use in `beforeEach`/`afterEach`
     - Pattern:
       ```typescript
-      import type { DB } from '@tycs/shared'
+      import type { DB } from '@mycscompanion/shared'
       import { Kysely, PostgresDialect, sql } from 'kysely'
       import pg from 'pg'
 
@@ -193,7 +193,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
         return app
       }
       ```
-    - `buildApp()` imports all plugins and configures the Fastify instance. Since `test.env` already sets `DATABASE_URL` to `tycs_test`, any plugins that import `db.ts` (future stories) will connect to the test database.
+    - `buildApp()` imports all plugins and configures the Fastify instance. Since `test.env` already sets `DATABASE_URL` to `mycscompanion_test`, any plugins that import `db.ts` (future stories) will connect to the test database.
     - Call `await app.ready()` to finalize plugin registration before inject
     - Callers must call `app.close()` in `afterAll` or `afterEach` to clean up
     - **Logging**: `buildApp()` configures pino. In tests, `LOG_LEVEL=silent` (set in vitest env) suppresses log output. If `pino-pretty` is not available in test context, the transport may fail. Handle this by checking: the `NODE_ENV=test` won't match `!== 'production'`, so pino-pretty transport WILL load. If this causes issues, override in `buildApp` or set `NODE_ENV=production` in test env to disable pretty-printing.
@@ -261,7 +261,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
   - [x]7.1 Create `apps/backend/src/test/canary.test.ts`:
     - This test validates the complete test infrastructure works
     - Test groups:
-      1. **Database connectivity**: Connect to `tycs_test`, run a simple query (`SELECT 1`)
+      1. **Database connectivity**: Connect to `mycscompanion_test`, run a simple query (`SELECT 1`)
       2. **Transaction rollback**: Insert a row, rollback, verify row is gone
       3. **Fastify inject**: Create test app, inject `GET /health`, verify 200 response
       4. **Redis mock**: Create mock, verify get/set operations
@@ -269,11 +269,11 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
       ```typescript
       import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
       import type { Kysely } from 'kysely'
-      import type { DB } from '@tycs/shared'
+      import type { DB } from '@mycscompanion/shared'
       import type { FastifyInstance } from 'fastify'
       import { createTestDb, beginTransaction, rollbackTransaction } from './test-db.js'
       import { createTestApp } from './test-app.js'
-      import { createMockRedis } from '@tycs/config/test-utils'
+      import { createMockRedis } from '@mycscompanion/config/test-utils'
 
       describe('Test Infrastructure Canary', () => {
         describe('Database', () => {
@@ -287,7 +287,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
             await testDb.destroy()
           })
 
-          it('should connect to tycs_test database', async () => {
+          it('should connect to mycscompanion_test database', async () => {
             const result = await sql`SELECT 1 as value`.execute(testDb)
             expect(result.rows[0]).toEqual({ value: 1 })
           })
@@ -339,7 +339,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
       ```
     - **Users table schema** (from `001_initial_schema.ts`): `id` (text PK), `email` (text NOT NULL UNIQUE), `display_name` (text, nullable), `created_at` (timestamptz, DEFAULT now()), `updated_at` (timestamptz, DEFAULT now()). Only `id` and `email` are required — `display_name` is nullable and timestamps have defaults. Simplify the insert to: `await testDb.insertInto('users').values({ id: 'test-canary-user', email: 'canary@test.com' }).execute()`
 
-- [x] Task 8: Populate `@tycs/config/test-utils` (AC: #7)
+- [x] Task 8: Populate `@mycscompanion/config/test-utils` (AC: #7)
   - [x]8.1 Update `packages/config/test-utils/index.ts`:
     - Re-export everything from `./mock-redis` (created in Task 6)
     - Export `createTestQueryClient` function
@@ -399,18 +399,18 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
     - MSW v2 handlers (Fly Machines API) — deferred to **Story 3.2**
     - Anthropic SDK mock (scripted streaming chunks) — deferred to **Story 6.1**
     - EventSource mock (injectable constructor) — deferred to **Story 3.4**
-    - Each story that needs a mock MUST add it to `@tycs/config/test-utils` (canonical location), not create ad-hoc mocks.
+    - Each story that needs a mock MUST add it to `@mycscompanion/config/test-utils` (canonical location), not create ad-hoc mocks.
 
 - [x] Task 9: Create Vitest config for `apps/webapp` (AC: #1)
   - [x]9.1 Create `apps/webapp/vitest.config.ts`:
-    - Import and merge `baseVitestConfig` from `@tycs/config/vitest.config`
+    - Import and merge `baseVitestConfig` from `@mycscompanion/config/vitest.config`
     - Set `test.environment: 'jsdom'` for React component testing
     - Set `test.setupFiles` to load jest-dom matchers — **CRITICAL**: without this, `toBeInTheDocument()` and similar DOM matchers won't be available
     - Exclude `e2e/` from Vitest test discovery
     - Pattern:
       ```typescript
       import { mergeConfig } from 'vitest/config'
-      import { baseVitestConfig } from '@tycs/config/vitest.config'
+      import { baseVitestConfig } from '@mycscompanion/config/vitest.config'
 
       export default mergeConfig(baseVitestConfig, {
         test: {
@@ -470,7 +470,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 
       export const TEST_USER = {
         uid: 'test-user-canary',
-        email: 'canary@test.tycs.dev',
+        email: 'canary@test.mycscompanion.dev',
         displayName: 'E2E Canary User',
       } as const
 
@@ -517,7 +517,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
   - [x]13.4 `pnpm test` — all tests pass:
     - `packages/shared`: 3 existing test files pass (constants, to-camel-case)
     - `apps/backend`: id.test.ts passes + canary.test.ts passes (DB, transaction, inject, Redis mock)
-    - Verify `tycs_test` database was created automatically
+    - Verify `mycscompanion_test` database was created automatically
   - [x]13.5 `pnpm --filter backend test` — backend tests in isolation
   - [x]13.6 E2E: Start backend (`pnpm --filter backend dev`), then `pnpm --filter webapp test:e2e` — canary passes
   - [x]13.7 `pnpm build` — TypeScript compiles (verify no type errors from new test-utils)
@@ -550,12 +550,12 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 **Mock Boundary Rule (project-context):**
 - Only mock what you don't own
 - Mocks are for external services only (Firebase, Anthropic, Fly.io)
-- Import from `@tycs/config/test-utils/` — never create ad-hoc mocks
+- Import from `@mycscompanion/config/test-utils/` — never create ad-hoc mocks
 - New patterns go into the canonical set
 
 **Import Paths in Tests:**
 - Backend test files use `.js` extensions on relative imports (NodeNext): `import { createTestApp } from './test-app.js'`
-- Cross-package imports use bare specifiers: `import { createMockRedis } from '@tycs/config/test-utils'`
+- Cross-package imports use bare specifiers: `import { createMockRedis } from '@mycscompanion/config/test-utils'`
 - Vitest resolves `.js` extensions to `.ts` source files automatically via its Vite pipeline
 
 **Vitest (NOT Jest):**
@@ -578,7 +578,7 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 - Do NOT use `toMatchSnapshot()` — use explicit assertions
 - Do NOT use `@/` import aliases — use relative paths with `.js` extensions
 - Do NOT install `ioredis-mock` npm package — use the custom `createMockRedis()` from test-utils
-- Do NOT create ad-hoc mock factories outside `@tycs/config/test-utils`
+- Do NOT create ad-hoc mock factories outside `@mycscompanion/config/test-utils`
 - Do NOT add E2E tests to the Turbo `test` pipeline — they require running services
 - Do NOT drop/recreate the test database on every run — use transaction rollback for isolation
 - Do NOT use `console.log` in test files — use Vitest's built-in output or pino logger
@@ -614,9 +614,9 @@ So that I can write reliable unit, integration, and end-to-end tests for any fea
 **What was established in earlier stories (1.1-1.3):**
 - Monorepo: Turborepo + pnpm workspaces (7 packages)
 - Docker: PostgreSQL 16 on port 5433, Redis 7 on port 6379
-- DATABASE_URL: `postgresql://tycs:tycs@localhost:5433/tycs`
+- DATABASE_URL: `postgresql://mycscompanion:mycscompanion@localhost:5433/mycscompanion`
 - REDIS_URL: `redis://localhost:6379`
-- `toCamelCase()` utility in `@tycs/shared`
+- `toCamelCase()` utility in `@mycscompanion/shared`
 - Kysely migration system with `001_initial_schema.ts`
 - `packages/config/test-utils/index.ts` placeholder (empty export)
 - `packages/config/vitest.config.ts` base config with workspace aliases
@@ -666,7 +666,7 @@ packages/config/
 
 **Files to MODIFY:**
 ```
-apps/backend/package.json                  # ADD test script, @tycs/config dep
+apps/backend/package.json                  # ADD test script, @mycscompanion/config dep
 apps/webapp/package.json                   # ADD test script, test:e2e scripts, test deps
 packages/config/package.json               # ADD devDeps for test-utils compilation
 packages/config/tsconfig.json              # ADD tsx support for providers.tsx
@@ -681,7 +681,7 @@ packages/config/test-utils/index.ts        # UPDATE barrel exports
 - `apps/backend/src/plugins/*` — do NOT modify (stubs, no changes needed)
 - `packages/shared/vitest.config.ts` — already configured, no changes needed
 - `turbo.json` — test task already configured, no changes needed
-- `docker-compose.yml` — no changes needed (tycs_test DB created programmatically)
+- `docker-compose.yml` — no changes needed (mycscompanion_test DB created programmatically)
 - `apps/backend/kysely.config.ts` — used by kysely-ctl for dev migrations, not by tests
 
 ### Library Version Notes
@@ -733,22 +733,22 @@ Claude Opus 4.6
 
 ### Debug Log References
 
-- Fixed `@tycs/config/test-utils` module resolution for NodeNext: added `exports` field to `packages/config/package.json` and `.js` extensions to barrel imports
+- Fixed `@mycscompanion/config/test-utils` module resolution for NodeNext: added `exports` field to `packages/config/package.json` and `.js` extensions to barrel imports
 - Fixed `MockRedis` type — `ReturnType<typeof vi.fn>` not callable in Vitest 4.x; switched to `Mock<(...) => ...>` generics
-- Added `jsx: "react-jsx"` to backend tsconfig to support transitive TSX resolution from `@tycs/config/test-utils/providers.tsx`
+- Added `jsx: "react-jsx"` to backend tsconfig to support transitive TSX resolution from `@mycscompanion/config/test-utils/providers.tsx`
 - Added `passWithNoTests: true` to webapp vitest config (no component tests exist yet)
 - Added `@types/react` devDep to config package for TSX compilation
-- Pre-existing: `@tycs/website` lint errors in `.astro/` generated files (not Story 1.5 scope)
-- Pre-existing: `@tycs/webapp` build failure due to Tailwind CSS v4/Vite resolution in `@tycs/ui` (not Story 1.5 scope)
+- Pre-existing: `@mycscompanion/website` lint errors in `.astro/` generated files (not Story 1.5 scope)
+- Pre-existing: `@mycscompanion/webapp` build failure due to Tailwind CSS v4/Vite resolution in `@mycscompanion/ui` (not Story 1.5 scope)
 
 ### Completion Notes List
 
 - All 13 tasks completed with 23 tests passing across 2 workspaces (shared: 13, backend: 10); webapp configured with passWithNoTests (no component tests yet)
-- Test infrastructure: Vitest + global-setup (creates `tycs_test` DB + migrations) + per-test setup (`vi.restoreAllMocks`)
+- Test infrastructure: Vitest + global-setup (creates `mycscompanion_test` DB + migrations) + per-test setup (`vi.restoreAllMocks`)
 - DB utilities: `createTestDb()` (pool max=1), `beginTransaction()`, `rollbackTransaction()` — verified via canary
 - Fastify inject: `createTestApp()` using `buildApp()` factory — verified via canary GET /health
 - Redis mock: `createMockRedis()` with in-memory Map backing — verified via canary get/set/del/ping
-- Test-utils exports: `createMockRedis`, `MockRedis`, `createTestQueryClient`, `TestProviders` from `@tycs/config/test-utils`
+- Test-utils exports: `createMockRedis`, `MockRedis`, `createTestQueryClient`, `TestProviders` from `@mycscompanion/config/test-utils`
 - Playwright E2E: Chromium-only config, canary test hits backend `/health`, auth helper scaffold for Story 2.1
 - Webapp vitest: jsdom environment, jest-dom matchers, e2e excluded from Vitest discovery
 
@@ -774,9 +774,9 @@ Claude Opus 4.6
 - packages/config/test-utils/providers.tsx
 
 **Modified files:**
-- apps/backend/package.json (added test script, @tycs/config devDep)
+- apps/backend/package.json (added test script, @mycscompanion/config devDep)
 - apps/backend/tsconfig.json (added jsx: react-jsx for transitive TSX)
-- apps/webapp/package.json (added test/test:e2e/test:e2e:ui scripts, test deps, @tycs/config devDep, @tanstack/react-query)
+- apps/webapp/package.json (added test/test:e2e/test:e2e:ui scripts, test deps, @mycscompanion/config devDep, @tanstack/react-query)
 - packages/config/package.json (added exports field, devDeps for test-utils)
 - packages/config/tsconfig.json (added jsx: react-jsx, tsx include pattern)
 - packages/config/test-utils/index.ts (populated barrel exports)

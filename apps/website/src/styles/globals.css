@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '@tycs/config/tailwind-tokens.css';
+@import '@mycscompanion/config/tailwind-tokens.css';
 
 @layer base {
   :root {

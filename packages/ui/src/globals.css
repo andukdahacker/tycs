@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '@tycs/config/tailwind-tokens.css';
+@import '@mycscompanion/config/tailwind-tokens.css';
 
 /*
  * shadcn/ui CSS custom property mapping.

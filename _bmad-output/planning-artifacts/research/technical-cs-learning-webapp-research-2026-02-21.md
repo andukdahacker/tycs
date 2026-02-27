@@ -22,19 +22,19 @@ source_verification: true
 
 ## Executive Summary
 
-This research validates a comprehensive technical plan for tycs, a CS foundations learning webapp that teaches working engineers to build real systems (databases, interpreters, OS components) through a mega-project spine approach with AI-guided Socratic tutoring. The confirmed stack -- React 19 + Vite on the frontend, Fastify on the backend, Turborepo for monorepo management, and Railway for deployment -- provides a lean, high-performance foundation with no vendor lock-in, full-stack TypeScript type safety, and a clear path from MVP to 10K users.
+This research validates a comprehensive technical plan for mycscompanion, a CS foundations learning webapp that teaches working engineers to build real systems (databases, interpreters, OS components) through a mega-project spine approach with AI-guided Socratic tutoring. The confirmed stack -- React 19 + Vite on the frontend, Fastify on the backend, Turborepo for monorepo management, and Railway for deployment -- provides a lean, high-performance foundation with no vendor lock-in, full-stack TypeScript type safety, and a clear path from MVP to 10K users.
 
-The architectural strategy centers on three critical decisions. First, a **modular monolith** using Fastify's plugin encapsulation system provides logical domain boundaries (AI tutor, code execution, curriculum, projects, identity) without the operational overhead of microservices -- with a well-defined extraction path starting with execution workers at ~1K users. Second, **server-side code execution** via Docker containers is required because tycs's core value proposition depends on compiling C, Rust, and Go code with access to real system calls (mmap, fsync) that WebAssembly cannot provide. Third, a **hybrid AI key strategy** where tycs provides included AI usage (free tier: ~50 interactions/day, paid: unlimited) with optional BYOK for power users, keeping system prompts server-side for security while managing costs through prompt caching, tiered model routing, and context window management.
+The architectural strategy centers on three critical decisions. First, a **modular monolith** using Fastify's plugin encapsulation system provides logical domain boundaries (AI tutor, code execution, curriculum, projects, identity) without the operational overhead of microservices -- with a well-defined extraction path starting with execution workers at ~1K users. Second, **server-side code execution** via Docker containers is required because mycscompanion's core value proposition depends on compiling C, Rust, and Go code with access to real system calls (mmap, fsync) that WebAssembly cannot provide. Third, a **hybrid AI key strategy** where mycscompanion provides included AI usage (free tier: ~50 interactions/day, paid: unlimited) with optional BYOK for power users, keeping system prompts server-side for security while managing costs through prompt caching, tiered model routing, and context window management.
 
 The integration patterns are fully specified with production-ready TypeScript code: AI tutor streaming via SSE through Fastify with Anthropic SDK tool calling, a BullMQ-based code execution pipeline with Docker container isolation and benchmark runners, RAG-powered curriculum search using pgvector in PostgreSQL with Drizzle ORM, and a typed API client shared between frontend and backend via Turborepo packages. Cost projections show $65/month at 100 users scaling to $3,040/month at 10K users, with AI API costs as the largest variable. The per-user cost decreases from $0.65 to $0.30 as infrastructure amortizes. The highest-severity risk is code execution security (mitigated by container isolation, network restrictions, resource limits, and a Firecracker upgrade path), while the highest-probability risk is AI cost escalation (mitigated by four layered strategies achieving an estimated 60-80% reduction from naive costs).
 
 **Key Technical Findings:**
-- Server-side execution is non-negotiable for tycs's systems programming focus -- no production platform has successfully moved C/Rust/Go compilation to the browser
+- Server-side execution is non-negotiable for mycscompanion's systems programming focus -- no production platform has successfully moved C/Rust/Go compilation to the browser
 - Fastify's plugin encapsulation model is uniquely well-suited to modular monolith architecture, providing microservice-like domain isolation at monolith operational cost
 - Anthropic's prompt caching alone can reduce AI input token costs by 50-70% for repeated sessions, and tiered model routing (Haiku for lookups, Sonnet for Socratic dialogue) adds another 30-50% savings
 - pgvector in PostgreSQL eliminates the need for a separate vector database service for RAG -- the curriculum corpus is small enough (hundreds to low thousands of chunks) that pgvector performs excellently
 - Monaco Editor's model-per-file architecture and built-in diff view directly serve the multi-file project editing and "How the Pros Did It" comparison features
-- The Turborepo shared packages pattern (`@tycs/shared`, `@tycs/db`, `@tycs/ui`) provides end-to-end TypeScript type safety between frontend and backend without code generation
+- The Turborepo shared packages pattern (`@mycscompanion/shared`, `@mycscompanion/db`, `@mycscompanion/ui`) provides end-to-end TypeScript type safety between frontend and backend without code generation
 - Railway's private networking, Docker support, and managed PostgreSQL/Redis consolidate all infrastructure under a single provider at $5/month base + usage
 
 **Top Recommendations:**
@@ -124,7 +124,7 @@ The following technology decisions were made by the user and override any confli
 | **UI Library** | shadcn/ui | Shared package in monorepo |
 | **Cloud Provider** | Railway | All services deployed on Railway |
 | **AI Integration** | Anthropic SDK / OpenAI SDK (direct) | No Vercel AI SDK |
-| **AI Key Strategy** | Hybrid (Option C) | tycs provides included AI usage (free tier: ~50 interactions/day, paid: unlimited). Optional BYOK for power users. System prompts always stay server-side. |
+| **AI Key Strategy** | Hybrid (Option C) | mycscompanion provides included AI usage (free tier: ~50 interactions/day, paid: unlimited). Optional BYOK for power users. System prompts always stay server-side. |
 | **Language** | TypeScript (full stack) | Sufficient for all workloads; heavy compute offloaded to Docker |
 | **Auth** | Firebase Auth | Free unlimited users, simple JWT verification with firebase-admin, no webhook sync needed |
 
@@ -140,20 +140,20 @@ The following technology decisions were made by the user and override any confli
 
 #### 1.1 Framework Landscape for Interactive Learning Platforms
 
-The primary contenders for building an interactive learning webapp like tycs are **Next.js**, **Remix**, and **SvelteKit**. Each has distinct strengths for this use case.
+The primary contenders for building an interactive learning webapp like mycscompanion are **Next.js**, **Remix**, and **SvelteKit**. Each has distinct strengths for this use case.
 
 **Next.js (v14/v15 - React-based)**
 
 - **Ecosystem maturity**: Largest ecosystem of any meta-framework. React has ~23M weekly npm downloads (as of early 2025). Next.js is used by Vercel, which provides first-class deployment support.
 - **App Router (v14+)**: Server Components, streaming SSR, and the `app/` directory provide a modern architecture for mixing static and dynamic content.
-- **Relevant for tycs**: The React ecosystem has the strongest code editor integrations (Monaco, CodeMirror wrappers), the most AI/LLM libraries, and the largest pool of developers for future hiring.
+- **Relevant for mycscompanion**: The React ecosystem has the strongest code editor integrations (Monaco, CodeMirror wrappers), the most AI/LLM libraries, and the largest pool of developers for future hiring.
 - **Drawbacks**: Bundle size can be large; React's virtual DOM adds overhead for highly interactive visualizations; Server Components mental model has a learning curve.
 - _Source: [Next.js Documentation](https://nextjs.org/docs) | [npm trends - React](https://npmtrends.com/react)_ [High Confidence]
 
 **Remix (v2 - React-based, now merging with React Router v7)**
 
 - **Web standards focus**: Built on native fetch, FormData, and progressive enhancement. Server-side data loading with nested routes.
-- **Relevant for tycs**: Excellent for forms-heavy flows (progress tracking, settings), but does not provide significant advantages over Next.js for the editor-centric UI tycs requires.
+- **Relevant for mycscompanion**: Excellent for forms-heavy flows (progress tracking, settings), but does not provide significant advantages over Next.js for the editor-centric UI mycscompanion requires.
 - **Key concern**: The Remix/React Router merger (announced 2024) creates uncertainty about the framework's long-term identity. Shopify acquired Remix but the direction is evolving.
 - _Source: [Remix Documentation](https://remix.run/docs) | [React Router v7 announcement](https://remix.run/blog/merging-remix-and-react-router)_ [High Confidence]
 
@@ -161,11 +161,11 @@ The primary contenders for building an interactive learning webapp like tycs are
 
 - **Performance advantage**: Svelte compiles to vanilla JS with no virtual DOM, resulting in smaller bundles (~30-40% smaller than equivalent React apps per Svelte team benchmarks) and faster runtime performance.
 - **Developer experience**: Less boilerplate, reactive by default, built-in stores for state management.
-- **Relevant for tycs**: Excellent for real-time visualizations (D3.js integrations are cleaner without React's reconciliation), animations, and interactive UI. Svelte's reactivity model is particularly well-suited to live-updating benchmark displays and data structure animations.
+- **Relevant for mycscompanion**: Excellent for real-time visualizations (D3.js integrations are cleaner without React's reconciliation), animations, and interactive UI. Svelte's reactivity model is particularly well-suited to live-updating benchmark displays and data structure animations.
 - **Drawbacks**: Smaller ecosystem; fewer ready-made code editor wrappers (though CodeMirror 6 works well); smaller hiring pool; fewer AI/LLM integration libraries.
 - _Source: [Svelte Documentation](https://svelte.dev/docs) | [SvelteKit Documentation](https://svelte.dev/docs/kit)_ [High Confidence]
 
-#### 1.2 Framework Comparison for tycs-Specific Requirements
+#### 1.2 Framework Comparison for mycscompanion-Specific Requirements
 
 | Requirement | Next.js | Remix | SvelteKit |
 |---|---|---|---|
@@ -191,7 +191,7 @@ The primary contenders for building an interactive learning webapp like tycs are
 
 **Monorepo Structure:**
 ```
-tycs/
+mycscompanion/
 ├── apps/
 │   ├── web/          # React + Vite frontend
 │   └── api/          # Fastify backend
@@ -226,7 +226,7 @@ TypeScript is the clear choice for this project. [High Confidence]
 
 ### 2. Browser-Based Code Editors
 
-This is one of the most critical architectural decisions for tycs. The learner spends most of their time in the code editor, so the choice directly impacts user experience.
+This is one of the most critical architectural decisions for mycscompanion. The learner spends most of their time in the code editor, so the choice directly impacts user experience.
 
 #### 2.1 Monaco Editor
 
@@ -239,13 +239,13 @@ This is one of the most critical architectural decisions for tycs. The learner s
 - **Extensibility**: Highly extensible with custom languages, themes, actions, and providers
 - **Web Workers**: Uses web workers for syntax highlighting and language services, keeping the main thread responsive
 
-**Pros for tycs:**
+**Pros for mycscompanion:**
 - Familiar VS Code experience reduces friction for working engineers
 - Rich IntelliSense for C/Rust/Go (the languages learners will use for database/interpreter projects)
 - Built-in diff view useful for "How the Pros Did It" comparisons
 - Excellent accessibility support
 
-**Cons for tycs:**
+**Cons for mycscompanion:**
 - Large bundle size impacts initial page load
 - Overkill for simple code snippets (micro-learning moments)
 - Mobile support is poor (not designed for small screens)
@@ -263,7 +263,7 @@ _Source: [Monaco Editor GitHub](https://github.com/microsoft/monaco-editor) | [M
 - **React integration**: `@uiw/react-codemirror` is popular, or direct integration via `useEffect` is straightforward
 - **Extensibility**: Extremely extensible via the extension system. Custom decorations, widgets, panels, tooltips, and state fields
 
-**Pros for tycs:**
+**Pros for mycscompanion:**
 - **Modular architecture** -- load only needed features, much smaller initial bundle
 - **Mobile-friendly** -- touch support is a first-class concern (useful if learners review on mobile)
 - **Collaborative editing support** built into the architecture (useful for future pair programming features)
@@ -271,7 +271,7 @@ _Source: [Monaco Editor GitHub](https://github.com/microsoft/monaco-editor) | [M
 - **Lezer parser system** -- can create custom grammars for teaching purposes (e.g., highlighting AST nodes in an interpreter project)
 - Lightweight enough to embed multiple instances (e.g., side-by-side comparison views)
 
-**Cons for tycs:**
+**Cons for mycscompanion:**
 - Less familiar to users expecting a VS Code-like experience
 - IntelliSense is not as rich as Monaco out-of-the-box (no built-in language services for C/Rust/Go)
 - Requires more assembly work to match Monaco's feature set
@@ -302,20 +302,20 @@ _Source: [CodeMirror 6 Documentation](https://codemirror.net/docs/) | [CodeMirro
 - Runs Node.js entirely in the browser using WebAssembly
 - Full npm support, file system, and terminal
 - Used by Angular, Svelte, and Astro documentation for interactive examples
-- **Relevance to tycs**: Could power a full-stack development environment in the browser, but is Node.js-focused -- does not natively run C, Rust, or Go code, which are the primary languages for building databases/interpreters
+- **Relevance to mycscompanion**: Could power a full-stack development environment in the browser, but is Node.js-focused -- does not natively run C, Rust, or Go code, which are the primary languages for building databases/interpreters
 - _Source: [WebContainers Documentation](https://webcontainers.io/) | [StackBlitz Blog](https://blog.stackblitz.com/)_ [High Confidence]
 
 **CodeSandbox Sandpack**
 - Embeddable code editor + bundler for React ecosystem
 - Lightweight, focused on web technologies (JS/TS/HTML/CSS)
 - Used by React documentation, multiple blogs and tutorials
-- **Relevance to tycs**: Not suitable as the primary editor since learners build in C/Rust/Go, not web technologies. Could be useful for embedding interactive web-based examples in curriculum content.
+- **Relevance to mycscompanion**: Not suitable as the primary editor since learners build in C/Rust/Go, not web technologies. Could be useful for embedding interactive web-based examples in curriculum content.
 - _Source: [Sandpack Documentation](https://sandpack.codesandbox.io/) | [Sandpack GitHub](https://github.com/codesandbox/sandpack)_ [High Confidence]
 
 **Theia IDE**
 - Open-source VS Code alternative that can run in browsers
 - Full LSP and DAP support
-- **Relevance to tycs**: Overly complex for this use case; designed for full IDE deployments, not embedded editor components
+- **Relevance to mycscompanion**: Overly complex for this use case; designed for full IDE deployments, not embedded editor components
 - _Source: [Eclipse Theia](https://theia-ide.org/)_ [Medium Confidence]
 
 #### 2.5 Recommendation
@@ -341,7 +341,7 @@ Rationale:
 
 ### 3. Code Execution & Sandboxing
 
-This is the most architecturally significant decision for tycs. Learners are building databases, interpreters, and operating system components in C, Rust, or Go. The code must compile and execute safely with performance benchmarking capabilities.
+This is the most architecturally significant decision for mycscompanion. Learners are building databases, interpreters, and operating system components in C, Rust, or Go. The code must compile and execute safely with performance benchmarking capabilities.
 
 #### 3.1 Execution Architecture Options
 
@@ -399,14 +399,14 @@ This is the approach used by most production coding platforms (LeetCode, HackerR
 - Compiles C/C++ code to WebAssembly that runs in the browser
 - Provides POSIX-like environment (virtual filesystem, basic system calls)
 - Used by projects like SQLite WASM, CPython WASM
-- **Limitation for tycs**: Cannot compile arbitrary user C code in the browser (Emscripten itself is the compiler, and running a full C compiler in the browser is possible but very slow)
+- **Limitation for mycscompanion**: Cannot compile arbitrary user C code in the browser (Emscripten itself is the compiler, and running a full C compiler in the browser is possible but very slow)
 - _Source: [Emscripten Documentation](https://emscripten.org/)_ [High Confidence]
 
 **WASI (WebAssembly System Interface):**
 - Standardized system interface for WASM modules
 - Enables WASM programs to access files, environment variables, clocks
 - Runtimes: Wasmtime, Wasmer, WasmEdge
-- **Limitation for tycs**: WASI is still maturing; not all system calls needed for database projects (e.g., `mmap`, `fsync`) are available
+- **Limitation for mycscompanion**: WASI is still maturing; not all system calls needed for database projects (e.g., `mmap`, `fsync`) are available
 - _Source: [WASI Documentation](https://wasi.dev/)_ [Medium Confidence - WASI is evolving rapidly]
 
 **Clang in the browser (via Emscripten):**
@@ -416,7 +416,7 @@ This is the approach used by most production coding platforms (LeetCode, HackerR
 
 **WebContainers (by StackBlitz):**
 - Runs Node.js in the browser but does NOT support C, Rust, or Go compilation
-- Not suitable for tycs's primary use case
+- Not suitable for mycscompanion's primary use case
 - _Source: [WebContainers](https://webcontainers.io/)_ [High Confidence]
 
 **Pros of browser-based execution:**
@@ -438,9 +438,9 @@ This is the approach used by most production coding platforms (LeetCode, HackerR
 - Use server-side execution for mega-project builds (C/Rust/Go compilation, benchmarking, system-level code)
 - This mirrors how Replit works: lightweight language runs in-browser, heavier workloads go to server
 
-#### 3.2 Server-Side Execution Architecture for tycs
+#### 3.2 Server-Side Execution Architecture for mycscompanion
 
-Given that tycs's core value proposition is building real databases, interpreters, and OS components, **server-side execution is required**. Here is the recommended architecture:
+Given that mycscompanion's core value proposition is building real databases, interpreters, and OS components, **server-side execution is required**. Here is the recommended architecture:
 
 ```
 User Code Edit (Monaco) --> Save/Submit -->
@@ -499,7 +499,7 @@ User submits benchmark request -->
 
 ### 4. AI Tutor Architecture
 
-The Context-Aware Socratic AI is one of tycs's primary differentiators. This section covers the architecture for building an AI tutor that explains concepts, asks questions, connects to the learner's background, and understands their code.
+The Context-Aware Socratic AI is one of mycscompanion's primary differentiators. This section covers the architecture for building an AI tutor that explains concepts, asks questions, connects to the learner's background, and understands their code.
 
 #### 4.1 LLM Provider Comparison
 
@@ -552,7 +552,7 @@ class OpenAIProvider implements AIProvider { /* ... */ }
 
 This thin abstraction gives provider switching without the overhead of a framework. The streaming output is piped to the frontend via SSE from Fastify.
 
-**Recommended AI Architecture for tycs:**
+**Recommended AI Architecture for mycscompanion:**
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -639,7 +639,7 @@ Curriculum Content (markdown files, code examples, concept definitions)
 
 **Vector Database Options:**
 
-| Option | Pros | Cons | Fit for tycs |
+| Option | Pros | Cons | Fit for mycscompanion |
 |---|---|---|---|
 | **pgvector** (PostgreSQL extension) | Same database, no extra infra, SQL queries | Performance degrades at >1M vectors | Excellent for MVP (curriculum is small) |
 | **Pinecone** | Managed, fast, scalable | Extra service, cost | Overkill for MVP |
@@ -680,7 +680,7 @@ AI API costs can escalate quickly with a Socratic tutor that engages in extended
 
 #### 5.1 Primary Database: PostgreSQL
 
-PostgreSQL is the clear choice for tycs's primary database. [High Confidence]
+PostgreSQL is the clear choice for mycscompanion's primary database. [High Confidence]
 
 **Why PostgreSQL:**
 - **Relational model** fits the domain naturally (users, projects, milestones, progress, code submissions, benchmark results)
@@ -755,7 +755,7 @@ _Source: [Neon](https://neon.tech/) | [Supabase](https://supabase.com/)_ [High C
 
 ### 6. Real-time Visualization
 
-Real-time visualization is critical for tycs's features: animating B-tree operations, visualizing query plans, showing memory layouts, and displaying benchmark results.
+Real-time visualization is critical for mycscompanion's features: animating B-tree operations, visualizing query plans, showing memory layouts, and displaying benchmark results.
 
 #### 6.1 Visualization Library Comparison
 
@@ -764,28 +764,28 @@ Real-time visualization is critical for tycs's features: animating B-tree operat
 - **Strengths**: Unlimited customization, vast ecosystem of examples, can create any visualization imaginable
 - **Weaknesses**: Steep learning curve, verbose API, conflicts with React's DOM management (React wants to own the DOM, D3 also wants to modify it)
 - **React integration**: Typically use D3 for calculations and React for rendering, or use refs to let D3 manage a specific DOM subtree
-- **Relevance to tycs**: Best choice for custom, one-of-a-kind visualizations like B-tree animations, memory layout diagrams, and query plan trees
+- **Relevance to mycscompanion**: Best choice for custom, one-of-a-kind visualizations like B-tree animations, memory layout diagrams, and query plan trees
 - _Source: [D3.js Documentation](https://d3js.org/) | [D3 GitHub](https://github.com/d3/d3)_ [High Confidence]
 
 **React Flow (v12)**
 - **What it is**: Library for building node-based UIs (flowcharts, diagrams, mind maps)
 - **Strengths**: Drag-and-drop nodes, edges with labels, built-in zoom/pan, excellent React integration
 - **Weaknesses**: Node-graph focused; not designed for arbitrary data visualizations
-- **Relevance to tycs**: Excellent for query plan visualization (nodes = operators, edges = data flow), concept maps (fog-of-war curriculum map), and system architecture diagrams
+- **Relevance to mycscompanion**: Excellent for query plan visualization (nodes = operators, edges = data flow), concept maps (fog-of-war curriculum map), and system architecture diagrams
 - _Source: [React Flow Documentation](https://reactflow.dev/)_ [High Confidence]
 
 **Framer Motion (v11)**
 - **What it is**: React animation library for UI animations and transitions
 - **Strengths**: Declarative animations, layout animations, gesture support, excellent DX
 - **Weaknesses**: Not designed for data visualization; designed for UI element animations
-- **Relevance to tycs**: Excellent for animating transitions between states (B-tree node splits, element insertions), milestone completion celebrations, and general UI polish
+- **Relevance to mycscompanion**: Excellent for animating transitions between states (B-tree node splits, element insertions), milestone completion celebrations, and general UI polish
 - _Source: [Framer Motion Documentation](https://www.framer.com/motion/)_ [High Confidence]
 
 **Mafs**
 - **What it is**: React library for interactive math visualizations (coordinate planes, functions, geometry)
 - **Strengths**: Beautiful math visualizations, React-native, interactive
 - **Weaknesses**: Narrow focus on math/geometry; not suited for general data structure visualization
-- **Relevance to tycs**: Could be useful for algorithm complexity visualizations (plotting O(n) vs O(log n) curves) but too narrow for primary visualization needs
+- **Relevance to mycscompanion**: Could be useful for algorithm complexity visualizations (plotting O(n) vs O(log n) curves) but too narrow for primary visualization needs
 - _Source: [Mafs Documentation](https://mafs.dev/)_ [Medium Confidence]
 
 **Rough.js / Excalidraw-like**
@@ -967,7 +967,7 @@ _Source: [Firebase Auth Documentation](https://firebase.google.com/docs/auth) | 
 
 4. **React ecosystem consolidation**: Despite competition from Svelte, Vue, and Solid, React continues to dominate the web framework landscape. Next.js has emerged as the de facto React meta-framework. Building on this stack maximizes ecosystem access and hiring pool.
 
-5. **Edge computing for latency**: Vercel, Cloudflare Workers, and Fly.io are pushing computation closer to users. For tycs, edge functions can handle auth, rate limiting, and AI request routing, while computation-heavy tasks (code execution, benchmarks) run on centralized servers.
+5. **Edge computing for latency**: Vercel, Cloudflare Workers, and Fly.io are pushing computation closer to users. For mycscompanion, edge functions can handle auth, rate limiting, and AI request routing, while computation-heavy tasks (code execution, benchmarks) run on centralized servers.
 
 #### 9.2 Recommended Complete Stack (Updated per User Decision)
 
@@ -1090,7 +1090,7 @@ All referenced documentation and resources:
 
 ## Integration Patterns Analysis
 
-> **Methodology Note:** This section provides architecture-level integration guidance specific to the tycs stack. Patterns are derived from official documentation, established community patterns, and production-validated approaches for each technology. Source URLs point to official documentation that the reader should verify for the most current API details. Confidence tags reflect the maturity and stability of each pattern.
+> **Methodology Note:** This section provides architecture-level integration guidance specific to the mycscompanion stack. Patterns are derived from official documentation, established community patterns, and production-validated approaches for each technology. Source URLs point to official documentation that the reader should verify for the most current API details. Confidence tags reflect the maturity and stability of each pattern.
 
 ---
 
@@ -1100,9 +1100,9 @@ All referenced documentation and resources:
 
 Fastify's core architectural primitive is the **plugin**. Every piece of functionality -- routes, database connections, authentication middleware, AI integrations -- should be encapsulated as a plugin. This is not optional guidance; Fastify's encapsulation model is fundamental to how it manages scope, decorators, and hooks.
 
-**Encapsulation Context:** Each plugin in Fastify creates its own encapsulation context. Decorators, hooks, and plugins registered inside a plugin are scoped to that plugin and its children -- they do not leak upward. This is critical for tycs because it means the AI tutor routes can have different middleware (e.g., rate limiting, conversation context loading) than the code execution routes.
+**Encapsulation Context:** Each plugin in Fastify creates its own encapsulation context. Decorators, hooks, and plugins registered inside a plugin are scoped to that plugin and its children -- they do not leak upward. This is critical for mycscompanion because it means the AI tutor routes can have different middleware (e.g., rate limiting, conversation context loading) than the code execution routes.
 
-**Recommended Plugin Structure for tycs:**
+**Recommended Plugin Structure for mycscompanion:**
 
 ```
 apps/api/src/
@@ -1194,7 +1194,7 @@ Fastify has built-in support for JSON Schema validation, but **TypeBox** is the 
 
 **However**, if your team prefers Zod (e.g., for shared validation between frontend forms and backend), `@fastify/type-provider-zod` exists and works well. The trade-off is a small performance cost for schema conversion.
 
-**TypeBox Pattern for tycs:**
+**TypeBox Pattern for mycscompanion:**
 
 ```typescript
 // packages/shared/src/schemas/ai.ts
@@ -1217,7 +1217,7 @@ export type ChatRequest = Static<typeof ChatRequestSchema>;
 
 // apps/api/src/routes/ai/chat.ts
 import { Type } from '@sinclair/typebox';
-import { ChatRequestSchema } from '@tycs/shared/schemas/ai';
+import { ChatRequestSchema } from '@mycscompanion/shared/schemas/ai';
 
 export default async function chatRoutes(app: FastifyInstance) {
   app.post('/chat', {
@@ -1363,7 +1363,7 @@ packages/shared/
 │   │   ├── milestones.ts  # Milestone IDs and metadata
 │   │   └── limits.ts      # Rate limits, size limits
 │   └── index.ts
-├── package.json            # name: "@tycs/shared"
+├── package.json            # name: "@mycscompanion/shared"
 └── tsconfig.json
 ```
 
@@ -1388,10 +1388,10 @@ _Source: [Turborepo Handbook - Internal Packages](https://turbo.build/repo/docs/
 
 Rather than introducing tRPC (which adds complexity and its own abstraction layer), use a **typed fetch wrapper** that leverages the shared schemas. This keeps the architecture simpler while maintaining type safety.
 
-**tRPC Evaluation for tycs:**
+**tRPC Evaluation for mycscompanion:**
 - **Pros**: End-to-end type safety without code generation, great DX
 - **Cons**: SSE streaming with tRPC requires additional setup (`httpBatchStreamLink`), tool calling flows are awkward through tRPC's subscription model, adds conceptual overhead
-- **Verdict**: For tycs's use case (streaming AI responses, job status polling, file uploads), a typed fetch wrapper provides 90% of the benefit with much less complexity. tRPC shines in CRUD-heavy apps, but tycs is streaming-heavy.
+- **Verdict**: For mycscompanion's use case (streaming AI responses, job status polling, file uploads), a typed fetch wrapper provides 90% of the benefit with much less complexity. tRPC shines in CRUD-heavy apps, but mycscompanion is streaming-heavy.
 
 **Typed API Client:**
 
@@ -1472,8 +1472,8 @@ _Source: [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_
 ```typescript
 // apps/web/src/hooks/useStreamingChat.ts
 import { useState, useCallback, useRef } from 'react';
-import type { SSEEvent } from '@tycs/shared/types/events';
-import type { ChatRequest } from '@tycs/shared/schemas/ai';
+import type { SSEEvent } from '@mycscompanion/shared/types/events';
+import type { ChatRequest } from '@mycscompanion/shared/schemas/ai';
 import { useApiClient } from './useApiClient';
 
 export function useStreamingChat() {
@@ -1545,7 +1545,7 @@ The `@anthropic-ai/sdk` provides native streaming via `client.messages.stream()`
 // apps/api/src/routes/ai/chat.ts
 import Anthropic from '@anthropic-ai/sdk';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { ChatRequestSchema } from '@tycs/shared/schemas/ai';
+import { ChatRequestSchema } from '@mycscompanion/shared/schemas/ai';
 import { assembleContext } from '../../services/context-assembler';
 import { buildSystemPrompt } from '../../services/ai-provider';
 import { toolDefinitions, executeToolCall } from '../../services/ai-tools';
@@ -1681,7 +1681,7 @@ _Source: [Anthropic SDK TypeScript](https://github.com/anthropics/anthropic-sdk-
 
 #### 3.2 Tool Calling Architecture
 
-The AI tutor's tool definitions should mirror the tycs domain model. Each tool gives the AI access to specific information it can use to provide contextual Socratic guidance.
+The AI tutor's tool definitions should mirror the mycscompanion domain model. Each tool gives the AI access to specific information it can use to provide contextual Socratic guidance.
 
 ```typescript
 // apps/api/src/services/ai-tools.ts
@@ -1789,7 +1789,7 @@ The context assembler is the critical piece that makes the AI tutor genuinely us
 ```typescript
 // apps/api/src/services/context-assembler.ts
 import { eq, desc } from 'drizzle-orm';
-import type { DrizzleDB } from '@tycs/db';
+import type { DrizzleDB } from '@mycscompanion/db';
 
 interface AssembledContext {
   learnerProfile: {
@@ -1859,7 +1859,7 @@ export async function assembleContext(params: {
 
 // System prompt builder
 export function buildSystemPrompt(context: AssembledContext): string {
-  return `You are a Socratic CS tutor for the tycs learning platform. Your role is to guide learners to discover answers through questions, not to provide direct solutions.
+  return `You are a Socratic CS tutor for the mycscompanion learning platform. Your role is to guide learners to discover answers through questions, not to provide direct solutions.
 
 ## Your Teaching Approach
 - NEVER give the learner a direct code solution. Instead, ask guiding questions.
@@ -1905,7 +1905,7 @@ ${context.learnerProfile.commonMistakes.map(m => `- ${m}`).join('\n')}
 
 BullMQ provides a robust job queue with features critical for code execution: job priorities, progress reporting, rate limiting, and configurable concurrency.
 
-**Queue Design for tycs:**
+**Queue Design for mycscompanion:**
 
 ```typescript
 // apps/api/src/services/execution-queue.ts
@@ -1987,9 +1987,9 @@ const connection = new Redis(process.env.REDIS_URL!, {
 });
 
 const IMAGES: Record<string, string> = {
-  c:    'tycs-sandbox-c:latest',     // Alpine + gcc + make
-  rust: 'tycs-sandbox-rust:latest',  // Alpine + rustc + cargo
-  go:   'tycs-sandbox-go:latest',    // Alpine + go
+  c:    'mycscompanion-sandbox-c:latest',     // Alpine + gcc + make
+  rust: 'mycscompanion-sandbox-rust:latest',  // Alpine + rustc + cargo
+  go:   'mycscompanion-sandbox-go:latest',    // Alpine + go
 };
 
 const worker = new Worker('code-execution', async (job: Job<ExecutionJobData>) => {
@@ -2429,7 +2429,7 @@ _Source: [Monaco DiffEditor API](https://microsoft.github.io/monaco-editor/docs.
 
 #### 5.3 LSP Considerations
 
-Full Language Server Protocol support in the browser is possible but complex. For the tycs MVP, Monaco's built-in language support for C, Rust, and Go provides syntax highlighting and basic completions. Full LSP (error squiggles from gcc/rustc, go-to-definition, etc.) is a Phase 2+ enhancement.
+Full Language Server Protocol support in the browser is possible but complex. For the mycscompanion MVP, Monaco's built-in language support for C, Rust, and Go provides syntax highlighting and basic completions. Full LSP (error squiggles from gcc/rustc, go-to-definition, etc.) is a Phase 2+ enhancement.
 
 **Options for enhanced language support:**
 1. **Monaco's built-in support**: Syntax highlighting, bracket matching, basic auto-indent for C/Rust/Go. No semantic analysis. [Available immediately]
@@ -2684,7 +2684,7 @@ _Source: [Drizzle ORM pgvector](https://orm.drizzle.team/docs/extensions/pg#pg_v
 ```typescript
 // apps/api/src/services/embedding.ts
 import { cosineDistance, desc, sql, gt, and, eq } from 'drizzle-orm';
-import { curriculumEmbeddings } from '@tycs/db/schema';
+import { curriculumEmbeddings } from '@mycscompanion/db/schema';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -2748,8 +2748,8 @@ export async function searchCurriculum(
 ```typescript
 // scripts/seed-embeddings.ts
 // Run during deployment or curriculum updates
-import { db } from '@tycs/db';
-import { curriculumEmbeddings } from '@tycs/db/schema';
+import { db } from '@mycscompanion/db';
+import { curriculumEmbeddings } from '@mycscompanion/db/schema';
 import { generateEmbedding } from '../apps/api/src/services/embedding';
 
 interface CurriculumChunk {
@@ -3268,9 +3268,9 @@ React renders benchmark charts (Recharts)
 
 ### 1. System Architecture: Modular Monolith
 
-#### 1.1 Why a Modular Monolith for tycs
+#### 1.1 Why a Modular Monolith for mycscompanion
 
-The tycs platform should start as a **modular monolith** rather than a microservices architecture. This is not a compromise -- it is the architecturally correct decision for a small team (1-3 developers) building an MVP.
+The mycscompanion platform should start as a **modular monolith** rather than a microservices architecture. This is not a compromise -- it is the architecturally correct decision for a small team (1-3 developers) building an MVP.
 
 **The case against premature microservices:**
 
@@ -3321,7 +3321,7 @@ _Source: [Fastify Encapsulation Documentation](https://fastify.dev/docs/latest/R
 
 #### 1.2 Domain Boundaries and Bounded Contexts
 
-The tycs platform has five distinct domain boundaries. Understanding these boundaries now prevents tangled data access patterns that make future extraction painful.
+The mycscompanion platform has five distinct domain boundaries. Understanding these boundaries now prevents tangled data access patterns that make future extraction painful.
 
 | Domain | Owns | Exposes to Other Domains | Data Store |
 |---|---|---|---|
@@ -3411,7 +3411,7 @@ _Source: [Drizzle ORM - Multiple Database Instances](https://orm.drizzle.team/do
 
 #### 2.3 Database Scaling Strategy
 
-PostgreSQL scaling for tycs follows a well-established progression:
+PostgreSQL scaling for mycscompanion follows a well-established progression:
 
 **Step 1: Connection Pooling (implement from day 1)**
 
@@ -3437,7 +3437,7 @@ export const db = drizzle(pool);
 **Step 2: Query Optimization (implement at ~500 users)**
 
 - Add database indexes based on actual query patterns (use `EXPLAIN ANALYZE`)
-- The most queried patterns for tycs will be:
+- The most queried patterns for mycscompanion will be:
   - User progress lookups: `WHERE user_id = ? AND project_id = ?`
   - Benchmark history: `WHERE project_id = ? ORDER BY created_at DESC`
   - Curriculum search: pgvector HNSW index (already in schema)
@@ -3461,7 +3461,7 @@ const results = await readDb.select().from(benchmarkResults)...;
 await db.insert(codeSubmissions).values(...);
 ```
 
-**Step 4: Partitioning (likely never needed for tycs scale)**
+**Step 4: Partitioning (likely never needed for mycscompanion scale)**
 
 If `benchmark_results` or `ai_conversations` grow very large, partition by `created_at` (monthly partitions). PostgreSQL declarative partitioning makes this transparent to Drizzle queries.
 
@@ -3498,7 +3498,7 @@ _Source: [BullMQ Priority Queues](https://docs.bullmq.io/guide/jobs/prioritized)
 
 #### 3.1 Curriculum Content Storage Strategy
 
-The curriculum is the intellectual core of tycs. How it is stored, versioned, and served affects both development velocity and AI tutor quality.
+The curriculum is the intellectual core of mycscompanion. How it is stored, versioned, and served affects both development velocity and AI tutor quality.
 
 **Recommended approach: Markdown files in the repository + database records for metadata and relationships.**
 
@@ -3657,9 +3657,9 @@ export function sm2(state: SM2State, quality: number): SM2Result {
 }
 ```
 
-**Adapting SM-2 for tycs concepts:**
+**Adapting SM-2 for mycscompanion concepts:**
 
-The standard SM-2 algorithm assumes flashcard-style review. For tycs, the "review" is contextualized -- concepts are reviewed through:
+The standard SM-2 algorithm assumes flashcard-style review. For mycscompanion, the "review" is contextualized -- concepts are reviewed through:
 
 1. **Quick recall quizzes**: "What is the time complexity of B-tree insertion?" (standard flashcard)
 2. **Code recognition**: "Which data structure is being implemented in this snippet?" (code-based review)
@@ -3676,7 +3676,7 @@ The quality rating (0-5) is derived from the review type and performance:
 
 ```typescript
 // apps/api/src/services/spaced-repetition.ts
-import { sm2 } from '@tycs/shared/algorithms/sm2';
+import { sm2 } from '@mycscompanion/shared/algorithms/sm2';
 import { and, eq, lte } from 'drizzle-orm';
 
 export async function getDueReviews(userId: string, db: DrizzleDB, limit = 10) {
@@ -3786,7 +3786,7 @@ jobs:
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
-          POSTGRES_DB: tycs_test
+          POSTGRES_DB: mycscompanion_test
         ports:
           - 5432:5432
         options: >-
@@ -3832,12 +3832,12 @@ jobs:
       - name: Run database migrations (test)
         run: npx turbo db:migrate
         env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/tycs_test
+          DATABASE_URL: postgresql://test:test@localhost:5432/mycscompanion_test
 
       - name: Run integration tests
         run: npx turbo test:integration
         env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/tycs_test
+          DATABASE_URL: postgresql://test:test@localhost:5432/mycscompanion_test
           REDIS_URL: redis://localhost:6379
 
   e2e:
@@ -3930,7 +3930,7 @@ _Source: [Turborepo CI Guide](https://turbo.build/repo/docs/crafting-your-reposi
 
 #### 4.2 Railway Deployment Pipeline
 
-Railway supports automatic deployments from GitHub. The recommended pattern for tycs:
+Railway supports automatic deployments from GitHub. The recommended pattern for mycscompanion:
 
 **Deployment strategy:**
 
@@ -3954,7 +3954,7 @@ Railway auto-deploys from main branch
 # apps/api/railway.toml
 [build]
 builder = "nixpacks"
-buildCommand = "npm run build --filter=@tycs/api"
+buildCommand = "npm run build --filter=@mycscompanion/api"
 
 [deploy]
 startCommand = "node dist/server.js"
@@ -3987,7 +3987,7 @@ _Source: [Railway Deploy Configuration](https://docs.railway.com/guides/start-co
 
 ### 5. Testing Strategy
 
-#### 5.1 Testing Pyramid for tycs
+#### 5.1 Testing Pyramid for mycscompanion
 
 The testing strategy follows a modified testing pyramid appropriate for a learning platform with external service dependencies (AI APIs, Docker execution, database):
 
@@ -4012,7 +4012,7 @@ The testing strategy follows a modified testing pyramid appropriate for a learni
 
 Vitest is the natural choice for this stack -- it is Vite-native, fast, and has an API compatible with Jest. Every package in the monorepo uses Vitest.
 
-**What to unit test in tycs:**
+**What to unit test in mycscompanion:**
 
 | Package/App | What to Test | Example |
 |---|---|---|
@@ -4116,7 +4116,7 @@ Fastify's `inject()` method allows testing HTTP routes without starting a real s
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { buildApp } from '../../../app';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import { db, pool } from '@tycs/db/test-utils';
+import { db, pool } from '@mycscompanion/db/test-utils';
 
 let app: Awaited<ReturnType<typeof buildApp>>;
 
@@ -4232,7 +4232,7 @@ _Source: [Fastify Testing Guide](https://fastify.dev/docs/latest/Guides/Testing/
 
 Playwright tests cover critical user flows end-to-end. For a learning platform, the critical flows are:
 
-**Critical E2E test flows for tycs:**
+**Critical E2E test flows for mycscompanion:**
 
 1. **Onboarding flow**: Sign up -> Set background -> Choose track -> Start first milestone
 2. **Code editing flow**: Open project -> Edit code in Monaco -> Run code -> See output
@@ -4475,7 +4475,7 @@ _Source: [Fastify Logging](https://fastify.dev/docs/latest/Reference/Logging/) |
 
 #### 6.3 Custom Metrics for Learning Platform
 
-Beyond standard application metrics, tycs needs learning-specific metrics to understand user engagement and platform health.
+Beyond standard application metrics, mycscompanion needs learning-specific metrics to understand user engagement and platform health.
 
 **Key metrics to track:**
 
@@ -4500,8 +4500,8 @@ Beyond standard application metrics, tycs needs learning-specific metrics to und
 
 ```typescript
 // apps/api/src/services/metrics.ts
-import { db } from '@tycs/db';
-import { metricsEvents } from '@tycs/db/schema';
+import { db } from '@mycscompanion/db';
+import { metricsEvents } from '@mycscompanion/db/schema';
 
 export async function trackMetric(
   name: string,
@@ -4576,9 +4576,9 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: tycs
-      POSTGRES_PASSWORD: tycs
-      POSTGRES_DB: tycs_dev
+      POSTGRES_USER: mycscompanion
+      POSTGRES_PASSWORD: mycscompanion
+      POSTGRES_DB: mycscompanion_dev
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -4695,11 +4695,11 @@ _Source: [Railway Environments](https://docs.railway.com/guides/environments)_ [
 
 #### 8.1 AI Cost Management (The Biggest Variable Cost)
 
-AI API costs are the single largest variable cost for tycs. At full usage, a single active user can generate $1-3/month in AI API costs. The following strategies are ordered by impact.
+AI API costs are the single largest variable cost for mycscompanion. At full usage, a single active user can generate $1-3/month in AI API costs. The following strategies are ordered by impact.
 
 **Strategy 1: Anthropic Prompt Caching (Highest Impact)**
 
-Anthropic's prompt caching feature caches the system prompt and static context across requests. Since tycs's system prompt includes a substantial static portion (teaching persona, rules, curriculum context), cached prompts save up to 90% on input token costs for the cached portion.
+Anthropic's prompt caching feature caches the system prompt and static context across requests. Since mycscompanion's system prompt includes a substantial static portion (teaching persona, rules, curriculum context), cached prompts save up to 90% on input token costs for the cached portion.
 
 ```typescript
 // apps/api/src/services/ai-provider.ts
@@ -4827,7 +4827,7 @@ async function setCachedResponse(redis: Redis, key: string, response: string): P
 1. **Right-size services**: Start with the smallest Railway service tier and scale up based on metrics. Railway charges per vCPU-hour and GB-hour, so oversized services waste money.
 2. **Scale-to-zero for workers**: If execution workers are idle (e.g., at night), Railway can scale them down. BullMQ gracefully handles this -- jobs wait in the queue until a worker picks them up.
 3. **Database connection limits**: Keep connection pool sizes small (5-10 per service replica) to avoid needing a larger PostgreSQL instance.
-4. **R2 free tier**: Cloudflare R2 includes 10GB storage and 10M Class A operations/month free. For tycs's file storage needs, this covers MVP through ~5K users.
+4. **R2 free tier**: Cloudflare R2 includes 10GB storage and 10M Class A operations/month free. For mycscompanion's file storage needs, this covers MVP through ~5K users.
 
 **Projected monthly costs by user scale:**
 
@@ -4891,7 +4891,7 @@ async function setCachedResponse(redis: Redis, key: string, response: string): P
 
 ### Summary of Key Technical Findings
 
-Across five research steps covering technology stack analysis, integration patterns, architectural design, and implementation approaches, this document establishes a technically sound and implementation-ready plan for tycs. The findings converge on several critical conclusions:
+Across five research steps covering technology stack analysis, integration patterns, architectural design, and implementation approaches, this document establishes a technically sound and implementation-ready plan for mycscompanion. The findings converge on several critical conclusions:
 
 **The stack is well-matched to the problem.** React 19 + Vite provides fast iteration and access to the largest ecosystem of code editor wrappers (Monaco) and AI libraries. Fastify's plugin system maps naturally to the domain boundaries of a learning platform, and its ~30K req/sec throughput ensures the API server will never be the bottleneck. Turborepo's shared packages solve the full-stack type safety problem without introducing code generation or framework lock-in. Railway consolidates all infrastructure under one provider with Docker support, private networking, and managed databases.
 
@@ -4903,11 +4903,11 @@ Across five research steps covering technology stack analysis, integration patte
 
 ### Strategic Technical Assessment
 
-The tycs technical strategy is well-positioned for several reasons:
+The mycscompanion technical strategy is well-positioned for several reasons:
 
 **Low lock-in, high optionality.** Every technology choice preserves the ability to switch later. The thin AI provider abstraction means switching from Anthropic to OpenAI (or a future provider) requires changing one adapter. Railway can be replaced by Fly.io, Render, or bare EC2 without application changes. Drizzle ORM generates standard SQL that works with any PostgreSQL host. The only meaningful lock-in is React for the frontend, which is a safe bet given its ecosystem dominance.
 
-**Cost structure scales sub-linearly.** The per-user cost drops from $0.65 at 100 users to $0.30 at 10K users as infrastructure costs amortize. The primary variable cost (AI API) has a proven downward trajectory -- LLM costs dropped 10-50x between 2023 and early 2025, and this trend is expected to continue. Building the cost optimization strategies (caching, routing, context management) early ensures tycs benefits from future price drops without architectural changes.
+**Cost structure scales sub-linearly.** The per-user cost drops from $0.65 at 100 users to $0.30 at 10K users as infrastructure costs amortize. The primary variable cost (AI API) has a proven downward trajectory -- LLM costs dropped 10-50x between 2023 and early 2025, and this trend is expected to continue. Building the cost optimization strategies (caching, routing, context management) early ensures mycscompanion benefits from future price drops without architectural changes.
 
 **The technical differentiators are defensible.** The combination of a Socratic AI tutor deeply integrated with a systems programming code editor, real compilation and benchmarking infrastructure, and curriculum-grounded RAG is not trivially replicable. The context assembly pipeline -- which fuses learner profile, code state, milestone progress, compilation errors, benchmark history, and curriculum search into a single AI prompt -- is the core technical moat.
 

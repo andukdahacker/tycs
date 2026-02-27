@@ -18,7 +18,7 @@ classification:
   complexity: medium
   projectContext: greenfield
 inputDocuments:
-  - '_bmad-output/planning-artifacts/product-brief-tycs-2026-02-21.md'
+  - '_bmad-output/planning-artifacts/product-brief-mycscompanion-2026-02-21.md'
   - '_bmad-output/planning-artifacts/research/market-cs-learning-webapp-research-2026-02-21.md'
   - '_bmad-output/planning-artifacts/research/technical-cs-learning-webapp-research-2026-02-21.md'
 documentCounts:
@@ -29,14 +29,14 @@ documentCounts:
 workflowType: 'prd'
 ---
 
-# Product Requirements Document - tycs
+# Product Requirements Document - mycscompanion
 
 **Author:** Ducdo
 **Date:** 2026-02-22
 
 ## Executive Summary
 
-**tycs** teaches working software engineers CS foundations by having them build a real database from scratch — progressing from a simple key-value store to a system with B-tree indexing, a query parser, and ACID transactions across 5 milestones.
+**mycscompanion** teaches working software engineers CS foundations by having them build a real database from scratch — progressing from a simple key-value store to a system with B-tree indexing, a query parser, and ACID transactions across 5 milestones.
 
 **Target users:** Backend and full-stack engineers (1-5+ years experience) who skipped or forgot CS fundamentals and want durable systems knowledge without returning to textbooks or MOOCs.
 
@@ -189,7 +189,7 @@ Seven narrative journeys that reveal product capabilities, edge cases, and opera
 
 ### Journey 2: Priya — "The Staff Engineer Breakthrough" (Primary User, Career-Driven Path)
 
-**Opening Scene:** Priya's in a 1:1 with her engineering manager. The feedback is familiar: *"Your frontend work is excellent, but for Staff level we need to see systems thinking. You need to be able to own architecture decisions end-to-end."* She nods. On the train home, she googles "learn systems engineering for frontend developers." The results are the usual: Educative system design courses (memorize patterns), MIT OCW (watch lectures), teachyourselfcs.com (read 9 textbooks). She's tried Educative — it felt like cramming flashcards. Then a Reddit thread recommends tycs: *"It's not studying. You literally build a database. By the end you understand B-trees because you implemented one."*
+**Opening Scene:** Priya's in a 1:1 with her engineering manager. The feedback is familiar: *"Your frontend work is excellent, but for Staff level we need to see systems thinking. You need to be able to own architecture decisions end-to-end."* She nods. On the train home, she googles "learn systems engineering for frontend developers." The results are the usual: Educative system design courses (memorize patterns), MIT OCW (watch lectures), teachyourselfcs.com (read 9 textbooks). She's tried Educative — it felt like cramming flashcards. Then a Reddit thread recommends mycscompanion: *"It's not studying. You literally build a database. By the end you understand B-trees because you implemented one."*
 
 **Rising Action:** Priya signs up. Background: "Frontend Developer, 5 years, TypeScript." The first milestone is in Go, which she's never written. She's nervous. But the 80% starter code is there, and the AI tutor says: *"Go's syntax will feel familiar coming from TypeScript. The big difference is explicit error handling — no try/catch. I'll flag Go-specific patterns when they come up."* She relaxes. By the end of Milestone 1, she's written 20 lines of Go and has a key-value store that persists to disk. It wasn't hard. It was... fun?
 
@@ -199,7 +199,7 @@ Seven narrative journeys that reveal product capabilities, edge cases, and opera
 
 ### Journey 3: Jake — "The First Wall" (Primary User, Edge Case / Stuck Path)
 
-**Opening Scene:** Jake saw a tycs link in his bootcamp alumni Discord. He signed up immediately — he's the kind of person who starts things. Background: "Junior Full-Stack Developer, 1.5 years, JavaScript." Milestone 1 went great. Milestone 2 (persistent storage engine) was harder but he pushed through. Now it's week 3, Milestone 3: B-Tree Indexing. He's staring at a function signature — `func (t *BTree) insert(key []byte, value []byte)` — and he has no idea where to start. The 40% starter code isn't enough scaffold. He doesn't understand what a B-tree even IS, let alone how to implement one.
+**Opening Scene:** Jake saw a mycscompanion link in his bootcamp alumni Discord. He signed up immediately — he's the kind of person who starts things. Background: "Junior Full-Stack Developer, 1.5 years, JavaScript." Milestone 1 went great. Milestone 2 (persistent storage engine) was harder but he pushed through. Now it's week 3, Milestone 3: B-Tree Indexing. He's staring at a function signature — `func (t *BTree) insert(key []byte, value []byte)` — and he has no idea where to start. The 40% starter code isn't enough scaffold. He doesn't understand what a B-tree even IS, let alone how to implement one.
 
 **Rising Action:** He's been stuck for 12 minutes. The AI tutor detects the stall and intervenes: *"Looks like you're thinking about this. Before we tackle the full insert, let me ask: you built a sorted array in Milestone 1. What happens to performance when that array gets really big?"* Jake types: "Searching gets slow because you have to check every element." The tutor: *"Exactly. A B-tree solves that by organizing keys into a tree structure where you can skip most of the data. Think of it like a phone book — you don't read every page, you jump to the right section. Here's how it works visually:"*
 
@@ -211,13 +211,13 @@ The tutor surfaces a **visual concept explainer** — an annotated diagram showi
 
 ### Journey 4: Alex — "The Returning Dropout" (Edge Case, Re-engagement)
 
-**Opening Scene:** Alex signed up for tycs 4 months ago. He completed Milestone 1 and got halfway through Milestone 2 before life happened — a project deadline at work, then a vacation, then the guilt of not logging in made it easier to just... not. His tycs tab has been closed for 3 months. Today he's scrolling Reddit and sees someone share their benchmark results from Milestone 4. He thinks: *"I was building that too."* He logs back in.
+**Opening Scene:** Alex signed up for mycscompanion 4 months ago. He completed Milestone 1 and got halfway through Milestone 2 before life happened — a project deadline at work, then a vacation, then the guilt of not logging in made it easier to just... not. His mycscompanion tab has been closed for 3 months. Today he's scrolling Reddit and sees someone share their benchmark results from Milestone 4. He thinks: *"I was building that too."* He logs back in.
 
 **Rising Action:** The app doesn't greet him with a guilt trip or a "welcome back after 97 days!" banner. It shows his database project exactly as he left it — Milestone 2, 60% complete, his code in the editor, his last benchmark results still visible. One button: "Continue Building." He clicks it. The app loads a **session summary** that was pre-computed and saved at the end of his last session 3 months ago: *"Last session: you were working on the write-ahead log. You had the append logic working (acceptance criteria 1-3 met). Remaining: implement the crash recovery function (criteria 4-5)."* The AI tutor picks up this summary as context: *"Welcome back. Looks like you were solid on the WAL append logic. The next piece is recovery — what should happen when the system crashes mid-write? Your function needs to replay the log."*
 
 **Climax:** Within 15 minutes, Alex is productive again. He didn't have to re-read a textbook chapter. He didn't have to figure out where he was in a syllabus. His project was waiting for him — code state, milestone progress, and a pre-computed summary of where he left off. He finishes the recovery function, runs the benchmark, and sees his WAL delivering durability guarantees. The AI tutor says: *"Your database can now survive a crash. That's not trivial — you just implemented the same principle PostgreSQL uses."* Alex thinks: *"Why did I ever stop?"*
 
-**Resolution:** Alex completes Milestone 2 that evening and starts Milestone 3 the next day. The zero-friction re-entry — no decisions, no guilt, just "here's your project, here's where you were" — is why he came back. Other platforms would have made him restart or navigate a course menu. tycs just said "Continue Building."
+**Resolution:** Alex completes Milestone 2 that evening and starts Milestone 3 the next day. The zero-friction re-entry — no decisions, no guilt, just "here's your project, here's where you were" — is why he came back. Other platforms would have made him restart or navigate a course menu. mycscompanion just said "Continue Building."
 
 **Technical Note:** Re-engagement context is achieved by pre-computing a session summary at the end of each session (stored as text in the database), not by expensive on-demand code analysis. The summary captures: milestone progress percentage, acceptance criteria met/unmet, and a natural-language description of what the user was working on. This summary is injected into the AI tutor's system prompt on re-engagement.
 
@@ -229,7 +229,7 @@ The tutor surfaces a **visual concept explainer** — an annotated diagram showi
 
 **Climax:** Monday. Ducdo reviews the AI tutor conversation logs via Metabase (free tier, self-hosted on Railway, querying the PostgreSQL conversations table directly). He reads a conversation where the tutor gave a direct answer instead of asking a Socratic question — the user asked "what's a page cache?" and the tutor explained it flatly. Ducdo flags this as a prompt quality issue, adjusts the system prompt to be more aggressive about asking questions first, and adds this scenario to his prompt test cases. He also checks the weekly metrics in Metabase: 23 milestones completed, 4 new signups, 1 dropout at Milestone 3 (the B-tree wall, as predicted). He notes the dropout in his friction log and checks if the Stuck Advisor triggered — it didn't, because the user's pace didn't cross the stuck threshold. He adjusts the threshold from 10 minutes to 7 minutes for Milestone 3.
 
-**Resolution:** Running tycs at MVP scale is a solo ops job. Ducdo doesn't need a custom admin panel — he needs existing tools cobbled together effectively: Railway dashboard for infra, Bull Board for job monitoring, Metabase for analytics and conversation review, Sentry for error tracking. The platform works because one person can manage it with off-the-shelf tools. Custom admin tooling is a growth investment, not an MVP requirement.
+**Resolution:** Running mycscompanion at MVP scale is a solo ops job. Ducdo doesn't need a custom admin panel — he needs existing tools cobbled together effectively: Railway dashboard for infra, Bull Board for job monitoring, Metabase for analytics and conversation review, Sentry for error tracking. The platform works because one person can manage it with off-the-shelf tools. Custom admin tooling is a growth investment, not an MVP requirement.
 
 **MVP Admin Toolkit:**
 - Railway dashboard — infra monitoring, deploys, logs
@@ -252,11 +252,11 @@ The tutor surfaces a **visual concept explainer** — an annotated diagram showi
 
 ### Journey 7: Taylor — "The Wrong Fit" (Edge Case, Graceful Redirect)
 
-**Opening Scene:** Taylor is 3 months into learning to code. She finished a few freeCodeCamp modules and can write basic JavaScript — loops, functions, simple DOM manipulation. She saw a tycs ad on Reddit that said "learn CS by building" and thought it sounded perfect. She signs up. Background questionnaire: "Student, <1 year experience, JavaScript."
+**Opening Scene:** Taylor is 3 months into learning to code. She finished a few freeCodeCamp modules and can write basic JavaScript — loops, functions, simple DOM manipulation. She saw a mycscompanion ad on Reddit that said "learn CS by building" and thought it sounded perfect. She signs up. Background questionnaire: "Student, <1 year experience, JavaScript."
 
-**Rising Action:** The onboarding detects from her background that she has less than 1 year of experience and no familiarity with compiled languages. Instead of dropping her into Milestone 1 and letting her drown, the app shows a **skill floor check** — a brief, friendly message: *"tycs is designed for developers with 1+ years of coding experience who are comfortable writing programs in at least one language. The projects involve building systems in Go, which assumes you can read and write working code independently."* Below that, a short code comprehension check — not a test, just 2-3 questions like "What does this Go function return?" with multiple choice answers. It's designed to be passable by anyone who can read code, not to gatekeep.
+**Rising Action:** The onboarding detects from her background that she has less than 1 year of experience and no familiarity with compiled languages. Instead of dropping her into Milestone 1 and letting her drown, the app shows a **skill floor check** — a brief, friendly message: *"mycscompanion is designed for developers with 1+ years of coding experience who are comfortable writing programs in at least one language. The projects involve building systems in Go, which assumes you can read and write working code independently."* Below that, a short code comprehension check — not a test, just 2-3 questions like "What does this Go function return?" with multiple choice answers. It's designed to be passable by anyone who can read code, not to gatekeep.
 
-**Climax:** Taylor looks at the Go snippet and doesn't recognize the syntax. She picks a wrong answer. The app doesn't say "you failed" — it says: *"It looks like Go might be new territory. That's totally fine — here are some great resources to build your foundation first."* It recommends The Odin Project and freeCodeCamp with a specific message: *"Come back to tycs when you've built a few projects and feel comfortable reading unfamiliar code. We'll be here."* It offers to save her email for a "ready to start" notification in 6 months.
+**Climax:** Taylor looks at the Go snippet and doesn't recognize the syntax. She picks a wrong answer. The app doesn't say "you failed" — it says: *"It looks like Go might be new territory. That's totally fine — here are some great resources to build your foundation first."* It recommends The Odin Project and freeCodeCamp with a specific message: *"Come back to mycscompanion when you've built a few projects and feel comfortable reading unfamiliar code. We'll be here."* It offers to save her email for a "ready to start" notification in 6 months.
 
 **Resolution:** Taylor doesn't leave a 1-star review. She doesn't rage-quit at Milestone 1 wondering why she can't understand anything. She was redirected gracefully, felt respected, and has a clear path back. Six months later, she gets the email, has finished The Odin Project's JavaScript track, and signs up again — this time ready.
 
@@ -313,7 +313,7 @@ The tutor surfaces a **visual concept explainer** — an annotated diagram showi
 
 ## Innovation & Novel Patterns
 
-Six innovation areas that differentiate tycs from existing CS learning platforms. Each includes a validation approach and fallback strategy.
+Six innovation areas that differentiate mycscompanion from existing CS learning platforms. Each includes a validation approach and fallback strategy.
 
 ### Detected Innovation Areas
 
@@ -335,7 +335,7 @@ Using actual performance benchmarks (ops/sec, latency) as the primary learning f
 Starting at 80% starter code and decaying to 15% across milestones. This pattern exists in language learning (scaffolded reading) but hasn't been applied systematically to systems programming education.
 
 **6. Anti-Metrics as Product Philosophy**
-Explicitly refusing to optimize for time-in-app, session length, or streak counts. Every learning platform in edtech optimizes for engagement addiction. tycs optimizes for milestones completed — actual learning outcomes. "We don't care how long you're in the app. We care that your database handles transactions." This is a genuinely contrarian position that directly addresses growing criticism of platforms like Duolingo and Codecademy optimizing for dopamine loops over durable skill building.
+Explicitly refusing to optimize for time-in-app, session length, or streak counts. Every learning platform in edtech optimizes for engagement addiction. mycscompanion optimizes for milestones completed — actual learning outcomes. "We don't care how long you're in the app. We care that your database handles transactions." This is a genuinely contrarian position that directly addresses growing criticism of platforms like Duolingo and Codecademy optimizing for dopamine loops over durable skill building.
 
 ### Validation Approach
 
@@ -362,7 +362,7 @@ Platform-specific technical decisions for the web application. Performance targe
 
 ### Project-Type Overview
 
-tycs is a monorepo (Turborepo) with three packages under `/apps`:
+mycscompanion is a monorepo (Turborepo) with three packages under `/apps`:
 - **`/apps/webapp`** — React + Vite SPA. The core learning platform (code editor, AI tutor, benchmarks, progress tracking).
 - **`/apps/website`** — Astro static site. Landing page, marketing pages, blog (future). Optimized for SEO, fast LCP, and social sharing.
 - **`/apps/backend`** — Fastify API server. Handles auth, code execution orchestration, AI tutor, data persistence.
@@ -417,9 +417,9 @@ See **Non-Functional Requirements > Performance** for the full performance targe
 | Blog/content (future) | `/apps/website` | Astro content collections | Growth channel for organic search |
 | App pages (`/learn/*`, `/milestones/*`) | `/apps/webapp` | SPA, noindex | Behind auth. No SEO value. Pure client-side rendering. |
 
-**Routing between packages:** The website and webapp are separate deployments on Railway. The website lives at the root domain (e.g., `tycs.dev`). The webapp lives at a subdomain (e.g., `app.tycs.dev`). Subdomain is simpler — avoids path routing complexity between two separate services.
+**Routing between packages:** The website and webapp are separate deployments on Railway. The website lives at the root domain (e.g., `mycscompanion.dev`). The webapp lives at a subdomain (e.g., `app.mycscompanion.dev`). Subdomain is simpler — avoids path routing complexity between two separate services.
 
-**Open Graph priority:** Astro makes custom OG images straightforward. When Sam shares tycs on HN or Slack, the preview card needs to show something compelling — a screenshot of the benchmark dashboard or code snippet. High-ROI, low-effort task baked into the Astro build.
+**Open Graph priority:** Astro makes custom OG images straightforward. When Sam shares mycscompanion on HN or Slack, the preview card needs to show something compelling — a screenshot of the benchmark dashboard or code snippet. High-ROI, low-effort task baked into the Astro build.
 
 ### Accessibility
 
@@ -597,7 +597,7 @@ Do not let Phase 1 become 12-month limbo. The 4-month checkpoint forces the conv
 
 ## Functional Requirements
 
-The capability contract for tycs. 56 requirements across 8 capability areas. Every capability listed here will be designed (UX), supported (Architecture), and implemented (Epics). Capabilities not listed here will not exist in the product.
+The capability contract for mycscompanion. 56 requirements across 8 capability areas. Every capability listed here will be designed (UX), supported (Architecture), and implemented (Epics). Capabilities not listed here will not exist in the product.
 
 ### Learning Experience
 

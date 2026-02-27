@@ -1,12 +1,12 @@
 import { mergeConfig } from 'vitest/config'
-import { baseVitestConfig } from '@tycs/config/vitest.config'
+import { baseVitestConfig } from '@mycscompanion/config/vitest.config'
 
 const pgPort = process.env['CI'] === 'true' ? '5432' : '5433'
 
 export default mergeConfig(baseVitestConfig, {
   test: {
     env: {
-      DATABASE_URL: `postgresql://tycs:tycs@localhost:${pgPort}/tycs_test`,
+      DATABASE_URL: `postgresql://mycscompanion:mycscompanion@localhost:${pgPort}/mycscompanion_test`,
       REDIS_URL: 'redis://localhost:6379',
       NODE_ENV: 'test',
       LOG_LEVEL: 'silent',
