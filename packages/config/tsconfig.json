@@ -3,7 +3,8 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "jsx": "react-jsx"
   },
-  "include": ["*.ts", "test-utils/**/*.ts"]
+  "include": ["*.ts", "test-utils/**/*.ts", "test-utils/**/*.tsx"]
 }

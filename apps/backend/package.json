@@ -10,6 +10,7 @@
     "start:worker": "node dist/worker/worker.js",
     "build": "tsc",
     "lint": "eslint .",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "db:migrate": "kysely migrate:latest",
     "db:seed": "dotenv -e ../../.env -- tsx src/scripts/seed.ts",
@@ -29,6 +30,7 @@
     "pino": "^9.7.0"
   },
   "devDependencies": {
+    "@tycs/config": "workspace:*",
     "@types/node": "^22.15.30",
     "@types/pg": "^8.16.0",
     "dotenv": "^17.3.1",

@@ -18,6 +18,11 @@ packages/shared/src/types/db.ts
 # Test coverage
 coverage
 
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+
 # Astro
 .astro
 
