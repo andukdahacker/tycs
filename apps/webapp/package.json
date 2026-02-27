@@ -14,9 +14,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.90.21",
     "@mycscompanion/shared": "workspace:*",
     "@mycscompanion/ui": "workspace:*",
+    "@tanstack/react-query": "^5.90.21",
+    "firebase": "^12.9.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router": "^7.6.1",
@@ -25,12 +26,12 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
     "@eslint/js": "^9.36.0",
+    "@mycscompanion/config": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.1.10",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@mycscompanion/config": "workspace:*",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react-swc": "^4.1.0",

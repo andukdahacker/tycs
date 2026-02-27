@@ -4,7 +4,7 @@ import { baseVitestConfig } from '@mycscompanion/config/vitest.config'
 export default mergeConfig(baseVitestConfig, {
   test: {
     environment: 'jsdom',
-    setupFiles: ['@testing-library/jest-dom'],
+    setupFiles: ['@testing-library/jest-dom/vitest'],
     exclude: ['**/e2e/**', '**/node_modules/**'],
     passWithNoTests: true,
   },

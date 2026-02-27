@@ -1,4 +1,10 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
+
+vi.mock('../plugins/auth/firebase.js', () => ({
+  initFirebaseAdmin: () => ({
+    verifyIdToken: vi.fn().mockResolvedValue({ uid: 'test-uid' }),
+  }),
+}))
 import type { Kysely } from 'kysely'
 import { sql } from 'kysely'
 import type { DB } from '@mycscompanion/shared'

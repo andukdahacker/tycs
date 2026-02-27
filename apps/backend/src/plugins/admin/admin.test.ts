@@ -7,6 +7,12 @@ vi.mock('@sentry/node', () => ({
   close: vi.fn().mockResolvedValue(undefined),
 }))
 
+vi.mock('../auth/firebase.js', () => ({
+  initFirebaseAdmin: () => ({
+    verifyIdToken: vi.fn().mockResolvedValue({ uid: 'test-uid' }),
+  }),
+}))
+
 import type { FastifyInstance } from 'fastify'
 import { buildApp } from '../../app.js'
 

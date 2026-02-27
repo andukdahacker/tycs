@@ -11,6 +11,12 @@ vi.mock('@sentry/node', () => ({
   close: vi.fn().mockResolvedValue(undefined),
 }))
 
+vi.mock('../plugins/auth/firebase.js', () => ({
+  initFirebaseAdmin: () => ({
+    verifyIdToken: vi.fn().mockResolvedValue({ uid: 'test-uid' }),
+  }),
+}))
+
 import type { FastifyInstance } from 'fastify'
 import { buildApp } from '../app.js'
 
@@ -56,6 +62,7 @@ describe('Error Handler', () => {
       const response = await app.inject({
         method: 'GET',
         url: '/test/server-error',
+        headers: { authorization: 'Bearer test-token' },
       })
 
       expect(response.statusCode).toBe(500)
@@ -75,6 +82,7 @@ describe('Error Handler', () => {
       const response = await app.inject({
         method: 'GET',
         url: '/test/server-error',
+        headers: { authorization: 'Bearer test-token' },
       })
 
       const body = response.json()
@@ -92,6 +100,7 @@ describe('Error Handler', () => {
       const response = await app.inject({
         method: 'GET',
         url: '/test/not-found',
+        headers: { authorization: 'Bearer test-token' },
       })
 
       expect(response.statusCode).toBe(404)
@@ -102,6 +111,7 @@ describe('Error Handler', () => {
       const response = await app.inject({
         method: 'GET',
         url: '/test/bad-request',
+        headers: { authorization: 'Bearer test-token' },
       })
 
       const body = response.json()
