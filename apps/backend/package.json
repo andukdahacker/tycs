@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@mycscompanion/config": "workspace:*",
-    "@types/node": "^22.15.30",
+    "@types/node": "^25.3.2",
     "@types/pg": "^8.16.0",
     "dotenv": "^17.3.1",
     "dotenv-cli": "^11.0.0",
