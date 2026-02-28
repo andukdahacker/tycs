@@ -1,13 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import { ProtectedRoute } from './components/common/ProtectedRoute'
+import { SignIn } from './routes/SignIn'
+import { SignUp } from './routes/SignUp'
 
-// Placeholder components — replaced by real implementations in Stories 2.2-2.5, 3.5+
-function SignInPlaceholder(): React.ReactElement {
-  return <div className="flex h-screen items-center justify-center bg-neutral-950 text-neutral-400">Sign In (Story 2.2)</div>
-}
-function SignUpPlaceholder(): React.ReactElement {
-  return <div className="flex h-screen items-center justify-center bg-neutral-950 text-neutral-400">Sign Up (Story 2.2)</div>
-}
+// Placeholder components — replaced by real implementations in Stories 2.3-2.5, 3.5+
 function OnboardingPlaceholder(): React.ReactElement {
   return <div className="flex h-screen items-center justify-center bg-neutral-950 text-neutral-400">Onboarding (Story 2.3)</div>
 }
@@ -20,8 +16,8 @@ function App(): React.ReactElement {
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route path="/sign-in" element={<SignInPlaceholder />} />
-        <Route path="/sign-up" element={<SignUpPlaceholder />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>

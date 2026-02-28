@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source "./components/**/*.{ts,tsx}";
 @import '@mycscompanion/config/tailwind-tokens.css';
 
 /*
