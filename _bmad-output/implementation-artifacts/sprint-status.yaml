@@ -71,7 +71,7 @@ development_status:
   epic-2: in-progress
   2-1-firebase-auth-integration-and-session-management: done
   2-2-signup-and-login-ui: done
-  2-3-background-questionnaire-and-user-profile: backlog
+  2-3-background-questionnaire-and-user-profile: done
   2-4-skill-floor-assessment: backlog
   2-5-graceful-redirect-for-under-qualified-users: backlog
   epic-2-retrospective: optional

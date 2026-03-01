@@ -1,11 +1,14 @@
 import type { FastifyInstance } from 'fastify'
+import { db as defaultDb } from '../../shared/db.js'
+import { profileRoutes } from './profile.js'
+import { onboardingRoutes } from './onboarding.js'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function accountPlugin(fastify: FastifyInstance): Promise<void> {
-  // Routes added in Story 8.x:
-  // GET /profile — get user profile
-  // PUT /profile — update user profile
-  // POST /onboarding — submit onboarding data
-  // GET /export — export user data
-  // DELETE / — delete account
+interface AccountPluginOptions {
+  readonly db?: typeof defaultDb
+}
+
+export async function accountPlugin(fastify: FastifyInstance, opts: AccountPluginOptions = {}): Promise<void> {
+  const db = opts.db ?? defaultDb
+  await fastify.register(profileRoutes, { db })
+  await fastify.register(onboardingRoutes, { db })
 }
