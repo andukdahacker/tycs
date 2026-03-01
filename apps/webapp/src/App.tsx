@@ -4,9 +4,17 @@ import { SignIn } from './routes/SignIn'
 import { SignUp } from './routes/SignUp'
 import { Onboarding } from './routes/Onboarding'
 
-// Placeholder components — replaced by real implementations in Stories 3.5+
+// Placeholder components — replaced by real implementations in later stories
 function OverviewPlaceholder(): React.ReactElement {
   return <div className="flex h-screen items-center justify-center bg-neutral-950 text-neutral-400">Overview (Story 4+)</div>
+}
+
+function NotReadyPlaceholder(): React.ReactElement {
+  return (
+    <div className="flex h-screen items-center justify-center bg-background text-muted-foreground">
+      Not Ready (Story 2.5)
+    </div>
+  )
 }
 
 function App(): React.ReactElement {
@@ -21,6 +29,7 @@ function App(): React.ReactElement {
         <Route element={<ProtectedRoute />}>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/overview" element={<OverviewPlaceholder />} />
+          <Route path="/not-ready" element={<NotReadyPlaceholder />} />
           <Route path="/" element={<Navigate to="/overview" replace />} />
         </Route>
 

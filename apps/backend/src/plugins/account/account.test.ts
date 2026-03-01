@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, afterAll } from 'vitest'
 import Fastify from 'fastify'
+import { sql } from 'kysely'
 import { authPlugin } from '../auth/index.js'
 import { accountPlugin } from './index.js'
 import { createMockFirebaseAuth } from '@mycscompanion/config/test-utils'
@@ -263,6 +264,193 @@ describe('AccountPlugin', () => {
       })
 
       expect(response.statusCode).toBe(401)
+    })
+  })
+
+  describe('POST /api/account/skill-assessment', () => {
+    it('should update user with passed=true and set skill_floor_completed_at', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(200)
+      const body = res.json()
+      expect(body.skillFloorPassed).toBe(true)
+      expect(body.skillFloorCompletedAt).not.toBeNull()
+    })
+
+    it('should update user with passed=false', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: false },
+      })
+
+      expect(res.statusCode).toBe(200)
+      const body = res.json()
+      expect(body.skillFloorPassed).toBe(false)
+      expect(body.skillFloorCompletedAt).not.toBeNull()
+    })
+
+    it('should return 400 when onboarding not completed', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+      }).execute()
+
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(400)
+      expect(res.json().error.code).toBe('ONBOARDING_REQUIRED')
+    })
+
+    it('should return 400 when user does not exist', async () => {
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(400)
+      expect(res.json().error.code).toBe('ONBOARDING_REQUIRED')
+    })
+
+    it('should return camelCase response keys', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(200)
+      const body = res.json()
+      expect('skillFloorPassed' in body).toBe(true)
+      expect('skillFloorCompletedAt' in body).toBe(true)
+      expect('skill_floor_passed' in body).toBe(false)
+      expect('skill_floor_completed_at' in body).toBe(false)
+    })
+
+    it('should return 400 for missing passed field', async () => {
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: {},
+      })
+
+      expect(res.statusCode).toBe(400)
+    })
+
+    it('should return 400 for non-boolean passed value', async () => {
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: 'yes' },
+      })
+
+      expect(res.statusCode).toBe(400)
+    })
+
+    it('should return 401 when no auth token provided', async () => {
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(401)
+    })
+
+    it('should overwrite previous assessment result on re-submission', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+        skill_floor_passed: false,
+        skill_floor_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'POST',
+        url: '/api/account/skill-assessment',
+        headers: { authorization: 'Bearer test-token' },
+        payload: { passed: true },
+      })
+
+      expect(res.statusCode).toBe(200)
+      expect(res.json().skillFloorPassed).toBe(true)
+    })
+  })
+
+  describe('GET /api/account/profile (skill assessment fields)', () => {
+    it('should return skillFloorPassed and skillFloorCompletedAt in profile after assessment', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+        skill_floor_passed: true,
+        skill_floor_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'GET',
+        url: '/api/account/profile',
+        headers: { authorization: 'Bearer valid-token' },
+      })
+
+      expect(res.statusCode).toBe(200)
+      const body = res.json()
+      expect(body.skillFloorPassed).toBe(true)
+      expect(body.skillFloorCompletedAt).not.toBeNull()
+    })
+
+    it('should return skillFloorPassed as null when assessment not taken', async () => {
+      await db.insertInto('users').values({
+        id: TEST_UID,
+        email: 'test@test.com',
+        onboarding_completed_at: sql`now()`,
+      }).execute()
+
+      const res = await app.inject({
+        method: 'GET',
+        url: '/api/account/profile',
+        headers: { authorization: 'Bearer valid-token' },
+      })
+
+      expect(res.statusCode).toBe(200)
+      const body = res.json()
+      expect(body.skillFloorPassed).toBeNull()
+      expect(body.skillFloorCompletedAt).toBeNull()
     })
   })
 })

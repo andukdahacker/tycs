@@ -57,7 +57,7 @@ describe('ProtectedRoute', () => {
 
     it('should render child routes when user is authenticated and onboarding complete', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/protected']}>
@@ -76,7 +76,7 @@ describe('ProtectedRoute', () => {
   describe('onboarding gate', () => {
     it('should redirect to /onboarding when user has not completed onboarding', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/overview']}>
@@ -95,7 +95,7 @@ describe('ProtectedRoute', () => {
 
     it('should redirect to /overview when completed user visits /onboarding', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/onboarding']}>
@@ -114,7 +114,7 @@ describe('ProtectedRoute', () => {
 
     it('should render outlet when onboarding is complete', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/overview']}>
@@ -131,7 +131,7 @@ describe('ProtectedRoute', () => {
 
     it('should show skeleton while checking onboarding status', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: null, loading: true })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: null, assessmentFailed: false, loading: true })
 
       render(
         <MemoryRouter initialEntries={['/overview']}>
@@ -148,7 +148,7 @@ describe('ProtectedRoute', () => {
 
     it('should render outlet when onboarding status is unknown (fail-open on network error)', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: null, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: null, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/overview']}>
@@ -167,7 +167,7 @@ describe('ProtectedRoute', () => {
 
     it('should allow /onboarding page when onboarding is not complete', () => {
       mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
-      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, assessmentFailed: false, loading: false })
 
       render(
         <MemoryRouter initialEntries={['/onboarding']}>
@@ -180,6 +180,63 @@ describe('ProtectedRoute', () => {
       )
 
       expect(screen.getByText('Onboarding Page')).toBeDefined()
+    })
+  })
+
+  describe('assessment gate', () => {
+    it('should redirect to /not-ready when assessment failed', () => {
+      mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, assessmentFailed: true, loading: false })
+
+      render(
+        <MemoryRouter initialEntries={['/overview']}>
+          <Routes>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/overview" element={<div>Overview Page</div>} />
+              <Route path="/not-ready" element={<div>Not Ready Page</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>,
+      )
+
+      expect(screen.getByText('Not Ready Page')).toBeDefined()
+      expect(screen.queryByText('Overview Page')).toBeNull()
+    })
+
+    it('should redirect to /overview when non-failed user visits /not-ready', () => {
+      mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: true, assessmentFailed: false, loading: false })
+
+      render(
+        <MemoryRouter initialEntries={['/not-ready']}>
+          <Routes>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/not-ready" element={<div>Not Ready Page</div>} />
+              <Route path="/overview" element={<div>Overview Page</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>,
+      )
+
+      expect(screen.getByText('Overview Page')).toBeDefined()
+      expect(screen.queryByText('Not Ready Page')).toBeNull()
+    })
+
+    it('should allow failed user to see /not-ready page', () => {
+      mockUseAuth.mockReturnValue({ user: { uid: 'test-uid' }, loading: false })
+      mockUseOnboardingStatus.mockReturnValue({ isComplete: false, assessmentFailed: true, loading: false })
+
+      render(
+        <MemoryRouter initialEntries={['/not-ready']}>
+          <Routes>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/not-ready" element={<div>Not Ready Page</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>,
+      )
+
+      expect(screen.getByText('Not Ready Page')).toBeDefined()
     })
   })
 })

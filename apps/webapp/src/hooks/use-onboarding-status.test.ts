@@ -32,10 +32,13 @@ describe('useOnboardingStatus', () => {
     vi.restoreAllMocks()
   })
 
-  it('should return isComplete true when profile has onboardingCompletedAt', async () => {
+  it('should return isComplete true when profile has onboardingCompletedAt and experience >= 1 year', async () => {
     mockApiFetch.mockResolvedValue({
       id: 'test-uid',
       onboardingCompletedAt: '2026-02-28T00:00:00.000Z',
+      experienceLevel: '3-to-5',
+      skillFloorPassed: null,
+      skillFloorCompletedAt: null,
     })
 
     const { result } = renderHook(() => useOnboardingStatus(), {
@@ -46,6 +49,7 @@ describe('useOnboardingStatus', () => {
       expect(result.current.loading).toBe(false)
     })
     expect(result.current.isComplete).toBe(true)
+    expect(result.current.assessmentFailed).toBe(false)
   })
 
   it('should return isComplete false when profile endpoint returns 404', async () => {
@@ -59,6 +63,7 @@ describe('useOnboardingStatus', () => {
       expect(result.current.loading).toBe(false)
     })
     expect(result.current.isComplete).toBe(false)
+    expect(result.current.assessmentFailed).toBe(false)
   })
 
   it('should return loading true while fetching', async () => {
@@ -94,6 +99,7 @@ describe('useOnboardingStatus', () => {
       expect(result.current.loading).toBe(false)
     })
     expect(result.current.isComplete).toBe(false)
+    expect(result.current.assessmentFailed).toBe(false)
   })
 
   it('should refetch when location pathname changes', async () => {
@@ -101,6 +107,9 @@ describe('useOnboardingStatus', () => {
     mockApiFetch.mockResolvedValue({
       id: 'test-uid',
       onboardingCompletedAt: '2026-02-28T00:00:00.000Z',
+      experienceLevel: '3-to-5',
+      skillFloorPassed: null,
+      skillFloorCompletedAt: null,
     })
 
     let navigateFn: ReturnType<typeof useNavigate>
@@ -143,5 +152,66 @@ describe('useOnboardingStatus', () => {
       expect(result.current.loading).toBe(false)
     })
     expect(result.current.isComplete).toBeNull()
+    expect(result.current.assessmentFailed).toBe(false)
+  })
+
+  it('should return isComplete false when assessment needed but not completed', async () => {
+    mockApiFetch.mockResolvedValue({
+      id: 'test-uid',
+      onboardingCompletedAt: '2026-02-28T00:00:00.000Z',
+      experienceLevel: 'less-than-1',
+      skillFloorPassed: null,
+      skillFloorCompletedAt: null,
+    })
+
+    const { result } = renderHook(() => useOnboardingStatus(), {
+      wrapper: createWrapper(['/overview']),
+    })
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.isComplete).toBe(false)
+    expect(result.current.assessmentFailed).toBe(false)
+  })
+
+  it('should return assessmentFailed true when assessment completed with passed=false', async () => {
+    mockApiFetch.mockResolvedValue({
+      id: 'test-uid',
+      onboardingCompletedAt: '2026-02-28T00:00:00.000Z',
+      experienceLevel: 'less-than-1',
+      skillFloorPassed: false,
+      skillFloorCompletedAt: '2026-02-28T00:00:00.000Z',
+    })
+
+    const { result } = renderHook(() => useOnboardingStatus(), {
+      wrapper: createWrapper(['/overview']),
+    })
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.isComplete).toBe(false)
+    expect(result.current.assessmentFailed).toBe(true)
+  })
+
+  it('should return isComplete true when assessment passed', async () => {
+    mockApiFetch.mockResolvedValue({
+      id: 'test-uid',
+      onboardingCompletedAt: '2026-02-28T00:00:00.000Z',
+      experienceLevel: 'less-than-1',
+      skillFloorPassed: true,
+      skillFloorCompletedAt: '2026-02-28T00:00:00.000Z',
+    })
+
+    const { result } = renderHook(() => useOnboardingStatus(), {
+      wrapper: createWrapper(['/overview']),
+    })
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.isComplete).toBe(true)
+    expect(result.current.assessmentFailed).toBe(false)
   })
 })

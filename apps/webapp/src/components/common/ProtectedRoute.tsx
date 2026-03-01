@@ -17,14 +17,22 @@ function ProtectedRoute(): React.ReactElement {
 }
 
 function OnboardingGate(): React.ReactElement {
-  const { isComplete, loading } = useOnboardingStatus()
+  const { isComplete, assessmentFailed, loading } = useOnboardingStatus()
   const location = useLocation()
 
   if (loading) {
     return <OnboardingLoadingSkeleton />
   }
 
-  if (isComplete === false && location.pathname !== '/onboarding') {
+  if (assessmentFailed && location.pathname !== '/not-ready') {
+    return <Navigate to="/not-ready" replace />
+  }
+
+  if (!assessmentFailed && location.pathname === '/not-ready') {
+    return <Navigate to="/overview" replace />
+  }
+
+  if (isComplete === false && !assessmentFailed && location.pathname !== '/onboarding') {
     return <Navigate to="/onboarding" replace />
   }
 

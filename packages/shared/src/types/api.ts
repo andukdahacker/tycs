@@ -20,6 +20,12 @@ export interface UserProfile {
   readonly experienceLevel: ExperienceLevel | null
   readonly primaryLanguage: PrimaryLanguage | null
   readonly onboardingCompletedAt: string | null
+  readonly skillFloorPassed: boolean | null
+  readonly skillFloorCompletedAt: string | null
   readonly createdAt: string
   readonly updatedAt: string
+}
+
+export interface SkillAssessmentRequest {
+  readonly passed: boolean
 }

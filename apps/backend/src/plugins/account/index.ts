@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import { db as defaultDb } from '../../shared/db.js'
 import { profileRoutes } from './profile.js'
 import { onboardingRoutes } from './onboarding.js'
+import { skillAssessmentRoutes } from './skill-assessment.js'
 
 interface AccountPluginOptions {
   readonly db?: typeof defaultDb
@@ -11,4 +12,5 @@ export async function accountPlugin(fastify: FastifyInstance, opts: AccountPlugi
   const db = opts.db ?? defaultDb
   await fastify.register(profileRoutes, { db })
   await fastify.register(onboardingRoutes, { db })
+  await fastify.register(skillAssessmentRoutes, { db })
 }

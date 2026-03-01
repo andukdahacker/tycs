@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { apiFetch } from '../lib/api-fetch'
+import { apiFetch, ApiError } from '../lib/api-fetch'
 import { auth } from '../lib/firebase'
 import { Button } from '@mycscompanion/ui/src/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@mycscompanion/ui/src/components/ui/card'
@@ -12,14 +12,65 @@ import {
   SelectValue,
 } from '@mycscompanion/ui/src/components/ui/select'
 import type { UserProfile } from '@mycscompanion/shared'
+import { SkillFloorCheck } from '../components/onboarding/SkillFloorCheck'
+
+function OnboardingLoadingSkeleton(): React.ReactElement {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <Card className="w-full max-w-[400px]">
+        <CardHeader className="text-center">
+          <div className="h-7 w-48 mx-auto bg-muted rounded animate-pulse" />
+          <div className="h-4 w-64 mx-auto bg-muted rounded animate-pulse mt-2" />
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="h-11 w-full bg-muted rounded animate-pulse" />
+          <div className="h-11 w-full bg-muted rounded animate-pulse" />
+          <div className="h-11 w-full bg-muted rounded animate-pulse" />
+          <div className="h-11 w-full bg-muted rounded animate-pulse" />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 function Onboarding(): React.ReactElement {
   const navigate = useNavigate()
+  const [step, setStep] = useState<'loading' | 'questionnaire' | 'assessment'>('loading')
   const [role, setRole] = useState('')
   const [experienceLevel, setExperienceLevel] = useState('')
   const [primaryLanguage, setPrimaryLanguage] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    async function detectStep(): Promise<void> {
+      try {
+        const profile = await apiFetch<UserProfile>('/api/account/profile')
+        if (profile.onboardingCompletedAt === null) {
+          setStep('questionnaire')
+        } else if (
+          profile.experienceLevel === 'less-than-1' &&
+          profile.skillFloorCompletedAt === null
+        ) {
+          setStep('assessment')
+        } else if (
+          profile.experienceLevel === 'less-than-1' &&
+          profile.skillFloorPassed === false
+        ) {
+          navigate('/not-ready', { replace: true })
+        } else {
+          navigate('/overview', { replace: true })
+        }
+      } catch (err: unknown) {
+        if (err instanceof ApiError && err.status === 404) {
+          setStep('questionnaire')
+        } else {
+          setStep('questionnaire')
+        }
+      }
+    }
+    void detectStep()
+  }, [navigate])
 
   const isFormComplete = role !== '' && experienceLevel !== '' && primaryLanguage !== ''
 
@@ -28,7 +79,7 @@ function Onboarding(): React.ReactElement {
     setError(null)
     setLoading(true)
     try {
-      await apiFetch<UserProfile>('/api/account/onboarding', {
+      const response = await apiFetch<UserProfile>('/api/account/onboarding', {
         method: 'POST',
         body: JSON.stringify({
           email: auth.currentUser?.email,
@@ -38,13 +89,29 @@ function Onboarding(): React.ReactElement {
           primaryLanguage,
         }),
       })
-      navigate('/overview', { replace: true })
+
+      if (response.experienceLevel === 'less-than-1') {
+        setStep('assessment')
+      } else {
+        navigate('/overview', { replace: true })
+      }
     } catch {
       setError("Couldn't save preferences, try again.")
     } finally {
       setLoading(false)
     }
   }
+
+  function handleAssessmentComplete(passed: boolean): void {
+    if (passed) {
+      navigate('/overview', { replace: true })
+    } else {
+      navigate('/not-ready', { replace: true })
+    }
+  }
+
+  if (step === 'loading') return <OnboardingLoadingSkeleton />
+  if (step === 'assessment') return <SkillFloorCheck onComplete={handleAssessmentComplete} />
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">

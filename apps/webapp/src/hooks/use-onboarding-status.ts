@@ -5,11 +5,13 @@ import type { UserProfile } from '@mycscompanion/shared'
 
 interface OnboardingStatus {
   readonly isComplete: boolean | null
+  readonly assessmentFailed: boolean
   readonly loading: boolean
 }
 
 function useOnboardingStatus(): OnboardingStatus {
   const [isComplete, setIsComplete] = useState<boolean | null>(null)
+  const [assessmentFailed, setAssessmentFailed] = useState(false)
   const [loading, setLoading] = useState(true)
   const location = useLocation()
 
@@ -17,12 +19,32 @@ function useOnboardingStatus(): OnboardingStatus {
     setLoading(true)
     try {
       const profile = await apiFetch<UserProfile>('/api/account/profile')
-      setIsComplete(profile.onboardingCompletedAt !== null)
+
+      if (profile.onboardingCompletedAt === null) {
+        setIsComplete(false)
+        setAssessmentFailed(false)
+      } else if (profile.experienceLevel === 'less-than-1') {
+        if (profile.skillFloorCompletedAt === null) {
+          setIsComplete(false)
+          setAssessmentFailed(false)
+        } else if (profile.skillFloorPassed === false) {
+          setIsComplete(false)
+          setAssessmentFailed(true)
+        } else {
+          setIsComplete(true)
+          setAssessmentFailed(false)
+        }
+      } else {
+        setIsComplete(true)
+        setAssessmentFailed(false)
+      }
     } catch (err: unknown) {
       if (err instanceof ApiError && err.status === 404) {
         setIsComplete(false)
+        setAssessmentFailed(false)
       } else {
         setIsComplete(null)
+        setAssessmentFailed(false)
       }
     } finally {
       setLoading(false)
@@ -33,7 +55,7 @@ function useOnboardingStatus(): OnboardingStatus {
     void fetchStatus()
   }, [fetchStatus, location.pathname])
 
-  return { isComplete, loading }
+  return { isComplete, assessmentFailed, loading }
 }
 
 export { useOnboardingStatus }
